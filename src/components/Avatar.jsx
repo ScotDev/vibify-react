@@ -16,7 +16,7 @@ export default function CustomAvatar({ name, subtitle, image_URL }) {
           alt="User profile picture"
           className="rounded-full ring ring-neutral-300 h-9 w-9"
         />
-        <div className="flex-col xs:hidden flex">
+        <div className="flex-col hidden sm:flex">
           <p className="text-neutral-800 font-medium">{name ?? "User"}</p>
           <p className="text-neutral-600  text-sm">
             {subtitle ? subtitle : "Product designer"}
