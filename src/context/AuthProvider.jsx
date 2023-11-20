@@ -15,20 +15,24 @@ const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const { data } = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === "SIGNED_IN" || event === "INITIAL_SESSION") {
-        setUser(session.user);
-        setSession(session);
+      console.log(event);
 
-        setItem("spotify_access_token", session.provider_token, 3600);
+      if (event === "INITIAL_SESSION") {
+        console.log("Setting tokens in local storage", session.provider_token);
+        setItem("spotify_access_token", session.provider_token);
 
         setItem(
           "spotify_refresh_token",
           session.provider_refresh_token,
           oneYear
         );
-        if (event === "SIGNED_OUT") {
-          removeAllItems();
-        }
+      }
+      if (event === "SIGNED_IN" || event === "INITIAL_SESSION") {
+        setUser(session.user);
+        setSession(session);
+      }
+      if (event === "SIGNED_OUT") {
+        removeAllItems();
       }
     });
     return () => {

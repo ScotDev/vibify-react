@@ -7,7 +7,6 @@ import { getUserTopItems } from "../utils/Spotify";
 
 export default function Profile() {
   const { profileData } = useLoaderData();
-  console.log(profileData);
 
   const [userTopItems, setUserTopItems] = useState([]);
 

@@ -19,8 +19,9 @@ const handleToken = async () => {
       // If refresh token found then use to retrieve new access token
       const new_access_token = await refreshSpotifyToken(refresh_token.value);
       if (!new_access_token) {
-        throw new Error("No new access token could be retrieved");
+        console.log("No new access token could be retrieved");
       }
+      console.log("New access token retrieved", new_access_token);
       setItem("spotify_access_token", new_access_token, 3600);
       return new_access_token;
     }
@@ -97,9 +98,10 @@ const refreshSpotifyToken = async (refresh_token) => {
   const token = await newAccessToken.json();
 
   if (!token.access_token) {
+    console.log("No new access token could be retrieved");
     return null;
   }
-  console.log(token.access_token);
+  console.log("New token", token.access_token);
   return token.access_token;
 };
 

@@ -4,8 +4,7 @@ import CustomAvatar from "./Avatar";
 import { useAuth } from "../context/AuthProvider";
 
 export default function Navbar() {
-  const { user, session } = useAuth();
-  console.log(session);
+  const { user } = useAuth();
   return (
     <>
       {/* Padding must be the same as /routes/root */}

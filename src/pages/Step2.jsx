@@ -28,21 +28,40 @@ export default function Step2() {
       {/* Section 1 has searchable tags */}
       {/* Section 2 has slider */}
       {/* Submit button */}
-      <form>
-        <fieldset className="flex flex-col sm:flex-row gap-8 py-8">
-          <div className="w-full flex flex-col gap-4">
-            <label htmlFor="BPM">BPM</label>
-            <Slider defaultValue={[85]} max={200} step={5} name="BPM" />
-          </div>
-          <div className="w-full flex flex-col gap-4">
-            <label htmlFor="qty">Number of tracks</label>
-            <Slider defaultValue={[10]} max={100} step={1} name="qty" />
-          </div>
-          <div className="w-full flex flex-col gap-4">
-            <label htmlFor="Popularity">Popularity</label>
-            <Slider defaultValue={[90]} max={100} step={5} name="Popularity" />
-          </div>
-        </fieldset>
+      <form className="flex flex-col gap-7">
+        <div
+          id="inspiration"
+          className="shadow-md rounded-lg py-8 px-6 bg-neutral-50"
+        >
+          <h3 className="text-xl">Set the tone</h3>
+          <fieldset className="flex flex-col sm:flex-row gap-8 py-8"></fieldset>
+        </div>
+
+        <div
+          id="finer-details"
+          className="shadow-md rounded-lg py-8 px-6 bg-neutral-50"
+        >
+          <h3 className="text-xl">Finer details</h3>
+          <fieldset className="flex flex-col sm:flex-row gap-8 py-8">
+            <div className="w-full flex flex-col gap-4">
+              <label htmlFor="BPM">BPM</label>
+              <Slider defaultValue={[85]} max={200} step={5} name="BPM" />
+            </div>
+            <div className="w-full flex flex-col gap-4">
+              <label htmlFor="qty">Number of tracks</label>
+              <Slider defaultValue={[10]} max={100} step={1} name="qty" />
+            </div>
+            <div className="w-full flex flex-col gap-4">
+              <label htmlFor="Popularity">Popularity</label>
+              <Slider
+                defaultValue={[90]}
+                max={100}
+                step={5}
+                name="Popularity"
+              />
+            </div>
+          </fieldset>
+        </div>
       </form>
     </div>
   );
