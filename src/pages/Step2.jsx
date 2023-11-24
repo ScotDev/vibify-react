@@ -1,4 +1,7 @@
 import { Slider } from "@/components/ui/slider";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import SearchableInput from "@/components/SearchableInput";
 // import {
 //   Form,
 //   FormControl,
@@ -28,13 +31,29 @@ export default function Step2() {
       {/* Section 1 has searchable tags */}
       {/* Section 2 has slider */}
       {/* Submit button */}
-      <form className="flex flex-col gap-7">
+      <form className="flex flex-col gap-7 relative">
         <div
           id="inspiration"
-          className="shadow-md rounded-lg py-8 px-6 bg-neutral-50"
+          className="shadow-md rounded-lg pt-8 pb-24 px-6 bg-neutral-50"
         >
           <h3 className="text-xl">Set the tone</h3>
-          <fieldset className="flex flex-col sm:flex-row gap-8 py-8"></fieldset>
+          <p className="text-sm py-4">
+            Add tracks, artists and genres to inspire the playlist
+          </p>
+          {/* <fieldset className="flex flex-col sm:flex-row gap-8 pt-4 pb-8">
+            <div className="w-1/2">
+              <Label htmlFor="tracks">Search for anything</Label>
+              <Input
+                type="text"
+                id="inspiration"
+                name="inspiration"
+                placeholder="In My Feelings, Efecto, House, Dance, Lil Nas X, Shakira"
+              />
+            </div>
+          </fieldset> */}
+          <div className="absolute w-1/2 z-50">
+            <SearchableInput />
+          </div>
         </div>
 
         <div
@@ -44,12 +63,12 @@ export default function Step2() {
           <h3 className="text-xl">Finer details</h3>
           <fieldset className="flex flex-col sm:flex-row gap-8 py-8">
             <div className="w-full flex flex-col gap-4">
-              <label htmlFor="BPM">BPM</label>
-              <Slider defaultValue={[85]} max={200} step={5} name="BPM" />
-            </div>
-            <div className="w-full flex flex-col gap-4">
               <label htmlFor="qty">Number of tracks</label>
               <Slider defaultValue={[10]} max={100} step={1} name="qty" />
+            </div>
+            <div className="w-full flex flex-col gap-4">
+              <label htmlFor="BPM">BPM</label>
+              <Slider defaultValue={[85]} max={200} step={5} name="BPM" />
             </div>
             <div className="w-full flex flex-col gap-4">
               <label htmlFor="Popularity">Popularity</label>
@@ -61,6 +80,9 @@ export default function Step2() {
               />
             </div>
           </fieldset>
+        </div>
+        <div className="py-8">
+          <button type="submit">Submit</button>
         </div>
       </form>
     </div>

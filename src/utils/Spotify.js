@@ -68,6 +68,8 @@ const getUserTopItems = async () => {
   return await res.json();
 };
 
+const getInspoResults = async (searchTerm) => {};
+
 const refreshSpotifyToken = async (refresh_token) => {
   const authData = Buffer.from(
     import.meta.env.VITE_SPOTIFY_CLIENTID +
