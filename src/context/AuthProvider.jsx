@@ -26,9 +26,16 @@ const AuthProvider = ({ children }) => {
       setLoading(false);
       console.log(session);
 
-      setItem("spotify_access_token", session.provider_token);
-
-      setItem("spotify_refresh_token", session.provider_refresh_token, oneYear);
+      if (session.provider_token) {
+        setItem("spotify_access_token", session.provider_token);
+      }
+      if (session.provider_refresh_token) {
+        setItem(
+          "spotify_refresh_token",
+          session.provider_refresh_token,
+          oneYear
+        );
+      }
     };
 
     const { data: listener } = supabase.auth.onAuthStateChange(

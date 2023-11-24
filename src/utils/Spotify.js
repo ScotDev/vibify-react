@@ -68,7 +68,26 @@ const getUserTopItems = async () => {
   return await res.json();
 };
 
-const getInspoResults = async (searchTerm) => {};
+// I need to fetch genres, artists and tracks from a search term.
+// Returning each as they return from spotify.
+
+const getGenres = async (searchTerm) => {
+  // https://api.spotify.com/v1/recommendations/available-genre-seeds
+  // Requires auth bearer header
+  // returns {
+  //   "genres": ["alternative", "samba"]
+  // }
+};
+
+const getArtists = async (searchTerm) => {
+  // https://api.spotify.com/v1/search?q=drake&type=artist&limit=5&offset=0'
+  // Requires auth bearer header
+};
+
+const getTracks = async (searchTerm) => {
+  // 'https://api.spotify.com/v1/search?q=drake&type=track&limit=5&offset=0'
+  // Requires auth bearer header
+};
 
 const refreshSpotifyToken = async (refresh_token) => {
   const authData = Buffer.from(
