@@ -1,4 +1,5 @@
 import { Link, useRouteError } from "react-router-dom";
+import SignOutButton from "./components/SignOutButton";
 
 export default function ErrorPage() {
   const error = useRouteError();
@@ -18,6 +19,7 @@ export default function ErrorPage() {
         <Link className="hover:underline" to="/">
           Go back home
         </Link>
+        <SignOutButton />
       </div>
     </div>
   );

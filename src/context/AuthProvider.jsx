@@ -7,7 +7,8 @@ const AuthContext = createContext({});
 
 export const useAuth = () => useContext(AuthContext);
 
-const oneYear = 24 * 60 * 60 * 1000 * 365;
+const oneHour = 3600 * 1000;
+const oneYear = 31556926 * 1000;
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -27,9 +28,11 @@ const AuthProvider = ({ children }) => {
       console.log(session);
 
       if (session.provider_token) {
-        setItem("spotify_access_token", session.provider_token);
+        console.log(session.provider_token);
+        setItem("spotify_access_token", session.provider_token, oneHour);
       }
       if (session.provider_refresh_token) {
+        console.log(session.provider_refresh_token);
         setItem(
           "spotify_refresh_token",
           session.provider_refresh_token,
@@ -53,10 +56,17 @@ const AuthProvider = ({ children }) => {
     };
   }, []);
 
+  const signOut = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) throw error;
+    removeAllItems();
+    window.location.reload();
+  };
+
   const value = {
     session,
     user,
-    signOut: () => supabase.auth.signOut(),
+    signOut: async () => await signOut(),
   };
 
   return (

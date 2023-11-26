@@ -1,20 +1,19 @@
-import { supabase } from "../supabase/client";
+import { useAuth } from "../context/AuthProvider";
 
 export default function SignOutButton() {
-  const signOut = async () => {
-    const { error } = await supabase.auth.signOut();
+  const { signOut } = useAuth();
 
-    if (error) {
-      console.log(error);
-    }
+  const handleSignOut = async () => {
+    console.log("Signing out...");
+    await signOut();
   };
 
   return (
     <>
       <button
         type="button"
-        className="bg-red-200 px-4 py-2 cursor-pointer"
-        onClick={() => supabase.auth.signOut()}
+        className="bg-indigo-100 w-fit text-neutral-900 font-medium px-4 py-2 rounded-lg cursor-pointer"
+        onClick={handleSignOut}
       >
         Sign out
       </button>

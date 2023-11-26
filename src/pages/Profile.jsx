@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useLoaderData } from "react-router-dom";
 import Code from "../components/Code";
 import MediaItem from "../components/MediaItem";
+import SignOutButton from "../components/SignOutButton";
 
 import { getUserTopItems } from "../utils/Spotify";
 
@@ -20,7 +21,7 @@ export default function Profile() {
   }, []);
 
   return (
-    <div className="flex flex-col pt-12 gap-6">
+    <div className="flex flex-col py-12 gap-6">
       <h1>Profile</h1>
       <div className="flex flex-col pt-6 gap-2 max-w-96 py-2">
         <p className="text-xs">Display name</p>
@@ -60,6 +61,7 @@ export default function Profile() {
           return <MediaItem key={item.name} data={item} />;
         })}
       </div>
+      <SignOutButton />
     </div>
   );
 }

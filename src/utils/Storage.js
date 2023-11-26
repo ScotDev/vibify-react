@@ -9,9 +9,10 @@
 
 const setItem = (name, value, expires_in) => {
   //   const oneYear = 24 * 60 * 60 * 1000 * 365;
-  const oneHour = 24 * 60 * 60 * 1000;
 
-  const expires = expires_in ? Date.now() + expires_in : Date.now() + oneHour;
+  // const expires = expires_in ? Date.now() + expires_in : Date.now() + oneHour;
+
+  const expires = expires_in + Date.now();
 
   if (window.localStorage) {
     window.localStorage.setItem(
@@ -23,12 +24,12 @@ const setItem = (name, value, expires_in) => {
 
 const getItem = (name) => {
   try {
-    const item = JSON.parse(localStorage.getItem("vibify_" + name));
-    if (item.expires < Date.now()) {
-      console.log("Item expired, removed from local storage");
-      localStorage.removeItem("vibify_" + name);
-      return null;
-    }
+    // const item = JSON.parse(localStorage.getItem("vibify_" + name));
+    // if (item.expires < Date.now()) {
+    //   console.log("Item expired, removed from local storage");
+    //   localStorage.removeItem("vibify_" + name);
+    //   return null;
+    // }
     return JSON.parse(localStorage.getItem("vibify_" + name));
   } catch (error) {
     console.log(error);

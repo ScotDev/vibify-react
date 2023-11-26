@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Slider } from "@/components/ui/slider";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -19,6 +20,19 @@ import SearchableInput from "@/components/SearchableInput";
 export default function Step2() {
   let params = new URLSearchParams(document.location.search);
   const preset = params.get("preset");
+  const [qty, setQty] = useState(10);
+  const [tempo, setTempo] = useState(85);
+  const [popularity, setPopularity] = useState(90);
+
+  const handleQtyChange = (value) => {
+    setQty(value);
+  };
+  const handleTempoChange = (value) => {
+    setTempo(value);
+  };
+  const handlePopularityChange = (value) => {
+    setPopularity(value);
+  };
 
   return (
     <div>
@@ -51,7 +65,7 @@ export default function Step2() {
               />
             </div>
           </fieldset> */}
-          <div className="absolute w-1/2 z-50">
+          <div className="absolute w-full md:w-1/2 z-50">
             <SearchableInput />
           </div>
         </div>
@@ -64,20 +78,42 @@ export default function Step2() {
           <fieldset className="flex flex-col sm:flex-row gap-8 py-8">
             <div className="w-full flex flex-col gap-4">
               <label htmlFor="qty">Number of tracks</label>
-              <Slider defaultValue={[10]} max={100} step={1} name="qty" />
+              <Slider
+                defaultValue={[10]}
+                value={[qty]}
+                onValueChange={handleQtyChange}
+                min={5}
+                max={100}
+                step={1}
+                name="qty"
+              />
+              <span>{qty}</span>
             </div>
             <div className="w-full flex flex-col gap-4">
               <label htmlFor="BPM">BPM</label>
-              <Slider defaultValue={[85]} max={200} step={5} name="BPM" />
+              <Slider
+                defaultValue={[85]}
+                value={[tempo]}
+                onValueChange={handleTempoChange}
+                min={20}
+                max={200}
+                step={5}
+                name="BPM"
+              />
+              <span>{tempo}</span>
             </div>
             <div className="w-full flex flex-col gap-4">
               <label htmlFor="Popularity">Popularity</label>
               <Slider
                 defaultValue={[90]}
+                value={[popularity]}
+                onValueChange={handlePopularityChange}
+                min={5}
                 max={100}
                 step={5}
                 name="Popularity"
               />
+              <span>{popularity}</span>
             </div>
           </fieldset>
         </div>

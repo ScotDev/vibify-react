@@ -9,7 +9,7 @@ export default function MediaItem({ data }) {
         <img
           src={data.album.images[0].url}
           alt="Media item cover art"
-          className="object-cover object-center aspect-square  rounded-xl"
+          className="object-cover object-center aspect-square rounded-xl shadow-md hover:shadow-xl transition duration-300 ease-in-out"
         />
       </Link>
       <div className="flex flex-col h-full gap-4 justify-between ">
