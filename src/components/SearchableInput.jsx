@@ -61,6 +61,7 @@ export default function SearchableInput() {
         placeholder="Type a command or search..."
         value={search}
         onValueChange={setSearch}
+        onFocus={() => setOpen(true)}
       />
       {open && (
         <CommandList>

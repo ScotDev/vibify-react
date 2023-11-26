@@ -48,7 +48,7 @@ export default function Step2() {
       <form className="flex flex-col gap-7 relative">
         <div
           id="inspiration"
-          className="shadow-md rounded-lg pt-8 pb-24 px-6 bg-neutral-50"
+          className="shadow-md h-64 rounded-lg pt-8 pb-24 px-6 bg-neutral-50 z-50"
         >
           <h3 className="text-xl">Set the tone</h3>
           <p className="text-sm py-4">
@@ -65,7 +65,7 @@ export default function Step2() {
               />
             </div>
           </fieldset> */}
-          <div className="absolute w-full md:w-1/2 z-50">
+          <div className="w-full md:w-1/2 z-50">
             <SearchableInput />
           </div>
         </div>
