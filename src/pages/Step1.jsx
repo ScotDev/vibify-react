@@ -8,7 +8,7 @@ export default function Step1() {
         <VibeCard title="running" />
         <VibeCard title="party" />
         <VibeCard title="focus" />
-        <VibeCard title="hip hop" />
+        <VibeCard title="hip-hop" />
         <VibeCard title="k-pop" />
         <VibeCard title="reggaeton" />
         <VibeCard title="custom" />
