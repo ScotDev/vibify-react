@@ -80,7 +80,7 @@ const getUserTopItems = async () => {
   };
 
   const res = await fetch(
-    "https://api.spotify.com/v1/me/top/tracks?time_range=short_term&limit=5",
+    "https://api.spotify.com/v1/me/top/tracks?time_range=short_term&limit=6",
     options
   );
 
@@ -130,7 +130,7 @@ const getArtists = async (searchTerm) => {
   // Requires auth bearer header
 
   const access_token = await handleToken();
-
+  // Return max of 5 results
   const request = new Request(
     `https://api.spotify.com/v1/search?q=${searchTerm}&type=artist&limit=5&offset=0`,
     { headers: { Authorization: `Bearer ${access_token}` } }
@@ -141,11 +141,18 @@ const getArtists = async (searchTerm) => {
   if (!result.artists) {
     return [];
   }
-  // Return max of 5 results
-  if (result.artists.items.length > 5) {
-    return result.artists.items.slice(0, 5);
-  }
-  return result.artists.items;
+
+  const uniqueArray = result.artists.items.reduce((acc, current) => {
+    const x = acc.find((item) => item.name === current.name);
+    if (!x) {
+      return acc.concat([current]);
+    } else {
+      return acc;
+    }
+  }, []);
+  console.log(uniqueArray);
+
+  return uniqueArray;
 };
 
 const getTracks = async (searchTerm) => {
@@ -153,7 +160,7 @@ const getTracks = async (searchTerm) => {
   // Requires auth bearer header
 
   const access_token = await handleToken();
-
+  // Return max of 5 results
   const request = new Request(
     `https://api.spotify.com/v1/search?q=${searchTerm}&type=track&limit=5&offset=0`,
     { headers: { Authorization: `Bearer ${access_token}` } }
@@ -164,9 +171,6 @@ const getTracks = async (searchTerm) => {
   console.log(result);
   if (!result.tracks) {
     return [];
-  }
-  if (result.tracks.items.length > 5) {
-    return result.tracks.items.slice(0, 5);
   }
   return result.tracks.items;
 };

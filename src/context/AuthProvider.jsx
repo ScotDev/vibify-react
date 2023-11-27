@@ -25,14 +25,14 @@ const AuthProvider = ({ children }) => {
       setSession(session);
       setUser(session?.user);
       setLoading(false);
-      console.log(session);
+      // console.log(session);
 
       if (session.provider_token) {
-        console.log(session.provider_token);
+        // console.log(session.provider_token);
         setItem("spotify_access_token", session.provider_token, oneHour);
       }
       if (session.provider_refresh_token) {
-        console.log(session.provider_refresh_token);
+        // console.log(session.provider_refresh_token);
         setItem(
           "spotify_refresh_token",
           session.provider_refresh_token,

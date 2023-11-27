@@ -12,7 +12,7 @@ import {
 import { getGenres, getArtists, getTracks } from "../utils/Spotify";
 
 export default function SearchableInput() {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [selectedGenre, setSelectedGenre] = useState("");
   const [selectedItems, setSelectedItems] = useState([]);
@@ -56,6 +56,7 @@ export default function SearchableInput() {
       const tracks = await getTracks(search.trim());
       setTrackResults(tracks);
       setLoading(false);
+      setOpen(true);
     }, 1500);
     return () => clearTimeout(delayDebounceFn);
   }, [search]);

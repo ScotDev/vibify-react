@@ -22,7 +22,7 @@ export default function Step2() {
   const preset = params.get("preset");
   const [qty, setQty] = useState(10);
   const [tempo, setTempo] = useState(85);
-  const [popularity, setPopularity] = useState(90);
+  const [popularity, setPopularity] = useState(100);
 
   const handleQtyChange = (value) => {
     setQty(value);
@@ -79,12 +79,12 @@ export default function Step2() {
             <div className="w-full flex flex-col gap-4">
               <label htmlFor="qty">Number of tracks</label>
               <Slider
-                defaultValue={[10]}
+                defaultValue={[qty]}
                 value={[qty]}
                 onValueChange={handleQtyChange}
                 min={5}
                 max={100}
-                step={1}
+                step={5}
                 name="qty"
               />
               <span>{qty}</span>
@@ -92,7 +92,7 @@ export default function Step2() {
             <div className="w-full flex flex-col gap-4">
               <label htmlFor="BPM">BPM</label>
               <Slider
-                defaultValue={[85]}
+                defaultValue={[tempo]}
                 value={[tempo]}
                 onValueChange={handleTempoChange}
                 min={20}
@@ -105,7 +105,7 @@ export default function Step2() {
             <div className="w-full flex flex-col gap-4">
               <label htmlFor="Popularity">Popularity</label>
               <Slider
-                defaultValue={[90]}
+                defaultValue={[popularity]}
                 value={[popularity]}
                 onValueChange={handlePopularityChange}
                 min={5}
