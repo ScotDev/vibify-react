@@ -3,19 +3,8 @@ import { Slider } from "@/components/ui/slider";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import SearchableInput from "@/components/SearchableInput";
-// import {
-//   Form,
-//   FormControl,
-//   FormDescription,
-//   FormField,
-//   FormItem,
-//   FormLabel,
-//   FormMessage,
-// } from "@/components/ui/form";
 
-// import { zodResolver } from "@hookform/resolvers/zod";
-// import { useForm } from "react-hook-form";
-// import * as z from "zod";
+import { useNavigate } from "react-router-dom";
 
 export default function Step2() {
   let params = new URLSearchParams(document.location.search);
@@ -23,6 +12,8 @@ export default function Step2() {
   const [qty, setQty] = useState(10);
   const [tempo, setTempo] = useState(85);
   const [popularity, setPopularity] = useState(100);
+  const [inspiration, setInspiration] = useState([]); // [track, artist, genre]
+  const navigate = useNavigate();
 
   const handleQtyChange = (value) => {
     setQty(value);
@@ -32,6 +23,45 @@ export default function Step2() {
   };
   const handlePopularityChange = (value) => {
     setPopularity(value);
+  };
+
+  const handleInspiration = (value) => {
+    if (inspiration.length < 3) {
+      setInspiration(value.flat());
+    }
+  };
+  const genres = [];
+  const artists = [];
+  const tracks = [];
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    let params = {};
+    params["qty"] = qty;
+    params["tempo"] = tempo;
+    params["popularity"] = popularity;
+
+    // Loop over inspiration array and add to params.
+    // Need to loop over and separate out by type, but grouped togther in the params, separated by commas.
+    // Doesn't need to be formatted for spotify API yet, I can do this in the loader function for the route for step-3.
+
+    inspiration.forEach((item) => {
+      if (item.type === "track") {
+        tracks.push(item.id);
+      }
+      if (item.type === "artist") {
+        artists.push(item.id);
+      }
+      if (item.type === "genre") {
+        genres.push(item.name);
+      }
+    });
+
+    navigate(
+      `/step-3?${new URLSearchParams(params).toString()}&genres=${genres.join(
+        ","
+      )}&artists=${artists.join(",")}&tracks=${tracks.join(",")}}`
+    );
+    console.log("submit");
   };
 
   return (
@@ -45,7 +75,7 @@ export default function Step2() {
       {/* Section 1 has searchable tags */}
       {/* Section 2 has slider */}
       {/* Submit button */}
-      <form className="flex flex-col gap-7 relative">
+      <form className="flex flex-col gap-7 relative" onSubmit={handleSubmit}>
         <div
           id="inspiration"
           className="shadow-md h-64 rounded-lg pt-8 pb-24 px-6 bg-neutral-50 z-50"
@@ -54,19 +84,50 @@ export default function Step2() {
           <p className="text-sm py-4">
             Add tracks, artists and genres to inspire the playlist
           </p>
-          {/* <fieldset className="flex flex-col sm:flex-row gap-8 pt-4 pb-8">
-            <div className="w-1/2">
-              <Label htmlFor="tracks">Search for anything</Label>
-              <Input
-                type="text"
-                id="inspiration"
-                name="inspiration"
-                placeholder="In My Feelings, Efecto, House, Dance, Lil Nas X, Shakira"
-              />
+
+          <div className="flex flex-col h-full gap-6 relative w-full md:w-1/2">
+            <div className="w-full z-50">
+              <SearchableInput handleInspiration={handleInspiration} />
             </div>
-          </fieldset> */}
-          <div className="w-full md:w-1/2 z-50">
-            <SearchableInput />
+            {inspiration.length === 3 && (
+              <p className="absolute bottom-12 right-0 text-sm font-medium text-neutral-700">
+                {inspiration.length} of 3 selected
+              </p>
+            )}
+            <div className="flex absolute bottom-6">
+              {inspiration.map((item) => {
+                if (item.type === "track") {
+                  return (
+                    <span
+                      key={item.name}
+                      className="bg-indigo-100 capitalize rounded-full px-4 py-2 text-sm font-semibold text-indigo-800 mr-2"
+                    >
+                      {item.name}
+                    </span>
+                  );
+                }
+                if (item.type === "artist") {
+                  return (
+                    <span
+                      key={item.name}
+                      className="bg-emerald-100 capitalize rounded-full px-4 py-2 text-sm font-semibold text-emerald-800 mr-2"
+                    >
+                      {item.name}
+                    </span>
+                  );
+                }
+                if (item.type === "genre") {
+                  return (
+                    <span
+                      key={item.name}
+                      className="bg-orange-100 capitalize rounded-full px-4 py-2 text-sm font-semibold text-orange-800 mr-2"
+                    >
+                      {item.name}
+                    </span>
+                  );
+                }
+              })}
+            </div>
           </div>
         </div>
 

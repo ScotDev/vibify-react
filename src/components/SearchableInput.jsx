@@ -9,18 +9,27 @@ import {
   CommandSeparator,
 } from "@/components/ui/command";
 
+import { PropTypes } from "prop-types";
+
 import { getGenres, getArtists, getTracks } from "../utils/Spotify";
 
-export default function SearchableInput() {
+export default function SearchableInput({ handleInspiration }) {
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
-  const [selectedGenre, setSelectedGenre] = useState("");
+  const [selectedGenres, setSelectedGenres] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const [genreResults, setGenreResults] = useState([]);
   const [artistResults, setArtistResults] = useState([]);
   const [trackResults, setTrackResults] = useState([]);
+
+  useEffect(() => {
+    // Need to merge selectedGenre and selectedItems into one array
+    // Then pass that array to handleInspiration
+    const inspiration = [...selectedItems, ...selectedGenres];
+    handleInspiration(inspiration);
+  }, [selectedItems, selectedGenres]);
 
   // useEffect(() => {
   //   const down = (e) => {
@@ -79,10 +88,28 @@ export default function SearchableInput() {
                 <CommandItem
                   key={genre}
                   value={genre}
+                  className="cursor-pointer"
                   onSelect={(currentValue) => {
-                    setSelectedGenre(
-                      currentValue === selectedGenre ? "" : currentValue
-                    );
+                    // Allow user to select multiple genres, with uniqueness check
+                    // setSelectedGenres(
+                    //   currentValue === selectedGenre ? "" : currentValue
+                    // );
+
+                    // genreResults.map((genre) => {
+                    //   if (genre.toLowerCase() === currentValue) {
+                    // Check if genre already exists in selectedGenres
+                    if (!selectedGenres.includes(currentValue)) {
+                      setSelectedGenres([
+                        ...selectedGenres,
+                        {
+                          name: currentValue,
+                          type: "genre",
+                        },
+                      ]);
+                    }
+                    //   }
+                    // });
+
                     setOpen(false);
                     setSearch("");
                   }}
@@ -105,6 +132,7 @@ export default function SearchableInput() {
                     artistResults.map((artist) => {
                       if (artist.name.toLowerCase() === currentValue) {
                         // Check if artist id already exists in selectedItems
+                        // !!!This might not be right
                         if (!selectedItems.includes(artist.id)) {
                           setSelectedItems([
                             ...selectedItems,
@@ -189,3 +217,7 @@ export default function SearchableInput() {
     </Command>
   );
 }
+
+SearchableInput.propTypes = {
+  handleInspiration: PropTypes.func.isRequired,
+};
