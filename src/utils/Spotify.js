@@ -138,7 +138,6 @@ const getArtists = async (searchTerm) => {
 
   const artists = await fetch(request);
   const result = await artists.json();
-  console.log(result.artists);
   if (!result.artists) {
     return [];
   }
@@ -152,6 +151,24 @@ const getArtists = async (searchTerm) => {
 const getTracks = async (searchTerm) => {
   // 'https://api.spotify.com/v1/search?q=${searchTerm}&type=track&limit=5&offset=0'
   // Requires auth bearer header
+
+  const access_token = await handleToken();
+
+  const request = new Request(
+    `https://api.spotify.com/v1/search?q=${searchTerm}&type=track&limit=5&offset=0`,
+    { headers: { Authorization: `Bearer ${access_token}` } }
+  );
+
+  const tracks = await fetch(request);
+  const result = await tracks.json();
+  console.log(result);
+  if (!result.tracks) {
+    return [];
+  }
+  if (result.tracks.items.length > 5) {
+    return result.tracks.items.slice(0, 5);
+  }
+  return result.tracks.items;
 };
 
 const refreshSpotifyToken = async (refresh_token) => {

@@ -9,7 +9,7 @@ import {
   CommandSeparator,
 } from "@/components/ui/command";
 
-import { getGenres, getArtists } from "../utils/Spotify";
+import { getGenres, getArtists, getTracks } from "../utils/Spotify";
 
 export default function SearchableInput() {
   const [open, setOpen] = useState(true);
@@ -20,6 +20,7 @@ export default function SearchableInput() {
 
   const [genreResults, setGenreResults] = useState([]);
   const [artistResults, setArtistResults] = useState([]);
+  const [trackResults, setTrackResults] = useState([]);
 
   // useEffect(() => {
   //   const down = (e) => {
@@ -33,8 +34,6 @@ export default function SearchableInput() {
   // }, []);
 
   useEffect(() => {
-    console.log(search);
-
     const delayDebounceFn = setTimeout(async () => {
       if (search.trim().length === 0) {
         setGenreResults([]);
@@ -44,12 +43,18 @@ export default function SearchableInput() {
         setArtistResults([]);
         return;
       }
+      if (search.trim().length === 0) {
+        setTrackResults([]);
+        return;
+      }
 
       setLoading(true);
       const genres = await getGenres(search.trim());
       setGenreResults(genres);
       const artists = await getArtists(search.trim());
       setArtistResults(artists);
+      const tracks = await getTracks(search.trim());
+      setTrackResults(tracks);
       setLoading(false);
     }, 1500);
     return () => clearTimeout(delayDebounceFn);
@@ -58,7 +63,7 @@ export default function SearchableInput() {
   return (
     <Command className="rounded-lg border shadow-md" loop>
       <CommandInput
-        placeholder="Type a command or search..."
+        placeholder="Type a genre, artist or track"
         value={search}
         onValueChange={setSearch}
         onFocus={() => setOpen(true)}
@@ -95,12 +100,27 @@ export default function SearchableInput() {
                   value={artist.name}
                   onSelect={(currentValue) => {
                     // Check if the artist is already selected
-                    setSelectedItems([...selectedItems, currentValue]);
+                    // On select, filter artist and add artist.ID to selectedItems
+                    artistResults.map((artist) => {
+                      if (artist.name.toLowerCase() === currentValue) {
+                        // Check if artist id already exists in selectedItems
+                        if (!selectedItems.includes(artist.id)) {
+                          setSelectedItems([
+                            ...selectedItems,
+                            {
+                              id: artist.id,
+                              name: artist.name,
+                              type: "artist",
+                            },
+                          ]);
+                        }
+                      }
+                    });
                     setOpen(false);
                     setSearch("");
                   }}
                 >
-                  <div className="flex h-12 items-center justify-between w-full">
+                  <div className="flex h-12 items-center justify-between w-full cursor-pointer">
                     <span className="capitalize">{artist.name}</span>
                     {artist.images.length > 2 ? (
                       <img
@@ -111,6 +131,51 @@ export default function SearchableInput() {
                     ) : (
                       <div className="h-full aspect-square rounded-lg bg-neutral-200 grid items-center text-center text-neutral-800 font-medium">
                         {artist.name[0]}
+                      </div>
+                    )}
+                  </div>
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          )}
+          <CommandSeparator />
+          {trackResults.length > 0 && (
+            <CommandGroup heading="Tracks">
+              {trackResults.map((track) => (
+                <CommandItem
+                  key={track.id}
+                  value={track.name}
+                  onSelect={(currentValue) => {
+                    trackResults.map((track) => {
+                      if (track.name.toLowerCase() === currentValue) {
+                        // Check if track id already exists in selectedItems
+                        if (!selectedItems.includes(track.id)) {
+                          setSelectedItems([
+                            ...selectedItems,
+                            {
+                              id: track.id,
+                              name: track.name,
+                              type: "track",
+                            },
+                          ]);
+                        }
+                      }
+                    });
+                    setOpen(false);
+                    setSearch("");
+                  }}
+                >
+                  <div className="flex h-12 items-center justify-between w-full cursor-pointer">
+                    <span className="capitalize">{track.name}</span>
+                    {track.album.images.length > 2 ? (
+                      <img
+                        src={track.album.images[2]?.url}
+                        alt="track"
+                        className="h-full aspect-square rounded-lg"
+                      />
+                    ) : (
+                      <div className="h-full aspect-square rounded-lg bg-neutral-200 grid items-center text-center text-neutral-800 font-medium">
+                        {track.name[0]}
                       </div>
                     )}
                   </div>
