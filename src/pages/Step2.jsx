@@ -54,7 +54,7 @@ export default function Step2() {
   const handleSubmit = (e) => {
     e.preventDefault();
     let params = {};
-    params["qty"] = qty;
+    params["limit"] = qty;
     params["tempo"] = tempo;
     params["popularity"] = popularity;
 
