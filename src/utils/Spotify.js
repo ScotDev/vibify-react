@@ -175,6 +175,43 @@ const getTracks = async (searchTerm) => {
   return result.tracks.items;
 };
 
+const getRecommendations = async (params) => {
+  // https://api.spotify.com/v1/recommendations
+  const access_token = await handleToken();
+
+  // Need to parse params and build out query string/
+  // const queryString = params.map((param) => {
+  //   const paramKey = Object.keys(param)[0];
+  //   console.log(paramKey, param[paramKey]);
+  //   const tempoAsNumber = parseInt(param["tempo"]);
+  //   return `&min_tempo=${tempoAsNumber - 10}&max_tempo=${tempoAsNumber + 10}`;
+  // });
+  const queryString = params
+    .map((param) => {
+      const paramKey = Object.keys(param)[0];
+      // if (paramKey === "genres") {
+      //   return encodeURIComponent(param[paramKey] = param[paramKey].split(","));
+      // }
+      const paramValue = encodeURIComponent(param[paramKey]);
+      return `${paramKey}=${paramValue}`;
+    })
+    .join("&");
+
+  console.log(queryString);
+
+  const request = new Request(
+    `https://api.spotify.com/v1/recommendations?${queryString}`,
+    { headers: { Authorization: `Bearer ${access_token}` } }
+  );
+  const tracks = await fetch(request);
+  const result = await tracks.json();
+  console.log(result);
+  if (!result.tracks) {
+    return [];
+  }
+  return result.tracks;
+};
+
 const refreshSpotifyToken = async (refresh_token) => {
   const authData = Buffer.from(
     import.meta.env.VITE_SPOTIFY_CLIENTID +
@@ -228,4 +265,5 @@ export {
   getGenres,
   getArtists,
   getTracks,
+  getRecommendations,
 };

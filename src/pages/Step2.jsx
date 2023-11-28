@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react";
 import { Slider } from "@/components/ui/slider";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import SearchableInput from "@/components/SearchableInput";
 
 import { useNavigate } from "react-router-dom";
@@ -38,10 +36,18 @@ export default function Step2() {
   };
 
   const handleInspiration = (value) => {
-    if (inspiration.length < 3) {
+    console.log("Value from handleInspiration", value);
+    console.log("Inspiration from handleInspiration", inspiration);
+    const difference = inspiration.length - value.flat().length;
+
+    // Need to tell searchableInput component how many new values it can accept.
+    // This could be a good use case for zustand or jotai
+    console.log("Difference", difference);
+    if (inspiration.length <= 3) {
       setInspiration(value.flat());
     }
   };
+
   const genres = [];
   const artists = [];
   const tracks = [];
@@ -69,11 +75,12 @@ export default function Step2() {
     });
 
     navigate(
-      `/step-3?${new URLSearchParams(params).toString()}&genres=${genres.join(
+      `/step-3?${new URLSearchParams(
+        params
+      ).toString()}&seed_genres=${genres.join(",")}&seed_artists=${artists.join(
         ","
-      )}&artists=${artists.join(",")}&tracks=${tracks.join(",")}}`
+      )}&seed_tracks=${tracks.join(",")}`
     );
-    console.log("submit");
   };
 
   return (

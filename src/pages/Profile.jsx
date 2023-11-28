@@ -11,6 +11,7 @@ export default function Profile() {
 
   const [userTopItems, setUserTopItems] = useState([]);
 
+  // TODO: Add a loading state + move this to loader function?
   useEffect(() => {
     const fetchUserTopItems = async () => {
       const data = await getUserTopItems();
