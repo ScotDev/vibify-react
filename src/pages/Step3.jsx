@@ -23,7 +23,7 @@ export default function Step3() {
         </div>
         <div>
           <p>Total tracks</p>
-          <span>40</span>
+          <span>{recommendationsData.length}</span>
         </div>
       </div>
       <div className="flex flex-col gap-6 overflow-x-hidden">

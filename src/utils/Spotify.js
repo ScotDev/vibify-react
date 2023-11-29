@@ -5,6 +5,7 @@ import { Buffer } from "buffer";
 // All functions here need to check token validity and request a new one if possible.
 
 const handleToken = async () => {
+  // TODO: This needs refactoring to be more efficient
   try {
     const access_token = await getItem("spotify_access_token");
 
@@ -12,6 +13,9 @@ const handleToken = async () => {
     // Check if access_token.expires is less than current time
     if (access_token) {
       // console.log("Access token found", access_token.expires);
+      if (access_token.value) {
+        return access_token.value;
+      }
       if (access_token.expires < Date.now()) {
         console.log("Access token expired");
         // If access token expired then check for refresh token
@@ -24,12 +28,24 @@ const handleToken = async () => {
           if (!new_access_token) {
             console.log("No new access token could be retrieved");
           }
-          // console.log("New access token retrieved", new_access_token);
+          console.log("New access token retrieved");
           setItem("spotify_access_token", new_access_token, 3600);
           return new_access_token;
         }
       }
-      return access_token.value;
+    } else {
+      // Try to get new access token
+      const refresh_token = await getItem("spotify_refresh_token");
+      if (refresh_token) {
+        // If refresh token found then use to retrieve new access token
+        const new_access_token = await refreshSpotifyToken(refresh_token.value);
+        if (!new_access_token) {
+          console.log("No new access token could be retrieved");
+        }
+        console.log("New access token retrieved");
+        setItem("spotify_access_token", new_access_token, 3600);
+        return new_access_token;
+      }
     }
 
     // // If no valid access token found then check for refresh token
@@ -186,7 +202,10 @@ const getRecommendations = async (params) => {
   //   const tempoAsNumber = parseInt(param["tempo"]);
   //   return `&min_tempo=${tempoAsNumber - 10}&max_tempo=${tempoAsNumber + 10}`;
   // });
-  const queryString = params
+  // if (!access_token) {
+  //   return [];
+  // }
+  const queryString = await params
     .map((param) => {
       const paramKey = Object.keys(param)[0];
       // if (paramKey === "genres") {
