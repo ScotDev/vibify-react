@@ -9,7 +9,7 @@ export async function loader({ request }) {
     fnParamsArr.push({ [key]: value });
   });
 
-  console.log("fnParams", fnParamsArr);
+  // console.log("fnParams", fnParamsArr);
   const recommendationsData = await getRecommendations(fnParamsArr);
   return { recommendationsData };
 }

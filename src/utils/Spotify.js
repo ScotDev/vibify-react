@@ -11,7 +11,7 @@ const handleToken = async () => {
     // If valid access token found then return it for use in other functions
     // Check if access_token.expires is less than current time
     if (access_token) {
-      console.log("Access token found", access_token.expires);
+      // console.log("Access token found", access_token.expires);
       if (access_token.expires < Date.now()) {
         console.log("Access token expired");
         // If access token expired then check for refresh token
@@ -24,7 +24,7 @@ const handleToken = async () => {
           if (!new_access_token) {
             console.log("No new access token could be retrieved");
           }
-          console.log("New access token retrieved", new_access_token);
+          // console.log("New access token retrieved", new_access_token);
           setItem("spotify_access_token", new_access_token, 3600);
           return new_access_token;
         }
@@ -108,13 +108,13 @@ const getGenres = async (searchTerm) => {
   const genres = await fetch(request);
 
   const result = await genres.json();
-  console.log(result);
+  // console.log(result);
   // Filter results by search term
   const filteredResults = result.genres.filter((genre) =>
     genre.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  console.log(filteredResults);
+  // console.log(filteredResults);
   if (!result.genres) {
     return [];
   }
@@ -150,7 +150,7 @@ const getArtists = async (searchTerm) => {
       return acc;
     }
   }, []);
-  console.log(uniqueArray);
+  // console.log(uniqueArray);
 
   return uniqueArray;
 };
@@ -168,7 +168,7 @@ const getTracks = async (searchTerm) => {
 
   const tracks = await fetch(request);
   const result = await tracks.json();
-  console.log(result);
+  // console.log(result);
   if (!result.tracks) {
     return [];
   }
@@ -192,12 +192,18 @@ const getRecommendations = async (params) => {
       // if (paramKey === "genres") {
       //   return encodeURIComponent(param[paramKey] = param[paramKey].split(","));
       // }
+      if (paramKey === "tempo") {
+        const tempoAsNumber = parseInt(param["tempo"]);
+        return `min_tempo=${tempoAsNumber - 10}&max_tempo=${
+          tempoAsNumber + 10
+        }`;
+      }
       const paramValue = encodeURIComponent(param[paramKey]);
       return `${paramKey}=${paramValue}`;
     })
     .join("&");
 
-  console.log(queryString);
+  // console.log(queryString);
 
   const request = new Request(
     `https://api.spotify.com/v1/recommendations?${queryString}`,
@@ -205,7 +211,6 @@ const getRecommendations = async (params) => {
   );
   const tracks = await fetch(request);
   const result = await tracks.json();
-  console.log(result);
   if (!result.tracks) {
     return [];
   }
@@ -245,7 +250,7 @@ const refreshSpotifyToken = async (refresh_token) => {
     console.log("No new access token could be retrieved");
     return null;
   }
-  console.log("New token", token.access_token);
+  // console.log("New token", token.access_token);
   return token.access_token;
 };
 

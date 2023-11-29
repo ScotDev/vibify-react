@@ -1,26 +1,40 @@
 import { useLoaderData, Link } from "react-router-dom";
 
-export default function Step3() {
-  // let params = new URLSearchParams(document.location.search);
-  // params.forEach((value, key) => {
-  //   console.log(`${key}: ${value}`);
-  // });
+import { msToMinSec } from "../utils/Calc";
 
+export default function Step3() {
   const { recommendationsData } = useLoaderData();
-  console.log(recommendationsData);
+  const totalDuration = recommendationsData?.reduce(
+    (a, b) => a + b.duration_ms,
+    0
+  );
 
   return (
     <div className="flex flex-col gap-12 py-12">
       <h1>Your recommendations</h1>
+      <div className="flex gap-12 text-center">
+        <div>
+          <p>Total duration</p>
+          <span>{msToMinSec(totalDuration)}</span>
+        </div>
+        <div>
+          <p>Average BPM</p>
+          <span>112</span>
+        </div>
+        <div>
+          <p>Total tracks</p>
+          <span>40</span>
+        </div>
+      </div>
       <div className="flex flex-col gap-6 overflow-x-hidden">
         {recommendationsData.map((recommendation) => (
           <div key={recommendation.id} className="flex gap-8 w-full">
             <img
-              src={recommendation.album.images[1].url}
+              src={recommendation.album.images[2].url}
               alt={recommendation.name}
-              className="object-cover object-center aspect-square rounded-xl shadow-md hover:shadow-xl transition duration-300 ease-in-out w-24 h-24 cursor-pointer"
+              className="object-cover object-center aspect-square rounded-xl shadow-md hover:shadow-xl transition duration-300 ease-in-out w-20 h-20 cursor-pointer"
             />
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-2">
               <h2 className="font-medium text-neutral-800 truncate ">
                 <Link
                   target="_blank"
