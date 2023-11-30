@@ -8,7 +8,7 @@ export default function ErrorPage() {
   return (
     <div
       id="error-page"
-      className="text-center grid place-items-center w-screen h-screen"
+      className="text-center grid gap-6 place-items-center w-screen h-screen"
     >
       <div>
         <h1>Oops!</h1>

@@ -114,7 +114,7 @@ export default function SearchableInput({ handleInspiration }) {
                     setSearch("");
                   }}
                 >
-                  <span className="capitalize">{genre}</span>
+                  <span className="capitalize font-medium">{genre}</span>
                 </CommandItem>
               ))}
             </CommandGroup>
@@ -150,7 +150,9 @@ export default function SearchableInput({ handleInspiration }) {
                   }}
                 >
                   <div className="flex h-12 items-center justify-between w-full cursor-pointer">
-                    <span className="capitalize">{artist.name}</span>
+                    <span className="capitalize font-medium">
+                      {artist.name}
+                    </span>
                     {artist.images.length > 2 ? (
                       <img
                         src={artist.images[2]?.url}
@@ -195,7 +197,7 @@ export default function SearchableInput({ handleInspiration }) {
                   }}
                 >
                   <div className="flex h-12 items-center justify-between w-full cursor-pointer">
-                    <span className="capitalize">{track.name}</span>
+                    <span className="capitalize font-medium">{track.name}</span>
                     {track.album.images.length > 2 ? (
                       <img
                         src={track.album.images[2]?.url}

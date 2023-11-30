@@ -6,6 +6,7 @@ import { SaveDialog } from "../components/SaveDialog";
 
 export default function Step3() {
   const { recommendationsData } = useLoaderData();
+  console.log(recommendationsData);
   const totalDuration = recommendationsData?.reduce(
     (a, b) => a + b.duration_ms,
     0

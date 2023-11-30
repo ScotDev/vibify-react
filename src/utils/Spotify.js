@@ -276,6 +276,34 @@ const createPlaylist = async (formData) => {
   console.log(result.id);
   return result.id;
 };
+const addTracksToPlaylist = async (playlistId, trackUris) => {
+  // https://api.spotify.com/v1/playlists/{playlist_id}/tracks
+  const access_token = await handleToken();
+  const uris = await trackUris.map((track) => track.uri);
+  console.log(uris);
+  const data = {
+    uris: [...uris],
+  };
+
+  const request = new Request(
+    `https://api.spotify.com/v1/playlists/${playlistId}/tracks`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${access_token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    }
+  );
+  const playlist = await fetch(request);
+  const result = await playlist.json();
+
+  if (!result.snapshot_id) {
+    return null;
+  }
+  return result.snapshot_id;
+};
 
 const refreshSpotifyToken = async (refresh_token) => {
   const authData = Buffer.from(
@@ -332,4 +360,5 @@ export {
   getTracks,
   getRecommendations,
   createPlaylist,
+  addTracksToPlaylist,
 };

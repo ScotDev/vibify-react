@@ -15,7 +15,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 
 import { PropTypes } from "prop-types";
 
-import { createPlaylist } from "../utils/Spotify";
+import { addTracksToPlaylist, createPlaylist } from "../utils/Spotify";
 
 // TODO: Add form validation via recommended shadcn zod config
 // https://ui.shadcn.com/docs/components/textarea#form
@@ -35,24 +35,33 @@ export const SaveDialog = ({ tracks }) => {
     e.preventDefault();
     setLoading(true);
     // console.log(e.target.value);
-    await createPlaylist(formData);
-    setLoading(false);
+    const playlistID = await createPlaylist(formData);
+    if (playlistID === null) {
+      console.log("Error creating playlist");
+      return;
+    }
+    await addTracksToPlaylist(playlistID, tracks);
+
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
     setTimeout(() => {
       setOpen(false);
     }, 1000);
   };
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger className="py-2 px-4 rounded-lg bg-neutral-200 font-medium w-max">
         Save
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="w-11/12 sm:w-full">
         <DialogHeader>
-          <DialogTitle>Save playlist to Spotify</DialogTitle>
-          <DialogDescription>
+          <DialogTitle className="pb-2">Save playlist to Spotify</DialogTitle>
+          {/* <DialogDescription>
             This action cannot be undone. This will permanently delete your
             account and remove your data from our servers.
-          </DialogDescription>
+          </DialogDescription> */}
         </DialogHeader>
         <form
           className="flex flex-col gap-6 pt-2"
