@@ -14,7 +14,8 @@ export default function Login() {
         providers={["spotify"]}
         onlyThirdPartyProviders
         providerScopes={{
-          spotify: "user-read-email user-read-private user-top-read",
+          spotify:
+            "user-read-email user-read-private user-top-read playlist-modify-public playlist-modify-private",
         }}
         theme="dark"
       />

@@ -2,6 +2,8 @@ import { useLoaderData, Link } from "react-router-dom";
 
 import { msToMinSec } from "../utils/Calc";
 
+import { SaveDialog } from "../components/SaveDialog";
+
 export default function Step3() {
   const { recommendationsData } = useLoaderData();
   const totalDuration = recommendationsData?.reduce(
@@ -12,25 +14,29 @@ export default function Step3() {
   return (
     <div className="flex flex-col gap-12 py-12">
       <h1>Your recommendations</h1>
-      <div className="flex gap-12 text-center">
-        <div>
-          <p>Total duration</p>
-          <span>{msToMinSec(totalDuration)}</span>
+      <div className="flex flex-col gap-8 ">
+        <div className="flex gap-12 text-center">
+          <div>
+            <p>Total duration</p>
+            <span>{msToMinSec(totalDuration)}</span>
+          </div>
+          <div>
+            <p>Average BPM</p>
+            <span>---</span>
+          </div>
+          <div>
+            <p>Total tracks</p>
+            <span>{recommendationsData.length}</span>
+          </div>
         </div>
-        <div>
-          <p>Average BPM</p>
-          <span>112</span>
-        </div>
-        <div>
-          <p>Total tracks</p>
-          <span>{recommendationsData.length}</span>
-        </div>
+        <SaveDialog tracks={recommendationsData} />
       </div>
+
       <div className="flex flex-col gap-6 overflow-x-hidden">
         {recommendationsData.map((recommendation) => (
           <div key={recommendation.id} className="flex gap-8 w-full">
             <img
-              src={recommendation.album.images[2].url}
+              src={recommendation.album.images[1].url}
               alt={recommendation.name}
               className="object-cover object-center aspect-square rounded-xl shadow-md hover:shadow-xl transition duration-300 ease-in-out w-20 h-20 cursor-pointer"
             />

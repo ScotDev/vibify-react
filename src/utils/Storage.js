@@ -43,6 +43,7 @@ const removeAllItems = () => {
     // If I add more items to localstorage I'll build this out.
     localStorage.removeItem("vibify_spotify_access_token");
     localStorage.removeItem("vibify_spotify_refresh_token");
+    localStorage.removeItem("vibify_spotify_user_id");
   }
 };
 

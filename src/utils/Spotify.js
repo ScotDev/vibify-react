@@ -103,9 +103,6 @@ const getUserTopItems = async () => {
   return await res.json();
 };
 
-// I need to fetch genres, artists and tracks from a search term.
-// Returning each as they return from spotify.
-
 const getGenres = async (searchTerm) => {
   // https://api.spotify.com/v1/recommendations/available-genre-seeds
   // Requires auth bearer header
@@ -236,6 +233,50 @@ const getRecommendations = async (params) => {
   return result.tracks;
 };
 
+const createPlaylist = async (formData) => {
+  // Need to get user ID - not currently stored but is available
+  //  - can either be stored in local storage, a cookie or I could bring in
+  //  zustand/jotai and take from state. Can also just pass into here as a param
+  // POST https://api.spotify.com/v1/users/{user_id}/playlists
+  //   {
+  //     "name": "New Playlist",
+  //     "description": "New playlist description",
+  //     "public": false
+  // }
+  // Should return playlist ID or null if error
+
+  const access_token = await handleToken();
+
+  const { name, description, isPublic } = formData;
+
+  const user_id = getItem("spotify_user_id").value;
+  console.log("User ID from local storage", user_id);
+  const data = {
+    name: name,
+    description: description,
+    public: isPublic,
+  };
+
+  const request = new Request(
+    `https://api.spotify.com/v1/users/${user_id}/playlists`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${access_token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    }
+  );
+  const playlist = await fetch(request);
+  const result = await playlist.json();
+  if (!result.id) {
+    return null;
+  }
+  console.log(result.id);
+  return result.id;
+};
+
 const refreshSpotifyToken = async (refresh_token) => {
   const authData = Buffer.from(
     import.meta.env.VITE_SPOTIFY_CLIENTID +
@@ -290,4 +331,5 @@ export {
   getArtists,
   getTracks,
   getRecommendations,
+  createPlaylist,
 };
