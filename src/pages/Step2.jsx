@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Slider } from "@/components/ui/slider";
 import SearchableInput from "@/components/SearchableInput";
 
-import { useNavigate } from "react-router-dom";
-
 import { handlePreset } from "../utils/Presets";
+
+import { useStore } from "../state/store";
 
 export default function Step2() {
   let params = new URLSearchParams(document.location.search);
@@ -15,15 +16,21 @@ export default function Step2() {
   const [inspiration, setInspiration] = useState([]); // [track, artist, genre]
   const navigate = useNavigate();
 
+  // const store = useInspirationStore((state) => state);
+  const store = useStore((state) => state);
+
   useEffect(() => {
     const vibe = handlePreset(preset);
-
     setQty(vibe.qty);
     setTempo(vibe.tempo);
     setPopularity(vibe.popularity);
     // For now just use vibe.genres from preset
     setInspiration(vibe.genres);
   }, []);
+
+  useEffect(() => {
+    console.log(store.items);
+  }, [store.items]);
 
   const handleQtyChange = (value) => {
     setQty(value);
@@ -108,18 +115,15 @@ export default function Step2() {
             <div className="w-full z-50">
               <SearchableInput handleInspiration={handleInspiration} />
             </div>
-            {inspiration.length === 3 && (
-              <p className="absolute bottom-12 right-0 text-sm font-medium text-neutral-700">
-                {inspiration.length} of 3 selected
-              </p>
-            )}
-            <div className="flex absolute bottom-6">
-              {inspiration.map((item) => {
+
+            <div className="flex absolute bottom-8 overflow-x-hidden w-full">
+              {store.items.map((item) => {
+                console.log("Item from store", item[0]);
                 if (item.type === "track") {
                   return (
                     <span
                       key={item.name}
-                      className="bg-indigo-100 capitalize rounded-full px-4 py-2 text-sm font-semibold text-indigo-800 mr-2"
+                      className="bg-indigo-100 capitalize rounded-full px-4 py-2 text-sm truncate w-[100px] sm:w-fit font-semibold text-indigo-800 mr-2"
                     >
                       {item.name}
                     </span>
@@ -129,7 +133,7 @@ export default function Step2() {
                   return (
                     <span
                       key={item.name}
-                      className="bg-emerald-100 capitalize rounded-full px-4 py-2 text-sm font-semibold text-emerald-800 mr-2"
+                      className="bg-emerald-100 capitalize rounded-full px-4 py-2 text-xs truncate w-[100px] sm:w-fit font-semibold text-emerald-800 mr-2"
                     >
                       {item.name}
                     </span>
@@ -139,13 +143,31 @@ export default function Step2() {
                   return (
                     <span
                       key={item.name}
-                      className="bg-orange-100 capitalize rounded-full px-4 py-2 text-sm font-semibold text-orange-800 mr-2"
+                      className="bg-orange-100 capitalize rounded-full px-4 py-2 text-sm truncate w-[100px] sm:w-fit font-semibold text-orange-800 mr-2"
                     >
                       {item.name}
                     </span>
                   );
                 }
               })}
+            </div>
+            <div className="absolute -bottom-1 left-0 flex w-full md:w-1/2 justify-between items-center">
+              <div>
+                <button
+                  type="button"
+                  onClick={() => store.removeAllItems()}
+                  className="underline text-xs text-neutral-700 "
+                >
+                  Remove all
+                </button>
+              </div>
+              <div>
+                {store.items.length === 3 && (
+                  <p className="text-sm  text-neutral-700 ">
+                    {store.items.length} of 3 selected
+                  </p>
+                )}
+              </div>
             </div>
           </div>
         </div>

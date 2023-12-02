@@ -34,6 +34,14 @@ export default function Step3() {
       </div>
 
       <div className="flex flex-col gap-6 overflow-x-hidden">
+        {recommendationsData.length === 0 && (
+          <div className="flex flex-col gap-4">
+            <h2 className="text-center text-lg">No recommendations found</h2>
+            <p className="text-center italic text-sm">
+              Try changing some the dials and knobs
+            </p>
+          </div>
+        )}
         {recommendationsData.map((recommendation) => (
           <div key={recommendation.id} className="flex gap-8 w-full">
             <img

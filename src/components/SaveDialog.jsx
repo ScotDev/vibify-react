@@ -16,6 +16,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { PropTypes } from "prop-types";
 
 import { addTracksToPlaylist, createPlaylist } from "../utils/Spotify";
+import useSpotifyAuth from "../hooks/useSpotifyAuth";
 
 // TODO: Add form validation via recommended shadcn zod config
 // https://ui.shadcn.com/docs/components/textarea#form
@@ -27,6 +28,8 @@ export const SaveDialog = ({ tracks }) => {
     description: "",
     public: true,
   });
+  const accessToken = useSpotifyAuth();
+
   const handleCheckboxChange = () => {
     setFormData({ ...formData, public: !formData.public });
   };
@@ -35,12 +38,12 @@ export const SaveDialog = ({ tracks }) => {
     e.preventDefault();
     setLoading(true);
     // console.log(e.target.value);
-    const playlistID = await createPlaylist(formData);
+    const playlistID = await createPlaylist(accessToken, formData);
     if (playlistID === null) {
       console.log("Error creating playlist");
       return;
     }
-    await addTracksToPlaylist(playlistID, tracks);
+    await addTracksToPlaylist(accessToken, playlistID, tracks);
 
     setTimeout(() => {
       setLoading(false);

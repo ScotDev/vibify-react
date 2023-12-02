@@ -5,7 +5,7 @@ const handlePreset = (preset) => {
     tracks: [],
     genres: [],
     tempo: 85,
-    popularity: 90,
+    popularity: 100,
     qty: 20,
   };
   switch (preset) {
@@ -61,7 +61,7 @@ const handlePreset = (preset) => {
           { name: "r-n-b", type: "genre" },
         ],
         tempo: 85,
-        popularity: 90,
+        popularity: 95,
         qty: 30,
       };
       break;
@@ -73,7 +73,7 @@ const handlePreset = (preset) => {
         genres: [{ name: "k-pop", type: "genre" }],
         tempo: 110,
         popularity: 100,
-        qty: 30,
+        qty: 20,
       };
       break;
     case "reggaeton":

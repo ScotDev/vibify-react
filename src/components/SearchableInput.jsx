@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+
 import {
   Command,
   CommandEmpty,
@@ -13,6 +14,10 @@ import { PropTypes } from "prop-types";
 
 import { getGenres, getArtists, getTracks } from "../utils/Spotify";
 
+// import { useInspirationStore } from "../state/store";
+import { useStore } from "../state/store";
+import useSpotifyAuth from "../hooks/useSpotifyAuth";
+
 export default function SearchableInput({ handleInspiration }) {
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
@@ -24,11 +29,18 @@ export default function SearchableInput({ handleInspiration }) {
   const [artistResults, setArtistResults] = useState([]);
   const [trackResults, setTrackResults] = useState([]);
 
+  const accessToken = useSpotifyAuth();
+
+  // const addItem = useInspirationStore((state) => state.addItem);
+  const store = useStore((state) => state);
+
   useEffect(() => {
     // Need to merge selectedGenre and selectedItems into one array
     // Then pass that array to handleInspiration
     const inspiration = [...selectedItems, ...selectedGenres];
     handleInspiration(inspiration);
+    console.log("Inspiration from SearchableInput", inspiration);
+    store.addToItems(inspiration);
   }, [selectedItems, selectedGenres]);
 
   // useEffect(() => {
@@ -58,11 +70,11 @@ export default function SearchableInput({ handleInspiration }) {
       }
 
       setLoading(true);
-      const genres = await getGenres(search.trim());
+      const genres = await getGenres(accessToken, search.trim());
       setGenreResults(genres);
-      const artists = await getArtists(search.trim());
+      const artists = await getArtists(accessToken, search.trim());
       setArtistResults(artists);
-      const tracks = await getTracks(search.trim());
+      const tracks = await getTracks(accessToken, search.trim());
       setTrackResults(tracks);
       setLoading(false);
       setOpen(true);
@@ -114,7 +126,9 @@ export default function SearchableInput({ handleInspiration }) {
                     setSearch("");
                   }}
                 >
-                  <span className="capitalize font-medium">{genre}</span>
+                  <span className="capitalize font-medium text-neutral-700">
+                    {genre}
+                  </span>
                 </CommandItem>
               ))}
             </CommandGroup>
@@ -150,7 +164,7 @@ export default function SearchableInput({ handleInspiration }) {
                   }}
                 >
                   <div className="flex h-12 items-center justify-between w-full cursor-pointer">
-                    <span className="capitalize font-medium">
+                    <span className="capitalize font-medium text-neutral-700">
                       {artist.name}
                     </span>
                     {artist.images.length > 2 ? (
@@ -197,7 +211,9 @@ export default function SearchableInput({ handleInspiration }) {
                   }}
                 >
                   <div className="flex h-12 items-center justify-between w-full cursor-pointer">
-                    <span className="capitalize font-medium">{track.name}</span>
+                    <span className="capitalize font-medium text-neutral-700">
+                      {track.name}
+                    </span>
                     {track.album.images.length > 2 ? (
                       <img
                         src={track.album.images[2]?.url}

@@ -5,21 +5,28 @@ import MediaItem from "../components/MediaItem";
 import SignOutButton from "../components/SignOutButton";
 
 import { getUserTopItems } from "../utils/Spotify";
+import useSpotifyAuth from "../hooks/useSpotifyAuth";
 
 export default function Profile() {
+  const accessToken = useSpotifyAuth();
+
+  // Potentially change to normally useEffect data fetching
+  // in order to access useSpotifyAuth() hook
   const { profileData } = useLoaderData();
 
   const [userTopItems, setUserTopItems] = useState([]);
 
   // TODO: Add a loading state + move this to loader function?
   useEffect(() => {
+    if (!accessToken) return;
     const fetchUserTopItems = async () => {
-      const data = await getUserTopItems();
+      const data = await getUserTopItems(accessToken);
       setUserTopItems(data);
     };
 
+    console.log(accessToken);
     fetchUserTopItems();
-  }, []);
+  }, [accessToken]);
 
   return (
     <div className="flex flex-col py-12 gap-6">

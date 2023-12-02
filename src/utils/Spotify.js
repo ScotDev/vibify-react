@@ -81,9 +81,9 @@ const getProfileData = async () => {
   return await res.json();
 };
 
-const getUserTopItems = async () => {
+const getUserTopItems = async (access_token) => {
   // TODO: Add error handling here
-  const access_token = await handleToken();
+  // const access_token = await handleToken();
   const options = {
     headers: {
       Authorization: `Bearer ${access_token}`,
@@ -103,7 +103,7 @@ const getUserTopItems = async () => {
   return await res.json();
 };
 
-const getGenres = async (searchTerm) => {
+const getGenres = async (access_token, searchTerm) => {
   // https://api.spotify.com/v1/recommendations/available-genre-seeds
   // Requires auth bearer header
   // returns {
@@ -111,7 +111,7 @@ const getGenres = async (searchTerm) => {
   // }
   // Sort genres A-Z + filter out by search term, returning max of 5
 
-  const access_token = await handleToken();
+  // const access_token = await handleToken();
 
   const request = new Request(
     "https://api.spotify.com/v1/recommendations/available-genre-seeds",
@@ -138,11 +138,11 @@ const getGenres = async (searchTerm) => {
   return filteredResults;
 };
 
-const getArtists = async (searchTerm) => {
+const getArtists = async (access_token, searchTerm) => {
   // https://api.spotify.com/v1/search?q=${searchTerm}&type=artist&limit=5&offset=0'
   // Requires auth bearer header
 
-  const access_token = await handleToken();
+  // const access_token = await handleToken();
   // Return max of 5 results
   const request = new Request(
     `https://api.spotify.com/v1/search?q=${searchTerm}&type=artist&limit=5&offset=0`,
@@ -168,11 +168,11 @@ const getArtists = async (searchTerm) => {
   return uniqueArray;
 };
 
-const getTracks = async (searchTerm) => {
+const getTracks = async (access_token, searchTerm) => {
   // 'https://api.spotify.com/v1/search?q=${searchTerm}&type=track&limit=5&offset=0'
   // Requires auth bearer header
 
-  const access_token = await handleToken();
+  // const access_token = await handleToken();
   // Return max of 5 results
   const request = new Request(
     `https://api.spotify.com/v1/search?q=${searchTerm}&type=track&limit=5&offset=0`,
@@ -233,7 +233,7 @@ const getRecommendations = async (params) => {
   return result.tracks;
 };
 
-const createPlaylist = async (formData) => {
+const createPlaylist = async (access_token, formData) => {
   // Need to get user ID - not currently stored but is available
   //  - can either be stored in local storage, a cookie or I could bring in
   //  zustand/jotai and take from state. Can also just pass into here as a param
@@ -245,7 +245,7 @@ const createPlaylist = async (formData) => {
   // }
   // Should return playlist ID or null if error
 
-  const access_token = await handleToken();
+  // const access_token = await handleToken();
 
   const { name, description, isPublic } = formData;
 
@@ -276,9 +276,9 @@ const createPlaylist = async (formData) => {
   console.log(result.id);
   return result.id;
 };
-const addTracksToPlaylist = async (playlistId, trackUris) => {
+const addTracksToPlaylist = async (access_token, playlistId, trackUris) => {
   // https://api.spotify.com/v1/playlists/{playlist_id}/tracks
-  const access_token = await handleToken();
+  // const access_token = await handleToken();
   const uris = await trackUris.map((track) => track.uri);
   console.log(uris);
   const data = {
