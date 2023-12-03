@@ -11,7 +11,7 @@ div.media-item a {
 }
 
 .media-item {
-  @apply flex flex-col pb-6 max-w-[13rem] gap-2 cursor-pointer;
+  @apply flex flex-col text-neutral-900 pb-6 max-w-[13rem] gap-2 cursor-pointer;
 }
 
 .user-items-grid {

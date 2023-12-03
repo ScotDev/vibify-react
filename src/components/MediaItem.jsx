@@ -12,7 +12,7 @@ export default function MediaItem({ data }) {
           className="object-cover object-center aspect-square rounded-xl shadow-md hover:shadow-xl transition duration-300 ease-in-out cursor-pointer"
         />
       </Link>
-      <div className="flex flex-col h-full gap-4 justify-between ">
+      <div className="flex flex-col h-full gap-4">
         <Link target="_blank" to={data.external_urls.spotify}>
           <h3 className="font-medium pt-2">{data.name}</h3>
         </Link>

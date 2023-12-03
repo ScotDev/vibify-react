@@ -1,10 +1,98 @@
 import { PropTypes } from "prop-types";
-import { getItem, setItem } from "../utils/Storage";
+import { getItem, removeAllItems, setItem } from "../utils/Storage";
 import { Buffer } from "buffer";
+import { supabase } from "../supabase/client";
 
 // All functions here need to check token validity and request a new one if possible.
 
+const oneHour = 3600 * 1000;
+const oneYear = 31556926 * 1000;
+
 const handleToken = async () => {
+  const localAccessToken = localStorage.getItem("vibify_spotify_access_token");
+  const localRefreshToken = localStorage.getItem(
+    "vibify_spotify_refresh_token"
+  );
+
+  if (localAccessToken) {
+    const { value, expires } = JSON.parse(localAccessToken);
+    if (value && expires > Date.now()) {
+      console.log("Access token retrieved from cache");
+      return value;
+    }
+  } else {
+    console.log("No access token found in cache");
+    const { value, expires } = JSON.parse(localRefreshToken);
+    if (value && expires > Date.now()) {
+      // 5. If it exists AND is valid, use it to get a new access token
+      console.log("Refresh token retrieved from cache");
+      console.log("Using refresh token to get new access token");
+
+      const newAccessToken = await refreshSpotifyToken(value);
+      if (newAccessToken) {
+        localStorage.setItem(
+          "vibify_spotify_access_token",
+          JSON.stringify({
+            value: newAccessToken,
+            expires: Date.now() + oneHour,
+          })
+        );
+        return newAccessToken;
+      } else {
+        console.log("Error getting new access token Spotify");
+        return null;
+      }
+    } else {
+      console.log("No refresh token found in cache");
+      removeAllItems();
+
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: "spotify",
+        options: {
+          scopes: [
+            "user-read-email",
+            "user-read-private",
+            "user-top-read",
+            "playlist-modify-public",
+            "playlist-modify-private",
+          ],
+        },
+      });
+      if (error) {
+        console.log(error);
+        return null;
+      } else {
+        console.log(data);
+
+        localStorage.setItem(
+          "vibify_spotify_access_token",
+          JSON.stringify({
+            value: data.session.provider_token,
+            expires: Date.now() + oneHour,
+          })
+        );
+        localStorage.setItem(
+          "vibify_spotify_refresh_token",
+          JSON.stringify({
+            value: data.session.provider_refresh_token,
+            expires: Date.now() + oneYear,
+          })
+        );
+
+        localStorage.setItem(
+          "vibify_spotify_user_id",
+          JSON.stringify({
+            value: data.session.user.identities[0].id,
+            expires: Date.now() + oneYear,
+          })
+        );
+        return data.session.provider_token;
+      }
+    }
+  }
+};
+
+const handleToken2 = async () => {
   // TODO: This needs refactoring to be more efficient
   try {
     const access_token = await getItem("spotify_access_token");

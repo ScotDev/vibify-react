@@ -6,7 +6,6 @@ import { SaveDialog } from "../components/SaveDialog";
 
 export default function Step3() {
   const { recommendationsData } = useLoaderData();
-  console.log(recommendationsData);
   const totalDuration = recommendationsData?.reduce(
     (a, b) => a + b.duration_ms,
     0
@@ -38,7 +37,7 @@ export default function Step3() {
           <div className="flex flex-col gap-4">
             <h2 className="text-center text-lg">No recommendations found</h2>
             <p className="text-center italic text-sm">
-              Try changing some the dials and knobs
+              Try changing some dials and knobs
             </p>
           </div>
         )}
