@@ -3,7 +3,7 @@ import { useState } from "react";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
+  // DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -112,7 +112,7 @@ export const SaveDialog = ({ tracks }) => {
           <button
             className="py-2 px-4 rounded-lg bg-neutral-200 font-medium w-max disabled:cursor-not-allowed disabled:opacity-70"
             type="submit"
-            disabled={loading}
+            disabled={loading || tracks.length === 0}
           >
             Save
           </button>

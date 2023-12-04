@@ -55,20 +55,14 @@ export default function SearchableInput({ handleInspiration }) {
   // }, []);
 
   useEffect(() => {
+    if (search.trim().length === 0) {
+      setGenreResults([]);
+      setArtistResults([]);
+      setTrackResults([]);
+      setOpen(false);
+      return;
+    }
     const delayDebounceFn = setTimeout(async () => {
-      if (search.trim().length === 0) {
-        setGenreResults([]);
-        return;
-      }
-      if (search.trim().length === 0) {
-        setArtistResults([]);
-        return;
-      }
-      if (search.trim().length === 0) {
-        setTrackResults([]);
-        return;
-      }
-
       setLoading(true);
       const genres = await getGenres(accessToken, search.trim());
       setGenreResults(genres);
@@ -93,7 +87,7 @@ export default function SearchableInput({ handleInspiration }) {
       {open && (
         <CommandList>
           {loading && <p className="text-sm px-3 py-2">Fetching results...</p>}
-          {!loading && <CommandEmpty>No results found</CommandEmpty>}
+          {/* {!loading && <CommandEmpty>No results found</CommandEmpty>} */}
           {genreResults.length > 0 && (
             <CommandGroup heading="Genres">
               {genreResults.map((genre) => (
@@ -211,9 +205,35 @@ export default function SearchableInput({ handleInspiration }) {
                   }}
                 >
                   <div className="flex h-12 items-center justify-between w-full cursor-pointer">
-                    <span className="capitalize font-medium text-neutral-700">
-                      {track.name}
-                    </span>
+                    <div className="flex flex-col gap-1">
+                      <span className="capitalize font-medium text-neutral-00">
+                        {track.name}
+                      </span>
+                      <span className="flex">
+                        {track.artists.map((artist, index) => {
+                          if (index === track.artists.length - 1) {
+                            return (
+                              <p
+                                className="capitalize text-xs text-neutral-600"
+                                key={artist.id}
+                              >
+                                {artist.name}
+                              </p>
+                            );
+                          } else {
+                            return (
+                              <p
+                                className="capitalize text-xs text-neutral-600"
+                                key={artist.id}
+                              >
+                                {artist.name},&nbsp;
+                              </p>
+                            );
+                          }
+                        })}
+                      </span>
+                    </div>
+
                     {track.album.images.length > 2 ? (
                       <img
                         src={track.album.images[2]?.url}

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useLoaderData } from "react-router-dom";
+import { Skeleton } from "@/components/ui/skeleton";
 import Code from "../components/Code";
 import MediaItem from "../components/MediaItem";
 import SignOutButton from "../components/SignOutButton";
@@ -15,6 +16,7 @@ export default function Profile() {
   const { profileData } = useLoaderData();
 
   const [userTopItems, setUserTopItems] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   // TODO: Add a loading state + move this to loader function?
   useEffect(() => {
@@ -24,8 +26,11 @@ export default function Profile() {
       setUserTopItems(data);
     };
 
-    console.log(accessToken);
+    // console.log(accessToken);
     fetchUserTopItems();
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
   }, [accessToken]);
 
   return (
@@ -65,9 +70,24 @@ export default function Profile() {
       <p className="text-xl">Top tracks last 4 weeks</p>
 
       <div className="md:flex md:flex-wrap grid grid-cols-2 gap-6 md:gap-16 mb-24">
-        {userTopItems?.items?.map((item) => {
-          return <MediaItem key={item.name} data={item} />;
-        })}
+        {loading &&
+          Array(6)
+            .fill()
+            .map((_, index) => {
+              return (
+                <div key={index} className="flex flex-col gap-4">
+                  <Skeleton className="w-52 h-52 rounded-xl" />
+                  <Skeleton className="w-52 h-6 rounded-xl" />
+                  <Skeleton className="w-52 h-6 rounded-xl" />
+                  <Skeleton className="w-52 h-6 rounded-xl" />
+                </div>
+              );
+            })}
+
+        {!loading &&
+          userTopItems?.items?.map((item) => {
+            return <MediaItem key={item.name} data={item} />;
+          })}
       </div>
       <SignOutButton />
     </div>
