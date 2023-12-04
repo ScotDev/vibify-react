@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
-import { useLoaderData } from "react-router-dom";
+// import { useLoaderData } from "react-router-dom";
 import { Skeleton } from "@/components/ui/skeleton";
 import Code from "../components/Code";
 import MediaItem from "../components/MediaItem";
 import SignOutButton from "../components/SignOutButton";
 
-import { getUserTopItems } from "../utils/Spotify";
+import { getProfileData, getUserTopItems } from "../utils/Spotify";
 import useSpotifyAuth from "../hooks/useSpotifyAuth";
 
 export default function Profile() {
@@ -13,9 +13,10 @@ export default function Profile() {
 
   // Potentially change to normally useEffect data fetching
   // in order to access useSpotifyAuth() hook
-  const { profileData } = useLoaderData();
+  // const { profileData } = useLoaderData();
 
   const [userTopItems, setUserTopItems] = useState([]);
+  const [userData, setUserData] = useState({});
   const [loading, setLoading] = useState(true);
 
   // TODO: Add a loading state + move this to loader function?
@@ -33,23 +34,33 @@ export default function Profile() {
     }, 1000);
   }, [accessToken]);
 
+  useEffect(() => {
+    if (!accessToken) return;
+    const fetchProfileData = async () => {
+      const data = await getProfileData(accessToken);
+      setUserData(data);
+    };
+
+    fetchProfileData();
+  }, [accessToken]);
+
   return (
     <div className="flex flex-col py-12 gap-6">
       <h1>Profile</h1>
       <div className="flex flex-col pt-6 gap-2 max-w-96 py-2">
         <p className="text-xs">Display name</p>
-        <h3>{profileData.display_name}</h3>
+        <h3>{userData.display_name}</h3>
       </div>
       <div className="flex flex-col gap-2 max-w-96 py-2">
         <p className="text-xs">Email address</p>
-        <h4>{profileData.email}</h4>
+        <h4>{userData.email}</h4>
       </div>
 
       <div className="flex flex-col gap-2 max-w-96 py-2">
         <p className="text-xs">Profile URL</p>
         <div className="flex gap-2">
-          <Code href={profileData.external_urls?.spotify}>
-            {profileData.external_urls?.spotify}
+          <Code href={userData.external_urls?.spotify}>
+            {userData.external_urls?.spotify}
           </Code>
           {/* <ClipboardButton
             title="Copy"
@@ -60,11 +71,11 @@ export default function Profile() {
 
       <div className="flex flex-col gap-2 max-w-96 py-2">
         <p className="text-xs">Subscription type</p>
-        <p className="capitalize">{profileData.product}</p>
+        <p className="capitalize">{userData.product}</p>
       </div>
       <div className="flex flex-col gap-2 max-w-96 py-2">
         <p className="text-xs">User country</p>
-        <p className="capitalize">{profileData.country}</p>
+        <p className="capitalize">{userData.country}</p>
       </div>
 
       <p className="text-xl">Top tracks last 4 weeks</p>
@@ -76,10 +87,10 @@ export default function Profile() {
               .map((_, index) => {
                 return (
                   <div key={index} className="flex flex-col gap-4">
-                    <Skeleton className="w-52 h-52 rounded-xl" />
-                    <Skeleton className="w-52 h-6 rounded-xl" />
-                    <Skeleton className="w-52 h-6 rounded-xl" />
-                    <Skeleton className="w-52 h-6 rounded-xl" />
+                    <Skeleton className="w-full sm:w-52 h-52 rounded-xl" />
+                    <Skeleton className="w-full sm:w-52 h-6 rounded-xl" />
+                    <Skeleton className="w-full sm:w-52 h-6 rounded-xl" />
+                    <Skeleton className="w-full sm:w-52 h-6 rounded-xl" />
                   </div>
                 );
               })

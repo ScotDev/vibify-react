@@ -83,20 +83,20 @@ export default function Step3() {
             })}
         {!loading &&
           recommendationsData.map((recommendation) => (
-            <div key={recommendation.id} className="flex gap-8 w-full">
+            <div key={recommendation.id} className="flex gap-8 w-full truncate">
               <Link
                 target="_blank"
                 to={recommendation.external_urls.spotify}
-                className="cursor-pointer"
+                className="cursor-pointer "
               >
                 <img
                   src={recommendation.album.images[1].url}
                   alt={recommendation.name}
-                  className="object-cover object-center aspect-square rounded-xl shadow-md hover:shadow-xl transition duration-300 ease-in-out w-20 h-20"
+                  className="object-cover object-center aspect-square rounded-xl shadow-md hover:shadow-xl transition duration-300 ease-in-out min-w-max w-20 h-20"
                 />
               </Link>
-              <div className="flex flex-col gap-2">
-                <h2 className="font-medium text-neutral-800 truncate">
+              <div className="flex flex-col justify-between gap-2 truncate w-64 sm:w-full">
+                <h2 className="font-medium text-sm sm:text-base text-neutral-800 truncate ">
                   <Link
                     target="_blank"
                     to={recommendation.external_urls.spotify}
@@ -105,7 +105,7 @@ export default function Step3() {
                     {recommendation.name}
                   </Link>
                 </h2>
-                <span className="flex max-w-prose text-neutral-700 text-sm truncate">
+                <span className="flex text-neutral-700 gap-1 text-xs sm:text-sm w-full truncate">
                   {recommendation.artists.map((artist, index) => {
                     // TODO: Add link to artist page
                     if (index === recommendation.artists.length - 1) {
@@ -114,7 +114,7 @@ export default function Step3() {
                           <Link
                             target="_blank"
                             to={artist.external_urls.spotify}
-                            className="underline cursor-pointer pr-1"
+                            className="underline cursor-pointer truncate"
                           >
                             {artist.name}
                           </Link>
@@ -126,7 +126,7 @@ export default function Step3() {
                           <Link
                             target="_blank"
                             to={artist.external_urls.spotify}
-                            className="underline cursor-pointer pr-1"
+                            className="underline cursor-pointer truncate"
                           >
                             {artist.name},
                           </Link>
@@ -135,12 +135,12 @@ export default function Step3() {
                     }
                   })}
                 </span>
-                <span className="flex max-w-prose truncate">
+                <span className="truncate text-xs sm:text-sm">
                   <Link
                     target="_blank"
                     href={recommendation.album.external_urls.spotify}
                   >
-                    <h5 className="text-sm text-neutral-700 truncate">
+                    <h5 className=" text-neutral-700 truncate">
                       {recommendation.album.name}
                     </h5>
                   </Link>

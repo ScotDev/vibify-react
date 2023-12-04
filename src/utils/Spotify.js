@@ -92,8 +92,8 @@ const handleToken = async () => {
   }
 };
 
-const getProfileData = async () => {
-  const access_token = await handleToken();
+const getProfileData = async (access_token) => {
+  // const access_token = await handleToken();
   // TODO: Add error handling here
   const options = {
     headers: {
