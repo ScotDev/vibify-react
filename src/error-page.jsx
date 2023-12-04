@@ -10,7 +10,7 @@ export default function ErrorPage() {
       id="error-page"
       className="text-center grid gap-6 place-items-center w-screen h-screen"
     >
-      <div>
+      <div className="flex flex-col gap-2 text-center items-center">
         <h1>Oops!</h1>
         <p className="py-6">Sorry, an unexpected error has occurred.</p>
         <p>

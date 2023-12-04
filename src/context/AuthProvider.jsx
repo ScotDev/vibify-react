@@ -7,8 +7,9 @@ const AuthContext = createContext({});
 
 export const useAuth = () => useContext(AuthContext);
 
-const oneHour = 3600 * 1000;
+// const oneHour = 3600 * 1000;
 const oneYear = 31556926 * 1000;
+const fifteenMinutes = 900 * 1000;
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -29,7 +30,7 @@ const AuthProvider = ({ children }) => {
       if (session.provider_token) {
         // console.log(session.provider_token);
         setItem("spotify_user_id", session.user.identities[0].id, oneYear);
-        setItem("spotify_access_token", session.provider_token, oneHour);
+        setItem("spotify_access_token", session.provider_token, fifteenMinutes);
       }
       if (session.provider_refresh_token) {
         // console.log(session.provider_refresh_token);

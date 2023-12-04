@@ -48,8 +48,8 @@ export default function Profile() {
       <div className="flex flex-col gap-2 max-w-96 py-2">
         <p className="text-xs">Profile URL</p>
         <div className="flex gap-2">
-          <Code href={profileData.external_urls.spotify}>
-            {profileData.external_urls.spotify}
+          <Code href={profileData.external_urls?.spotify}>
+            {profileData.external_urls?.spotify}
           </Code>
           {/* <ClipboardButton
             title="Copy"
@@ -70,24 +70,22 @@ export default function Profile() {
       <p className="text-xl">Top tracks last 4 weeks</p>
 
       <div className="md:flex md:flex-wrap grid grid-cols-2 gap-6 md:gap-16 mb-24">
-        {loading &&
-          Array(6)
-            .fill()
-            .map((_, index) => {
-              return (
-                <div key={index} className="flex flex-col gap-4">
-                  <Skeleton className="w-52 h-52 rounded-xl" />
-                  <Skeleton className="w-52 h-6 rounded-xl" />
-                  <Skeleton className="w-52 h-6 rounded-xl" />
-                  <Skeleton className="w-52 h-6 rounded-xl" />
-                </div>
-              );
+        {loading
+          ? Array(6)
+              .fill()
+              .map((_, index) => {
+                return (
+                  <div key={index} className="flex flex-col gap-4">
+                    <Skeleton className="w-52 h-52 rounded-xl" />
+                    <Skeleton className="w-52 h-6 rounded-xl" />
+                    <Skeleton className="w-52 h-6 rounded-xl" />
+                    <Skeleton className="w-52 h-6 rounded-xl" />
+                  </div>
+                );
+              })
+          : userTopItems?.items?.map((item) => {
+              return <MediaItem key={item.name} data={item} />;
             })}
-
-        {!loading &&
-          userTopItems?.items?.map((item) => {
-            return <MediaItem key={item.name} data={item} />;
-          })}
       </div>
       <SignOutButton />
     </div>
