@@ -5,6 +5,7 @@ import { removeAllItems } from "../utils/Storage";
 
 const oneHour = 3600 * 1000;
 const oneYear = 31556926 * 1000;
+const fifteenMinutes = 900 * 1000;
 
 export default function useSpotifyAuth() {
   const [accessToken, setAccessToken] = useState(null);
@@ -56,7 +57,7 @@ export default function useSpotifyAuth() {
               "vibify_spotify_access_token",
               JSON.stringify({
                 value: newAccessToken,
-                expires: Date.now() + oneHour,
+                expires: Date.now() + fifteenMinutes,
               })
             );
           } else {
@@ -111,7 +112,7 @@ export default function useSpotifyAuth() {
               "vibify_spotify_access_token",
               JSON.stringify({
                 value: data.session.provider_token,
-                expires: Date.now() + oneHour,
+                expires: Date.now() + fifteenMinutes,
               })
             );
             localStorage.setItem(

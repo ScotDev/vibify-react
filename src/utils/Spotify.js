@@ -5,8 +5,9 @@ import { supabase } from "../supabase/client";
 
 // All functions here need to check token validity and request a new one if possible.
 
-const oneHour = 3600 * 1000;
+// const oneHour = 3600 * 1000;
 const oneYear = 31556926 * 1000;
+const fifteenMinutes = 900 * 1000;
 
 const handleToken = async () => {
   const localAccessToken = sessionStorage.getItem(
@@ -36,7 +37,7 @@ const handleToken = async () => {
           "vibify_spotify_access_token",
           JSON.stringify({
             value: newAccessToken,
-            expires: Date.now() + oneHour,
+            expires: Date.now() + fifteenMinutes,
           })
         );
         return newAccessToken;
@@ -70,7 +71,7 @@ const handleToken = async () => {
           "vibify_spotify_access_token",
           JSON.stringify({
             value: data.session.provider_token,
-            expires: Date.now() + oneHour,
+            expires: Date.now() + fifteenMinutes,
           })
         );
         localStorage.setItem(
@@ -306,8 +307,9 @@ const createPlaylist = async (access_token, formData) => {
 const addTracksToPlaylist = async (access_token, playlistId, trackUris) => {
   // https://api.spotify.com/v1/playlists/{playlist_id}/tracks
   // const access_token = await handleToken();
+  console.log("Adding tracks to playlist", playlistId);
   const uris = await trackUris.map((track) => track.uri);
-  console.log(uris);
+  // console.log(uris);
   const data = {
     uris: [...uris],
   };
@@ -330,6 +332,23 @@ const addTracksToPlaylist = async (access_token, playlistId, trackUris) => {
     return null;
   }
   return result.snapshot_id;
+};
+
+const getUserPlaylists = async (access_token) => {
+  // https://api.spotify.com/v1/me/playlists
+
+  const request = new Request(
+    "https://api.spotify.com/v1/me/playlists?limit=40",
+    {
+      headers: { Authorization: `Bearer ${access_token}` },
+    }
+  );
+  const playlists = await fetch(request);
+  const result = await playlists.json();
+  if (!result.items) {
+    return [];
+  }
+  return result.items;
 };
 
 const refreshSpotifyToken = async (refresh_token) => {
@@ -388,4 +407,5 @@ export {
   getRecommendations,
   createPlaylist,
   addTracksToPlaylist,
+  getUserPlaylists,
 };

@@ -7,9 +7,9 @@ const AuthContext = createContext({});
 
 export const useAuth = () => useContext(AuthContext);
 
-const oneHour = 3600 * 1000;
+// const oneHour = 3600 * 1000;
 const oneYear = 31556926 * 1000;
-// const fifteenMinutes = 900 * 1000;
+const fifteenMinutes = 900 * 1000;
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -41,7 +41,7 @@ const AuthProvider = ({ children }) => {
             "vibify_spotify_access_token",
             JSON.stringify({
               value: session.provider_token,
-              expires: Date.now() + oneHour,
+              expires: Date.now() + fifteenMinutes,
             })
           );
         } catch (error) {
