@@ -41,9 +41,13 @@ const removeAllItems = () => {
   if (window.localStorage) {
     // Better if it loops through all the keys and removes only vibify_ keys.
     // If I add more items to localstorage I'll build this out.
-    localStorage.removeItem("vibify_spotify_access_token");
-    localStorage.removeItem("vibify_spotify_refresh_token");
-    localStorage.removeItem("vibify_spotify_user_id");
+    try {
+      sessionStorage.removeItem("vibify_spotify_access_token");
+      localStorage.removeItem("vibify_spotify_refresh_token");
+      localStorage.removeItem("vibify_spotify_user_id");
+    } catch (error) {
+      console.log(error);
+    }
   }
 };
 

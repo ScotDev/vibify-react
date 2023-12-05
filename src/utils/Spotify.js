@@ -9,7 +9,9 @@ const oneHour = 3600 * 1000;
 const oneYear = 31556926 * 1000;
 
 const handleToken = async () => {
-  const localAccessToken = localStorage.getItem("vibify_spotify_access_token");
+  const localAccessToken = sessionStorage.getItem(
+    "vibify_spotify_access_token"
+  );
   const localRefreshToken = localStorage.getItem(
     "vibify_spotify_refresh_token"
   );
@@ -30,7 +32,7 @@ const handleToken = async () => {
 
       const newAccessToken = await refreshSpotifyToken(value);
       if (newAccessToken) {
-        localStorage.setItem(
+        sessionStorage.setItem(
           "vibify_spotify_access_token",
           JSON.stringify({
             value: newAccessToken,
@@ -64,7 +66,7 @@ const handleToken = async () => {
       } else {
         console.log(data);
 
-        localStorage.setItem(
+        sessionStorage.setItem(
           "vibify_spotify_access_token",
           JSON.stringify({
             value: data.session.provider_token,

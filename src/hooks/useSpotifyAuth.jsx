@@ -19,7 +19,7 @@ export default function useSpotifyAuth() {
   useEffect(() => {
     const authenticateWithSpotify = async () => {
       // 1. Check for access token in local storage
-      const localAccessToken = localStorage.getItem(
+      const localAccessToken = sessionStorage.getItem(
         "vibify_spotify_access_token"
       );
 
@@ -52,7 +52,7 @@ export default function useSpotifyAuth() {
           const newAccessToken = await refreshSpotifyToken(value);
           if (newAccessToken) {
             handleSuccess(newAccessToken);
-            localStorage.setItem(
+            sessionStorage.setItem(
               "vibify_spotify_access_token",
               JSON.stringify({
                 value: newAccessToken,
@@ -107,7 +107,7 @@ export default function useSpotifyAuth() {
             console.log(data);
             handleSuccess(data.session.provider_token);
 
-            localStorage.setItem(
+            sessionStorage.setItem(
               "vibify_spotify_access_token",
               JSON.stringify({
                 value: data.session.provider_token,

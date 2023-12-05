@@ -7,9 +7,9 @@ const AuthContext = createContext({});
 
 export const useAuth = () => useContext(AuthContext);
 
-// const oneHour = 3600 * 1000;
+const oneHour = 3600 * 1000;
 const oneYear = 31556926 * 1000;
-const fifteenMinutes = 900 * 1000;
+// const fifteenMinutes = 900 * 1000;
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -29,8 +29,26 @@ const AuthProvider = ({ children }) => {
 
       if (session.provider_token) {
         // console.log(session.provider_token);
-        setItem("spotify_user_id", session.user.identities[0].id, oneYear);
-        setItem("spotify_access_token", session.provider_token, fifteenMinutes);
+        try {
+          localStorage.setItem(
+            "vibify_spotify_user_id",
+            JSON.stringify({
+              value: session.user.identities[0].id,
+              expires: Date.now() + oneYear,
+            })
+          );
+          sessionStorage.setItem(
+            "vibify_spotify_access_token",
+            JSON.stringify({
+              value: session.provider_token,
+              expires: Date.now() + oneHour,
+            })
+          );
+        } catch (error) {
+          console.log(error);
+        }
+        // setItem("spotify_user_id", session.user.identities[0].id, oneYear);
+        // setItem("spotify_access_token", session.provider_token, fifteenMinutes);
       }
       if (session.provider_refresh_token) {
         // console.log(session.provider_refresh_token);
@@ -59,7 +77,7 @@ const AuthProvider = ({ children }) => {
 
   const signOut = async () => {
     const { error } = await supabase.auth.signOut();
-    if (error) throw error;
+    if (error) console.log(error);
     removeAllItems();
     window.location.reload();
   };
