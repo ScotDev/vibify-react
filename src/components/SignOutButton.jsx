@@ -12,7 +12,7 @@ export default function SignOutButton() {
     <>
       <button
         type="button"
-        className="bg-indigo-100 w-fit text-neutral-900 font-medium px-4 py-2 rounded-lg cursor-pointer"
+        className="button-secondary w-max"
         onClick={handleSignOut}
       >
         Sign out

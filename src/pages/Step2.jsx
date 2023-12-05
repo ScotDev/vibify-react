@@ -220,7 +220,9 @@ export default function Step2() {
           </fieldset>
         </div>
         <div className="py-8">
-          <button type="submit">Submit</button>
+          <button type="submit" className="button">
+            Submit
+          </button>
         </div>
       </form>
     </div>

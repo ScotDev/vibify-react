@@ -112,10 +112,7 @@ export const SaveDialog = ({ tracks }) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger className="w-fit">
-        <button
-          disabled={tracks.length === 0}
-          className="py-2 px-4 rounded-lg bg-indigo-100 disabled:bg-neutral-200 font-medium w-max"
-        >
+        <button disabled={tracks.length === 0} className="button-secondary">
           Save
         </button>
       </DialogTrigger>
@@ -220,7 +217,7 @@ export const SaveDialog = ({ tracks }) => {
           </div>
           <div className="flex justify-between">
             <button
-              className="py-2 px-4 rounded-lg bg-indigo-100 disabled:bg-neutral-200 text-neutral-800 font-medium w-max disabled:cursor-not-allowed disabled:opacity-70"
+              className="button-primary"
               type="submit"
               disabled={loading || tracks.length === 0}
             >
