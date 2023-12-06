@@ -43,6 +43,7 @@ export default function useSpotifyAuth() {
       } else {
         // 4. If it's not valid, check for a refresh token in local storage
         console.log("No usable access token found in cache");
+        sessionStorage.removeItem("vibify_spotify_access_token");
         const { value, expires } = JSON.parse(localRefreshToken);
 
         if (value && expires > Date.now()) {

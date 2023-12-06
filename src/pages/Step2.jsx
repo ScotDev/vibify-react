@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Slider } from "@/components/ui/slider";
 import SearchableInput from "@/components/SearchableInput";
+import Tag from "../components/Tag";
 
 import { handlePreset } from "../utils/Presets";
 
@@ -32,15 +33,15 @@ export default function Step2() {
 
   useEffect(() => {
     vibe.genres.forEach((genre) => {
-      const hasItem = (genre) =>
-        items.filter((item) => item.name === genre.name).length === 0;
-      console.log(hasItem(genre));
+      // const hasItem = (genre) =>
+      //   items.filter((item) => item.name === genre.name).length === 0;
+      // console.log(hasItem(genre));
       if (items.length < 3) {
-        console.log("adding genre");
+        console.log("adding genre", genre);
         addToItems(genre);
       }
     });
-    console.log(vibe.genres);
+    // console.log(vibe.genres);
   }, []);
 
   const handleQtyChange = (value) => {
@@ -95,60 +96,27 @@ export default function Step2() {
         The chosen vibe is
         <span className="font-bold capitalize text-indigo-800"> {preset}</span>
       </h2>
-      {/* Take preset and set form inputs + tags  */}
-      {/* Section 1 has searchable tags */}
-      {/* Section 2 has slider */}
-      {/* Submit button */}
       <form className="flex flex-col gap-7 relative" onSubmit={handleSubmit}>
         <div
           id="inspiration"
-          className="shadow-md h-64 rounded-lg pt-8 pb-24 px-6 bg-neutral-50 z-50"
+          className="shadow-md h-72 sm:h-64 rounded-lg pt-8 pb-24 px-6 bg-neutral-50 z-50"
         >
           <h3 className="text-xl">Set the tone</h3>
           <p className="text-sm py-4">
             Add tracks, artists and genres to inspire the playlist
           </p>
 
-          <div className="flex flex-col h-full gap-6 relative w-full md:w-1/2">
+          <div className="flex flex-col h-full gap-6 relative w-full md:w-2/5">
             <div className="w-full z-50">
               <SearchableInput />
             </div>
 
-            <div className="flex absolute bottom-8 overflow-x-hidden w-full">
+            <div className="flex absolute bottom-16 overflow-x-hidden w-full">
               {items.map((item) => {
-                if (item.type === "track") {
-                  return (
-                    <span
-                      key={item.name}
-                      className="bg-indigo-100 capitalize rounded-full px-4 py-2 text-sm truncate w-[100px] sm:w-fit font-semibold text-indigo-800 mr-2"
-                    >
-                      {item.name}
-                    </span>
-                  );
-                }
-                if (item.type === "artist") {
-                  return (
-                    <span
-                      key={item.name}
-                      className="bg-emerald-100 capitalize rounded-full px-4 py-2 text-xs truncate w-[100px] sm:w-fit font-semibold text-emerald-800 mr-2"
-                    >
-                      {item.name}
-                    </span>
-                  );
-                }
-                if (item.type === "genre") {
-                  return (
-                    <span
-                      key={item.name}
-                      className="bg-orange-100 capitalize rounded-full px-4 py-2 text-sm truncate w-[100px] sm:w-fit font-semibold text-orange-800 mr-2"
-                    >
-                      {item.name}
-                    </span>
-                  );
-                }
+                return <Tag key={item.name} value={item} />;
               })}
             </div>
-            <div className="absolute -bottom-1 left-0 flex w-full md:w-1/2 justify-between items-center">
+            <div className="absolute bottom-4 sm:-bottom-1 left-0 flex w-full md:w-1/2 justify-between items-center">
               <div>
                 <button
                   type="button"
@@ -216,8 +184,8 @@ export default function Step2() {
             </div>
           </fieldset>
         </div>
-        <div className="py-8">
-          <button type="submit" className="button">
+        <div className="py-4">
+          <button type="submit" className="button-primary">
             Submit
           </button>
         </div>

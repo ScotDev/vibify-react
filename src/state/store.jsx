@@ -5,14 +5,19 @@ import { createContext, useContextSelector } from "use-context-selector";
 const useStore = () => {
   const [items, setItems] = useState([]);
 
-  const addToItems = useCallback((newItem) => {
+  // I'm aware that not using useCallback here defeats the point of using the library, but it's the only easy way to ensure the
+  // state stays reactive
+  const addToItems = (newItem) => {
     // Check if item already exists before adding by check if item.name already exists in items
-    if (items.filter((item) => item.name === newItem.name).length === 0) {
-      setItems((items) => [...items, newItem]);
-    }
-
     // setItems((items) => [...items, newItem]);
-  }, []);
+    let exists = items.some((item) => item.name === newItem.name);
+    if (exists) {
+      console.log("item already exists");
+      setItems((items) => [...items]);
+      return;
+    }
+    setItems((items) => [...items, newItem]);
+  };
 
   const removeAllItems = useCallback(() => {
     setItems([]);

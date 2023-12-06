@@ -15,50 +15,30 @@ import { getGenres, getArtists, getTracks } from "../utils/Spotify";
 // import { useInspirationStore } from "../state/store";
 // import { useStore } from "../state/store";
 import useSpotifyAuth from "../hooks/useSpotifyAuth";
-import { useAddToItems, useItems } from "../state/store";
+import { useAddToItems } from "../state/store";
 
 export default function SearchableInput() {
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
-  const [selectedGenres, setSelectedGenres] = useState([]);
-  const [selectedItems, setSelectedItems] = useState([]);
+  // const [selectedGenres, setSelectedGenres] = useState([]);
+  // const [selectedItems, setSelectedItems] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const [genreResults, setGenreResults] = useState([]);
   const [artistResults, setArtistResults] = useState([]);
   const [trackResults, setTrackResults] = useState([]);
 
-  const items = useItems();
   const addToItems = useAddToItems();
 
   const accessToken = useSpotifyAuth();
 
-  // const addItem = useInspirationStore((state) => state.addItem);
-  // const store = useStore((state) => state);
-
-  // useEffect(() => {
-  //   // Need to merge selectedGenre and selectedItems into one array
-  //   // Then pass that array to handleInspiration
-  //   const inspiration = [...selectedItems, ...selectedGenres];
-  //   // handleInspiration(inspiration);
-  //   console.log("Inspiration from SearchableInput", inspiration);
-  //   // Need to check if inspiration is already in items
-  //   // If not, add to items
-
-  //   addToItems(inspiration);
-  //   // store.addToItems(inspiration);
-  // }, [selectedItems]);
-
-  const addGenre = (genre) => {
+  const addInspirationObject = (object) => {
     // Check if genre already exists in items
     // If not, add to items
-    console.log("genre", genre);
-    items.forEach((item) => {
-      if (item.name === genre.name) {
-        console.log("matched item", item);
-        addToItems(genre);
-      }
-    });
+    console.log("object", object);
+
+    console.log("adding object");
+    addToItems(object);
   };
 
   // useEffect(() => {
@@ -134,7 +114,7 @@ export default function SearchableInput() {
                     //   }
                     // });
 
-                    addGenre({ name: currentValue, type: "genre" });
+                    addInspirationObject({ name: currentValue, type: "genre" });
 
                     setOpen(false);
                     setSearch("");
@@ -157,22 +137,25 @@ export default function SearchableInput() {
                   onSelect={(currentValue) => {
                     // Check if the artist is already selected
                     // On select, filter artist and add artist.ID to selectedItems
-                    artistResults.map((artist) => {
-                      if (artist.name.toLowerCase() === currentValue) {
-                        // Check if artist id already exists in selectedItems
-                        // !!!This might not be right
-                        if (!selectedItems.includes(artist.id)) {
-                          setSelectedItems([
-                            ...selectedItems,
-                            {
-                              id: artist.id,
-                              name: artist.name,
-                              type: "artist",
-                            },
-                          ]);
-                        }
-                      }
+
+                    // Check if artist id already exists in selectedItems
+                    // !!!This might not be right
+                    // if (!selectedItems.includes(artist.id)) {
+                    //   setSelectedItems([
+                    //     ...selectedItems,
+                    //     {
+                    //       id: artist.id,
+                    //       name: artist.name,
+                    //       type: "artist",
+                    //     },
+                    //   ]);
+                    // }
+                    addInspirationObject({
+                      id: artist.id,
+                      name: currentValue,
+                      type: "artist",
                     });
+
                     setOpen(false);
                     setSearch("");
                   }}
@@ -205,20 +188,25 @@ export default function SearchableInput() {
                   key={track.id}
                   value={track.name}
                   onSelect={(currentValue) => {
-                    trackResults.map((track) => {
-                      if (track.name.toLowerCase() === currentValue) {
-                        // Check if track id already exists in selectedItems
-                        if (!selectedItems.includes(track.id)) {
-                          setSelectedItems([
-                            ...selectedItems,
-                            {
-                              id: track.id,
-                              name: track.name,
-                              type: "track",
-                            },
-                          ]);
-                        }
-                      }
+                    // trackResults.map((track) => {
+                    //   if (track.name.toLowerCase() === currentValue) {
+                    //     // Check if track id already exists in selectedItems
+                    //     if (!selectedItems.includes(track.id)) {
+                    //       setSelectedItems([
+                    //         ...selectedItems,
+                    //         {
+                    //           id: track.id,
+                    //           name: track.name,
+                    //           type: "track",
+                    //         },
+                    //       ]);
+                    //     }
+                    //   }
+                    // });
+                    addInspirationObject({
+                      id: track.id,
+                      name: currentValue,
+                      type: "track",
                     });
                     setOpen(false);
                     setSearch("");

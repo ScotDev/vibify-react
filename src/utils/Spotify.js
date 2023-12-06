@@ -25,6 +25,7 @@ const handleToken = async () => {
     }
   } else {
     console.log("No access token found in cache");
+    sessionStorage.removeItem("vibify_spotify_access_token");
     const { value, expires } = JSON.parse(localRefreshToken);
     if (value && expires > Date.now()) {
       // 5. If it exists AND is valid, use it to get a new access token
