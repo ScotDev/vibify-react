@@ -11,9 +11,6 @@ import {
 } from "@/components/ui/command";
 
 import { getGenres, getArtists, getTracks } from "../utils/Spotify";
-
-// import { useInspirationStore } from "../state/store";
-// import { useStore } from "../state/store";
 import useSpotifyAuth from "../hooks/useSpotifyAuth";
 import { useAddToItems, useItems } from "../state/store";
 

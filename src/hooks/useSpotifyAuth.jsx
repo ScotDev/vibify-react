@@ -35,7 +35,9 @@ export default function useSpotifyAuth() {
       // 2. If it exists, check it is still valid
       if (localAccessToken) {
         const { value, expires } = JSON.parse(localAccessToken);
-        if (value && expires > Date.now()) {
+        const hardcodeFalse = false;
+        // if (value && expires > Date.now()) {
+        if (hardcodeFalse) {
           console.log("Access token retrieved from cache");
           // 3. If it's valid, set it as the access token
           handleSuccess(value);
