@@ -5,7 +5,7 @@ import SearchableInput from "@/components/SearchableInput";
 
 import { handlePreset } from "../utils/Presets";
 
-import { useStore } from "../state/store";
+import { useAddToItems, useItems, useRemoveAllItems } from "../state/store";
 
 export default function Step2() {
   let params = new URLSearchParams(document.location.search);
@@ -13,24 +13,35 @@ export default function Step2() {
   const [qty, setQty] = useState(10);
   const [tempo, setTempo] = useState(85);
   const [popularity, setPopularity] = useState(100);
-  const [inspiration, setInspiration] = useState([]); // [track, artist, genre]
+  // const [inspiration, setInspiration] = useState([]);
   const navigate = useNavigate();
 
   // const store = useInspirationStore((state) => state);
-  const store = useStore((state) => state);
-
+  // const store = useStore((state) => state);
+  const items = useItems();
+  const addToItems = useAddToItems();
+  const removeAllItems = useRemoveAllItems();
+  const vibe = handlePreset(preset);
   useEffect(() => {
-    const vibe = handlePreset(preset);
     setQty(vibe.qty);
     setTempo(vibe.tempo);
     setPopularity(vibe.popularity);
     // For now just use vibe.genres from preset
-    setInspiration(vibe.genres);
+    // setInspiration(vibe.genres);
   }, []);
 
   useEffect(() => {
-    console.log(store.items);
-  }, [store.items]);
+    vibe.genres.forEach((genre) => {
+      const hasItem = (genre) =>
+        items.filter((item) => item.name === genre.name).length === 0;
+      console.log(hasItem(genre));
+      if (items.length < 3) {
+        console.log("adding genre");
+        addToItems(genre);
+      }
+    });
+    console.log(vibe.genres);
+  }, []);
 
   const handleQtyChange = (value) => {
     setQty(value);
@@ -40,19 +51,6 @@ export default function Step2() {
   };
   const handlePopularityChange = (value) => {
     setPopularity(value);
-  };
-
-  const handleInspiration = (value) => {
-    console.log("Value from handleInspiration", value);
-    console.log("Inspiration from handleInspiration", inspiration);
-    const difference = inspiration.length - value.flat().length;
-
-    // Need to tell searchableInput component how many new values it can accept.
-    // This could be a good use case for zustand or jotai
-    console.log("Difference", difference);
-    if (inspiration.length <= 3) {
-      setInspiration(value.flat());
-    }
   };
 
   const genres = [];
@@ -69,7 +67,7 @@ export default function Step2() {
     // Need to loop over and separate out by type, but grouped togther in the params, separated by commas.
     // Doesn't need to be formatted for spotify API yet, I can do this in the loader function for the route for step-3.
 
-    inspiration.forEach((item) => {
+    items.forEach((item) => {
       if (item.type === "track") {
         tracks.push(item.id);
       }
@@ -113,12 +111,11 @@ export default function Step2() {
 
           <div className="flex flex-col h-full gap-6 relative w-full md:w-1/2">
             <div className="w-full z-50">
-              <SearchableInput handleInspiration={handleInspiration} />
+              <SearchableInput />
             </div>
 
             <div className="flex absolute bottom-8 overflow-x-hidden w-full">
-              {store.items.map((item) => {
-                console.log("Item from store", item[0]);
+              {items.map((item) => {
                 if (item.type === "track") {
                   return (
                     <span
@@ -155,16 +152,16 @@ export default function Step2() {
               <div>
                 <button
                   type="button"
-                  onClick={() => store.removeAllItems()}
+                  onClick={removeAllItems}
                   className="underline text-xs text-neutral-700 "
                 >
                   Remove all
                 </button>
               </div>
               <div>
-                {store.items.length === 3 && (
+                {items.length === 3 && (
                   <p className="text-sm  text-neutral-700 ">
-                    {store.items.length} of 3 selected
+                    {items.length} of 3 selected
                   </p>
                 )}
               </div>

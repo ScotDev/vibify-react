@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import {
   Command,
-  CommandEmpty,
+  // CommandEmpty,
   CommandGroup,
   CommandInput,
   CommandItem,
@@ -10,15 +10,14 @@ import {
   CommandSeparator,
 } from "@/components/ui/command";
 
-import { PropTypes } from "prop-types";
-
 import { getGenres, getArtists, getTracks } from "../utils/Spotify";
 
 // import { useInspirationStore } from "../state/store";
-import { useStore } from "../state/store";
+// import { useStore } from "../state/store";
 import useSpotifyAuth from "../hooks/useSpotifyAuth";
+import { useAddToItems, useItems } from "../state/store";
 
-export default function SearchableInput({ handleInspiration }) {
+export default function SearchableInput() {
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [selectedGenres, setSelectedGenres] = useState([]);
@@ -29,19 +28,38 @@ export default function SearchableInput({ handleInspiration }) {
   const [artistResults, setArtistResults] = useState([]);
   const [trackResults, setTrackResults] = useState([]);
 
+  const items = useItems();
+  const addToItems = useAddToItems();
+
   const accessToken = useSpotifyAuth();
 
   // const addItem = useInspirationStore((state) => state.addItem);
-  const store = useStore((state) => state);
+  // const store = useStore((state) => state);
 
-  useEffect(() => {
-    // Need to merge selectedGenre and selectedItems into one array
-    // Then pass that array to handleInspiration
-    const inspiration = [...selectedItems, ...selectedGenres];
-    handleInspiration(inspiration);
-    console.log("Inspiration from SearchableInput", inspiration);
-    store.addToItems(inspiration);
-  }, [selectedItems, selectedGenres]);
+  // useEffect(() => {
+  //   // Need to merge selectedGenre and selectedItems into one array
+  //   // Then pass that array to handleInspiration
+  //   const inspiration = [...selectedItems, ...selectedGenres];
+  //   // handleInspiration(inspiration);
+  //   console.log("Inspiration from SearchableInput", inspiration);
+  //   // Need to check if inspiration is already in items
+  //   // If not, add to items
+
+  //   addToItems(inspiration);
+  //   // store.addToItems(inspiration);
+  // }, [selectedItems]);
+
+  const addGenre = (genre) => {
+    // Check if genre already exists in items
+    // If not, add to items
+    console.log("genre", genre);
+    items.forEach((item) => {
+      if (item.name === genre.name) {
+        console.log("matched item", item);
+        addToItems(genre);
+      }
+    });
+  };
 
   // useEffect(() => {
   //   const down = (e) => {
@@ -104,17 +122,19 @@ export default function SearchableInput({ handleInspiration }) {
                     // genreResults.map((genre) => {
                     //   if (genre.toLowerCase() === currentValue) {
                     // Check if genre already exists in selectedGenres
-                    if (!selectedGenres.includes(currentValue)) {
-                      setSelectedGenres([
-                        ...selectedGenres,
-                        {
-                          name: currentValue,
-                          type: "genre",
-                        },
-                      ]);
-                    }
+                    // if (!selectedGenres.includes(currentValue)) {
+                    //   setSelectedGenres([
+                    //     ...selectedGenres,
+                    //     {
+                    //       name: currentValue,
+                    //       type: "genre",
+                    //     },
+                    //   ]);
+                    // }
                     //   }
                     // });
+
+                    addGenre({ name: currentValue, type: "genre" });
 
                     setOpen(false);
                     setSearch("");
@@ -255,7 +275,3 @@ export default function SearchableInput({ handleInspiration }) {
     </Command>
   );
 }
-
-SearchableInput.propTypes = {
-  handleInspiration: PropTypes.func.isRequired,
-};

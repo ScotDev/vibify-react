@@ -19,6 +19,7 @@ import Step1 from "./pages/Step1.jsx";
 import Step2 from "./pages/Step2.jsx";
 import Step3 from "./pages/Step3.jsx";
 import Step3Route from "./routes/step-3.jsx";
+import { StoreContextProvider } from "./state/store.jsx";
 
 const router = createBrowserRouter([
   {
@@ -86,11 +87,13 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <AuthProvider>
-      <RouterProvider router={router}>
-        <App />
-      </RouterProvider>
-    </AuthProvider>
+    <StoreContextProvider>
+      <AuthProvider>
+        <RouterProvider router={router}>
+          <App />
+        </RouterProvider>
+      </AuthProvider>
+    </StoreContextProvider>
   </React.StrictMode>
 );
 
