@@ -111,12 +111,12 @@ export default function Step2() {
               <SearchableInput />
             </div>
 
-            <div className="flex absolute bottom-16 overflow-x-hidden w-full">
+            <div className="flex absolute bottom-14 sm:bottom-8 overflow-x-hidden w-full">
               {items.map((item) => {
                 return <Tag key={item.name} value={item} />;
               })}
             </div>
-            <div className="absolute bottom-4 sm:-bottom-1 left-0 flex w-full md:w-1/2 justify-between items-center">
+            <div className="absolute bottom-4 sm:-bottom-1 left-0 flex w-full justify-between items-center">
               <div>
                 <button
                   type="button"
@@ -128,7 +128,7 @@ export default function Step2() {
               </div>
               <div>
                 {items.length === 3 && (
-                  <p className="text-sm  text-neutral-700 ">
+                  <p className="text-xs  text-neutral-700 ">
                     {items.length} of 3 selected
                   </p>
                 )}

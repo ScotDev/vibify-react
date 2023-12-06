@@ -31,7 +31,7 @@ export default function Step3() {
         <div className="flex flex-col gap-8 ">
           <div className="flex gap-12 text-center">
             <div className="flex flex-col gap-2 items-center">
-              <p className="text-muted-foreground">Total duration</p>
+              <p className="font-medium">Total duration</p>
               {loading ? (
                 <Skeleton className="h-4 w-20 rounded-xl" />
               ) : (
@@ -39,7 +39,7 @@ export default function Step3() {
               )}
             </div>
             <div className="flex flex-col gap-2 items-center">
-              <p className="text-muted-foreground ">Average BPM</p>
+              <p className="font-medium">Average BPM</p>
               {loading ? (
                 <Skeleton className="h-4 w-20 rounded-xl" />
               ) : (
@@ -47,7 +47,7 @@ export default function Step3() {
               )}
             </div>
             <div className="flex flex-col gap-2 items-center">
-              <p className="text-muted-foreground">Total tracks</p>
+              <p className="font-medium">Total tracks</p>
               {loading ? (
                 <Skeleton className="h-4 w-20 rounded-xl" />
               ) : (

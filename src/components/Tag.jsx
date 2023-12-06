@@ -10,7 +10,7 @@ export default function Tag({ value }) {
   return (
     <span
       key={value.name}
-      className={`${colour} capitalize rounded-full px-4 py-2 text-xs truncate max-w-[100px] sm:w-max font-semibold text-neutral-800 mr-2`}
+      className={`${colour} capitalize rounded-full px-4 py-2 text-sm sm:text-xs truncate max-w-[100px] sm:w-max font-semibold text-neutral-800 mr-2`}
     >
       {value.name}
     </span>

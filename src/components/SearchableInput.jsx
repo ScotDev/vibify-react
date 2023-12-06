@@ -15,7 +15,7 @@ import { getGenres, getArtists, getTracks } from "../utils/Spotify";
 // import { useInspirationStore } from "../state/store";
 // import { useStore } from "../state/store";
 import useSpotifyAuth from "../hooks/useSpotifyAuth";
-import { useAddToItems } from "../state/store";
+import { useAddToItems, useItems } from "../state/store";
 
 export default function SearchableInput() {
   const [open, setOpen] = useState(false);
@@ -28,17 +28,17 @@ export default function SearchableInput() {
   const [artistResults, setArtistResults] = useState([]);
   const [trackResults, setTrackResults] = useState([]);
 
+  const items = useItems();
   const addToItems = useAddToItems();
 
   const accessToken = useSpotifyAuth();
 
   const addInspirationObject = (object) => {
-    // Check if genre already exists in items
-    // If not, add to items
     console.log("object", object);
-
-    console.log("adding object");
-    addToItems(object);
+    if (items.length < 3) {
+      console.log("adding object");
+      addToItems(object);
+    }
   };
 
   // useEffect(() => {
