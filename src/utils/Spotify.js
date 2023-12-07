@@ -1,5 +1,4 @@
 import { PropTypes } from "prop-types";
-import { getItem, removeAllItems } from "../utils/Storage";
 import { Buffer } from "buffer";
 import { supabase } from "../supabase/client";
 

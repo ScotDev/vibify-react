@@ -21,7 +21,9 @@ const icon = (title) => {
 
     case "k-pop":
       return (
-        <h3 className={`font-medium text-4xl leading-none text-center `}>
+        <h3
+          className={`font-medium text-3xl sm:text-4xl leading-none text-center `}
+        >
           케이팝
         </h3>
       );
@@ -34,9 +36,7 @@ const icon = (title) => {
 
     case "custom":
       return (
-        <h3 className="font-medium text-8xl leading-none pb-4 text-center">
-          +
-        </h3>
+        <h3 className="font-medium text-6xl sm:text-8xl text-center">+</h3>
       );
 
     default:

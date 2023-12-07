@@ -1,7 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { PropTypes } from "prop-types";
 import { supabase } from "../supabase/client";
-import { setItem, removeAllItems } from "../utils/Storage";
 
 const AuthContext = createContext({});
 

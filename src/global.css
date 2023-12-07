@@ -61,7 +61,7 @@ div.media-item a {
 }
 
 .card-icon {
-  @apply text-neutral-900 justify-self-center aspect-square text-6xl;
+  @apply text-neutral-900 justify-self-center aspect-square text-4xl sm:text-6xl;
 }
 
 @layer base {
