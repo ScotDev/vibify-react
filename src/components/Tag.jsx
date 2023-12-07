@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 
-export default function Tag({ value }) {
+export default function Tag({ value, handleClick }) {
   const colour =
     value.type === "genre"
       ? "bg-emerald-100"
@@ -8,15 +8,26 @@ export default function Tag({ value }) {
       ? "bg-blue-100"
       : "bg-orange-100";
   return (
-    <span
-      key={value.name}
-      className={`${colour} capitalize rounded-full px-4 py-2 text-sm sm:text-xs truncate max-w-[100px] sm:w-max font-semibold text-neutral-800 mr-2`}
+    <div
+      className={`${colour} flex rounded-full px-4 py-2 text-sm sm:text-xs max-w-[110px] sm:w-max font-semibold text-neutral-800 mr-2`}
     >
-      {value.name === "edm"
-        ? "EDM"
-        : value.name === "drum-and-bass"
-        ? "Drum & Bass"
-        : value.name}
-    </span>
+      <span
+        className={`${
+          value.type === "genre" ? "capitalize" : ""
+        } truncate w-full`}
+      >
+        {value.name === "edm"
+          ? "EDM"
+          : value.name === "drum-and-bass"
+          ? "Drum & Bass"
+          : value.name}
+      </span>
+      <span
+        onClick={() => handleClick(value.id)}
+        className="pl-1 text-muted-foreground font-medium cursor-pointer"
+      >
+        X
+      </span>
+    </div>
   );
 }

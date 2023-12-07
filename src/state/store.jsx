@@ -19,6 +19,17 @@ const useStore = () => {
     setItems((items) => [...items, newItem]);
   };
 
+  const removeOneItem = (id) => {
+    console.log("removing item", id);
+    const newItems = items.filter((item) => item.id !== id);
+    setItems(newItems);
+  };
+  // const removeOneItem = (name) => {
+  //   console.log("removing item", name);
+  //   const newItems = items.filter((item) => item.name !== name);
+  //   setItems(newItems);
+  // };
+
   const removeAllItems = useCallback(() => {
     setItems([]);
   }, []);
@@ -26,6 +37,7 @@ const useStore = () => {
   return {
     items,
     addToItems,
+    removeOneItem,
     removeAllItems,
   };
 };
@@ -40,5 +52,7 @@ export const useItems = () =>
   useContextSelector(StoreContext, (store) => store.items);
 export const useAddToItems = () =>
   useContextSelector(StoreContext, (store) => store.addToItems);
+export const useRemoveOneItem = () =>
+  useContextSelector(StoreContext, (store) => store.removeOneItem);
 export const useRemoveAllItems = () =>
   useContextSelector(StoreContext, (store) => store.removeAllItems);

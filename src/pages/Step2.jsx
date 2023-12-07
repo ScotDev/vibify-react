@@ -6,7 +6,12 @@ import Tag from "../components/Tag";
 
 import { handlePreset } from "../utils/Presets";
 
-import { useAddToItems, useItems, useRemoveAllItems } from "../state/store";
+import {
+  useAddToItems,
+  useItems,
+  useRemoveAllItems,
+  useRemoveOneItem,
+} from "../state/store";
 
 export default function Step2() {
   let params = new URLSearchParams(document.location.search);
@@ -21,8 +26,15 @@ export default function Step2() {
   // const store = useStore((state) => state);
   const items = useItems();
   const addToItems = useAddToItems();
+  const removeOneItem = useRemoveOneItem();
   const removeAllItems = useRemoveAllItems();
   const vibe = handlePreset(preset);
+
+  const removeOne = (id) => {
+    console.log("removing item", id);
+    removeOneItem(id);
+  };
+
   useEffect(() => {
     setQty(vibe.qty);
     setTempo(vibe.tempo);
@@ -106,14 +118,20 @@ export default function Step2() {
             Add tracks, artists and genres to inspire the playlist
           </p>
 
-          <div className="flex flex-col h-full gap-6 relative w-full md:w-2/5">
+          <div className="flex flex-col h-full gap-6 relative w-full lg:w-1/2">
             <div className="w-full z-50">
               <SearchableInput />
             </div>
 
-            <div className="flex absolute bottom-14  overflow-x-hidden w-full">
+            <div className="flex absolute bottom-14 overflow-x-hidden w-full">
               {items.map((item) => {
-                return <Tag key={item.name} value={item} />;
+                return (
+                  <Tag
+                    key={item.id ? item.id : item.name}
+                    value={item}
+                    handleClick={removeOne}
+                  />
+                );
               })}
             </div>
             <div className="absolute bottom-4 sm:bottom-2 left-0 flex w-full justify-between items-center">

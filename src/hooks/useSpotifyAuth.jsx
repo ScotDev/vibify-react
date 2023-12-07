@@ -91,7 +91,8 @@ export default function useSpotifyAuth() {
           // 7. If neither are usable, call supabase signout to clear the session then sign in again with
           //    spotify to get a new tokens
           console.log("No usable refresh token found in cache");
-          removeAllItems();
+          localStorage.clear();
+          sessionStorage.clear();
           //   await supabase.auth.signOut();
           const { data, error } = await supabase.auth.signInWithOAuth({
             provider: "spotify",

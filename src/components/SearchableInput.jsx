@@ -93,7 +93,11 @@ export default function SearchableInput() {
                   value={genre}
                   className="cursor-pointer"
                   onSelect={(currentValue) => {
-                    addInspirationObject({ name: currentValue, type: "genre" });
+                    addInspirationObject({
+                      id: Math.floor(Math.random() * 100),
+                      name: currentValue,
+                      type: "genre",
+                    });
 
                     setOpen(false);
                     setSearch("");
@@ -117,25 +121,12 @@ export default function SearchableInput() {
                 <CommandItem
                   key={artist.id}
                   value={artist.name}
-                  onSelect={(currentValue) => {
-                    // Check if the artist is already selected
-                    // On select, filter artist and add artist.ID to selectedItems
-
-                    // Check if artist id already exists in selectedItems
-                    // !!!This might not be right
-                    // if (!selectedItems.includes(artist.id)) {
-                    //   setSelectedItems([
-                    //     ...selectedItems,
-                    //     {
-                    //       id: artist.id,
-                    //       name: artist.name,
-                    //       type: "artist",
-                    //     },
-                    //   ]);
-                    // }
+                  onSelect={() => {
+                    // this component formats currentvalue as lowercase,
+                    // so just using artist.name to preserve case
                     addInspirationObject({
                       id: artist.id,
-                      name: currentValue,
+                      name: artist.name,
                       type: "artist",
                     });
 
@@ -144,7 +135,7 @@ export default function SearchableInput() {
                   }}
                 >
                   <div className="flex h-12 items-center justify-between w-full cursor-pointer">
-                    <span className="capitalize font-medium text-neutral-700">
+                    <span className="font-medium text-neutral-700">
                       {artist.name}
                     </span>
                     {artist.images.length > 2 ? (
