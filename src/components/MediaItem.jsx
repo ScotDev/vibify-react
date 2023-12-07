@@ -16,7 +16,7 @@ export default function MediaItem({ data }) {
         <Link target="_blank" to={data.external_urls.spotify}>
           <h3 className="font-medium pt-2">{data.name}</h3>
         </Link>
-        <h4 className="text-sm text-neutral-400 flex flex-wrap gap-1">
+        <h4 className="text-sm flex flex-wrap gap-1">
           {data.artists.map((artist, index) => {
             if (index === data.artists.length - 1) {
               return (
@@ -45,7 +45,7 @@ export default function MediaItem({ data }) {
           })}
         </h4>
         <Link target="_blank" to={data.album.external_urls.spotify}>
-          <h5 className="text-sm text-neutral-400">{data.album.name}</h5>
+          <h5 className="text-sm text-muted-foreground">{data.album.name}</h5>
         </Link>
       </div>
     </div>

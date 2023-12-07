@@ -101,7 +101,8 @@ export default function Profile() {
 
       <p className="text-xl">Top tracks last 4 weeks</p>
 
-      <div className="md:flex md:flex-wrap grid grid-cols-2 gap-6 md:gap-16">
+      {/* <div className="md:flex md:flex-wrap grid grid-cols-2 gap-6 md:gap-16"> */}
+      <div className="sm:grid-cols-3 grid grid-cols-2 gap-6 md:max-w-3xl">
         {loading
           ? Array(6)
               .fill()

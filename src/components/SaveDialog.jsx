@@ -116,7 +116,12 @@ export const SaveDialog = ({ tracks }) => {
           Save
         </button>
       </DialogTrigger>
-      <DialogContent className="w-11/12 sm:w-full">
+      <DialogContent
+        className="w-11/12 sm:w-full"
+        // Necessary to prevent autofocus on input.
+        // Normal autofocus={false} is ignored by shadcn/radix
+        onOpenAutoFocus={(e) => e.preventDefault()}
+      >
         <DialogHeader>
           <DialogTitle className="pb-2">Save playlist to Spotify</DialogTitle>
           <DialogDescription>

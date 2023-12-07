@@ -32,9 +32,9 @@ div.media-item a {
   @apply flex flex-col text-neutral-900 pb-6 max-w-[13rem] gap-2 cursor-pointer;
 }
 
-.user-items-grid {
+/* .user-items-grid {
   @apply flex flex-wrap gap-16 mb-24;
-}
+} */
 
 .card-grid {
   /* @apply flex flex-wrap gap-6 mb-24 xs:gap-2 xs:grid xs:grid-cols-2; */
