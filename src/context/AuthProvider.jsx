@@ -9,7 +9,7 @@ export const useAuth = () => useContext(AuthContext);
 
 // const oneHour = 3600 * 1000;
 const oneYear = 31556926 * 1000;
-const fifteenMinutes = 900 * 1000;
+// const fifteenMinutes = 900 * 1000;
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);

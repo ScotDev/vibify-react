@@ -111,13 +111,13 @@ export default function useSpotifyAuth() {
             console.log(data);
             handleSuccess(data.session.provider_token);
 
-            sessionStorage.setItem(
-              "vibify_spotify_access_token",
-              JSON.stringify({
-                value: data.session.provider_token,
-                expires: Date.now() + fifteenMinutes,
-              })
-            );
+            // sessionStorage.setItem(
+            //   "vibify_spotify_access_token",
+            //   JSON.stringify({
+            //     value: data.session.provider_token,
+            //     expires: Date.now() + fifteenMinutes,
+            //   })
+            // );
             localStorage.setItem(
               "vibify_spotify_refresh_token",
               JSON.stringify({
