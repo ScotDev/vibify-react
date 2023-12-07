@@ -26,7 +26,7 @@ export default function Step3() {
 
   return (
     <>
-      <div className="flex flex-col gap-12 py-12">
+      <div className="flex flex-col gap-12 content">
         <h1>Your recommendations</h1>
         <div className="flex flex-col gap-8 ">
           <div className="flex gap-12 text-center">

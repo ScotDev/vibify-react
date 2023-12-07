@@ -90,7 +90,7 @@ export default function Step2() {
   };
 
   return (
-    <div>
+    <div className="content">
       <h1>Adjust the vibe</h1>
       <h2 className="text-xl py-6">
         The chosen vibe is
@@ -99,10 +99,10 @@ export default function Step2() {
       <form className="flex flex-col gap-7 relative" onSubmit={handleSubmit}>
         <div
           id="inspiration"
-          className="shadow-md h-72 sm:h-64 rounded-lg pt-8 pb-24 px-6 bg-neutral-50 z-50"
+          className="shadow-md h-72 rounded-lg pt-8 pb-24 px-6 bg-neutral-50 z-50"
         >
-          <h3 className="text-xl">Set the tone</h3>
-          <p className="text-sm py-4">
+          <h3 className="text-xl font-medium">Set the tone</h3>
+          <p className="text-sm py-4 text-muted-foreground">
             Add tracks, artists and genres to inspire the playlist
           </p>
 
@@ -111,12 +111,12 @@ export default function Step2() {
               <SearchableInput />
             </div>
 
-            <div className="flex absolute bottom-14 sm:bottom-8 overflow-x-hidden w-full">
+            <div className="flex absolute bottom-14  overflow-x-hidden w-full">
               {items.map((item) => {
                 return <Tag key={item.name} value={item} />;
               })}
             </div>
-            <div className="absolute bottom-4 sm:-bottom-1 left-0 flex w-full justify-between items-center">
+            <div className="absolute bottom-4 sm:bottom-2 left-0 flex w-full justify-between items-center">
               <div>
                 <button
                   type="button"

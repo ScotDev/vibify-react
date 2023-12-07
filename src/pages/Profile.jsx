@@ -31,7 +31,7 @@ export default function Profile() {
     fetchUserTopItems();
     setTimeout(() => {
       setLoading(false);
-    }, 1500);
+    }, 1000);
   }, [accessToken]);
 
   useEffect(() => {
@@ -45,12 +45,12 @@ export default function Profile() {
   }, [accessToken]);
 
   return (
-    <div className="flex flex-col py-12 gap-6">
+    <div className="flex flex-col content gap-6">
       <h1>Profile</h1>
       <div className="flex flex-col pt-6 gap-2 max-w-96 py-2">
         <p className="text-xs">Display name</p>
         {loading ? (
-          <Skeleton className="w-full sm:w-52 h-6 mt-1 rounded-xl" />
+          <Skeleton className="w-full sm:w-52 h-5 mt-1 rounded-xl" />
         ) : (
           <h3>{userData.display_name}</h3>
         )}
@@ -58,7 +58,7 @@ export default function Profile() {
       <div className="flex flex-col gap-2 max-w-96 py-2">
         <p className="text-xs">Email address</p>
         {loading ? (
-          <Skeleton className="w-full sm:w-52 h-6 mt-1 rounded-xl" />
+          <Skeleton className="w-full sm:w-52 h-5 mt-1 rounded-xl" />
         ) : (
           <h4>{userData.email}</h4>
         )}
@@ -85,7 +85,7 @@ export default function Profile() {
       <div className="flex flex-col gap-2 max-w-96 py-2">
         <p className="text-xs">Subscription type</p>
         {loading ? (
-          <Skeleton className="w-24 h-6 mt-1 rounded-xl" />
+          <Skeleton className="w-24 h-5 mt-1 rounded-xl" />
         ) : (
           <p className="capitalize">{userData.product}</p>
         )}
@@ -93,7 +93,7 @@ export default function Profile() {
       <div className="flex flex-col gap-2 max-w-96 py-2">
         <p className="text-xs">User country</p>
         {loading ? (
-          <Skeleton className="w-20 h-6 mt-1 rounded-xl" />
+          <Skeleton className="w-20 h-5 mt-1 rounded-xl" />
         ) : (
           <p className="capitalize">{userData.country}</p>
         )}
@@ -101,7 +101,7 @@ export default function Profile() {
 
       <p className="text-xl">Top tracks last 4 weeks</p>
 
-      <div className="md:flex md:flex-wrap grid grid-cols-2 gap-6 md:gap-16 mb-24">
+      <div className="md:flex md:flex-wrap grid grid-cols-2 gap-6 md:gap-16">
         {loading
           ? Array(6)
               .fill()
@@ -119,7 +119,9 @@ export default function Profile() {
               return <MediaItem key={item.name} data={item} />;
             })}
       </div>
-      <SignOutButton />
+      <div className="pt-8 pb-4 sm:pt-16">
+        <SignOutButton />
+      </div>
     </div>
   );
 }

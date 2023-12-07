@@ -57,8 +57,11 @@ export default function SearchableInput() {
       setOpen(false);
       return;
     }
-    const delayDebounceFn = setTimeout(async () => {
+    if (search.trim().length > 2) {
       setLoading(true);
+      setOpen(true);
+    }
+    const delayDebounceFn = setTimeout(async () => {
       const genres = await getGenres(accessToken, search.trim());
       setGenreResults(genres);
       const artists = await getArtists(accessToken, search.trim());
@@ -66,7 +69,6 @@ export default function SearchableInput() {
       const tracks = await getTracks(accessToken, search.trim());
       setTrackResults(tracks);
       setLoading(false);
-      setOpen(true);
     }, 1500);
     return () => clearTimeout(delayDebounceFn);
   }, [search]);
@@ -82,7 +84,7 @@ export default function SearchableInput() {
       {open && (
         <CommandList>
           {loading && <p className="text-sm px-3 py-2">Fetching results...</p>}
-          {/* {!loading && <CommandEmpty>No results found</CommandEmpty>} */}
+          {/* {loading && <CommandEmpty>No results found</CommandEmpty>} */}
           {genreResults.length > 0 && (
             <CommandGroup heading="Genres">
               {genreResults.map((genre) => (

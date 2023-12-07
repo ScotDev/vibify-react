@@ -36,9 +36,7 @@ export default function useSpotifyAuth() {
       // 2. If it exists, check it is still valid
       if (localAccessToken) {
         const { value, expires } = JSON.parse(localAccessToken);
-        const hardcodeFalse = false;
-        // if (value && expires > Date.now()) {
-        if (hardcodeFalse) {
+        if (value && expires > Date.now()) {
           console.log("Access token retrieved from cache");
           // 3. If it's valid, set it as the access token
           handleSuccess(value);
@@ -57,14 +55,14 @@ export default function useSpotifyAuth() {
           const newAccessToken = await refreshSpotifyToken(value);
           if (newAccessToken) {
             handleSuccess(newAccessToken);
-            // Temporarily disabled as spotify seems to reject all stored access tokens
-            // sessionStorage.setItem(
-            //   "vibify_spotify_access_token",
-            //   JSON.stringify({
-            //     value: newAccessToken,
-            //     expires: Date.now() + fifteenMinutes,
-            //   })
-            // );
+
+            sessionStorage.setItem(
+              "vibify_spotify_access_token",
+              JSON.stringify({
+                value: newAccessToken,
+                expires: Date.now() + fifteenMinutes,
+              })
+            );
           } else {
             handleError("Error getting new access token Spotify");
           }

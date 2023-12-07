@@ -1,5 +1,5 @@
 import { PropTypes } from "prop-types";
-import { getItem, removeAllItems, setItem } from "../utils/Storage";
+import { getItem, removeAllItems } from "../utils/Storage";
 import { Buffer } from "buffer";
 import { supabase } from "../supabase/client";
 
@@ -19,6 +19,7 @@ const handleToken = async () => {
 
   if (localAccessToken) {
     const { value, expires } = JSON.parse(localAccessToken);
+
     if (value && expires > Date.now()) {
       console.log("Access token retrieved from cache");
       return value;
@@ -371,6 +372,8 @@ const refreshSpotifyToken = async (refresh_token) => {
       "Content-Type": "application/x-www-form-urlencoded",
     },
     body: new URLSearchParams(formData),
+    // no-cache is crucial, otherwise spotify may return an expired token with a new expiry date
+    cache: "no-cache",
     json: true,
   };
 

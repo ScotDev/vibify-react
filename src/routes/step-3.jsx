@@ -14,6 +14,9 @@ export async function loader({ request }) {
   return { recommendationsData };
 }
 
+// This componenent is a bit pointless now, keeping it for now
+// In case I decide to go back to the react router loader pattern
+
 export default function Step3Route() {
   return (
     <>

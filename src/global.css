@@ -2,8 +2,26 @@
 @tailwind components;
 @tailwind utilities;
 
+.content {
+  @apply py-12;
+}
+
 h1 {
   @apply text-2xl font-medium;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+span {
+  @apply text-neutral-800;
+}
+
+.brand-name {
+  @apply text-xl font-semibold font-mono text-neutral-800;
 }
 
 div.media-item a {

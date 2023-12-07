@@ -37,14 +37,14 @@ const AuthProvider = ({ children }) => {
               expires: Date.now() + oneYear,
             })
           );
-          // Temporarily disabled as spotify seems to reject all stored access tokens
-          // sessionStorage.setItem(
-          //   "vibify_spotify_access_token",
-          //   JSON.stringify({
-          //     value: session.provider_token,
-          //     expires: Date.now() + fifteenMinutes,
-          //   })
-          // );
+
+          sessionStorage.setItem(
+            "vibify_spotify_access_token",
+            JSON.stringify({
+              value: session.provider_token,
+              expires: Date.now() + fifteenMinutes,
+            })
+          );
         } catch (error) {
           console.log(error);
         }
@@ -82,7 +82,13 @@ const AuthProvider = ({ children }) => {
   const signOut = async () => {
     const { error } = await supabase.auth.signOut();
     if (error) console.log(error);
-    removeAllItems();
+
+    try {
+      removeAllItems();
+      sessionStorage.clear();
+    } catch (error) {
+      console.log(error);
+    }
     window.location.reload();
   };
 
