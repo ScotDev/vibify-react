@@ -161,25 +161,12 @@ export default function SearchableInput() {
                 <CommandItem
                   key={track.id}
                   value={track.name}
-                  onSelect={(currentValue) => {
-                    // trackResults.map((track) => {
-                    //   if (track.name.toLowerCase() === currentValue) {
-                    //     // Check if track id already exists in selectedItems
-                    //     if (!selectedItems.includes(track.id)) {
-                    //       setSelectedItems([
-                    //         ...selectedItems,
-                    //         {
-                    //           id: track.id,
-                    //           name: track.name,
-                    //           type: "track",
-                    //         },
-                    //       ]);
-                    //     }
-                    //   }
-                    // });
+                  onSelect={() => {
+                    // this component formats currentvalue as lowercase,
+                    // so just using track.name to preserve case
                     addInspirationObject({
                       id: track.id,
-                      name: currentValue,
+                      name: track.name,
                       type: "track",
                     });
                     setOpen(false);
