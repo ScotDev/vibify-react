@@ -91,26 +91,6 @@ export default function SearchableInput() {
                   value={genre}
                   className="cursor-pointer"
                   onSelect={(currentValue) => {
-                    // Allow user to select multiple genres, with uniqueness check
-                    // setSelectedGenres(
-                    //   currentValue === selectedGenre ? "" : currentValue
-                    // );
-
-                    // genreResults.map((genre) => {
-                    //   if (genre.toLowerCase() === currentValue) {
-                    // Check if genre already exists in selectedGenres
-                    // if (!selectedGenres.includes(currentValue)) {
-                    //   setSelectedGenres([
-                    //     ...selectedGenres,
-                    //     {
-                    //       name: currentValue,
-                    //       type: "genre",
-                    //     },
-                    //   ]);
-                    // }
-                    //   }
-                    // });
-
                     addInspirationObject({ name: currentValue, type: "genre" });
 
                     setOpen(false);
@@ -118,7 +98,11 @@ export default function SearchableInput() {
                   }}
                 >
                   <span className="capitalize font-medium text-neutral-700">
-                    {genre}
+                    {genre === "edm"
+                      ? "EDM"
+                      : genre === "drum-and-bass"
+                      ? "Drum & Bass"
+                      : genre}
                   </span>
                 </CommandItem>
               ))}

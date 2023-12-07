@@ -12,7 +12,11 @@ export default function Tag({ value }) {
       key={value.name}
       className={`${colour} capitalize rounded-full px-4 py-2 text-sm sm:text-xs truncate max-w-[100px] sm:w-max font-semibold text-neutral-800 mr-2`}
     >
-      {value.name}
+      {value.name === "edm"
+        ? "EDM"
+        : value.name === "drum-and-bass"
+        ? "Drum & Bass"
+        : value.name}
     </span>
   );
 }

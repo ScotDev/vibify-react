@@ -37,13 +37,14 @@ const AuthProvider = ({ children }) => {
               expires: Date.now() + oneYear,
             })
           );
-          sessionStorage.setItem(
-            "vibify_spotify_access_token",
-            JSON.stringify({
-              value: session.provider_token,
-              expires: Date.now() + fifteenMinutes,
-            })
-          );
+          // Temporarily disabled as spotify seems to reject all stored access tokens
+          // sessionStorage.setItem(
+          //   "vibify_spotify_access_token",
+          //   JSON.stringify({
+          //     value: session.provider_token,
+          //     expires: Date.now() + fifteenMinutes,
+          //   })
+          // );
         } catch (error) {
           console.log(error);
         }
@@ -52,10 +53,13 @@ const AuthProvider = ({ children }) => {
       }
       if (session.provider_refresh_token) {
         // console.log(session.provider_refresh_token);
-        setItem(
-          "spotify_refresh_token",
-          session.provider_refresh_token,
-          oneYear
+
+        localStorage.setItem(
+          "vibify_spotify_refresh_token",
+          JSON.stringify({
+            value: session.provider_refresh_token,
+            expires: Date.now() + oneYear,
+          })
         );
       }
     };

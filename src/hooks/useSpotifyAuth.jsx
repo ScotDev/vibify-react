@@ -10,6 +10,7 @@ const fifteenMinutes = 900 * 1000;
 export default function useSpotifyAuth() {
   const [accessToken, setAccessToken] = useState(null);
   const handleSuccess = (token) => {
+    console.log("Success");
     setAccessToken(token);
   };
   const handleError = (error) => {
@@ -56,13 +57,14 @@ export default function useSpotifyAuth() {
           const newAccessToken = await refreshSpotifyToken(value);
           if (newAccessToken) {
             handleSuccess(newAccessToken);
-            sessionStorage.setItem(
-              "vibify_spotify_access_token",
-              JSON.stringify({
-                value: newAccessToken,
-                expires: Date.now() + fifteenMinutes,
-              })
-            );
+            // Temporarily disabled as spotify seems to reject all stored access tokens
+            // sessionStorage.setItem(
+            //   "vibify_spotify_access_token",
+            //   JSON.stringify({
+            //     value: newAccessToken,
+            //     expires: Date.now() + fifteenMinutes,
+            //   })
+            // );
           } else {
             handleError("Error getting new access token Spotify");
           }
