@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { refreshSpotifyToken } from "../utils/Spotify";
 import { supabase } from "../supabase/client";
-import { removeAllItems } from "../utils/Storage";
 
 const oneHour = 3600 * 1000;
 const oneYear = 31556926 * 1000;
@@ -56,13 +55,13 @@ export default function useSpotifyAuth() {
           if (newAccessToken) {
             handleSuccess(newAccessToken);
 
-            sessionStorage.setItem(
-              "vibify_spotify_access_token",
-              JSON.stringify({
-                value: newAccessToken,
-                expires: Date.now() + fifteenMinutes,
-              })
-            );
+            // sessionStorage.setItem(
+            //   "vibify_spotify_access_token",
+            //   JSON.stringify({
+            //     value: newAccessToken,
+            //     expires: Date.now() + fifteenMinutes,
+            //   })
+            // );
           } else {
             handleError("Error getting new access token Spotify");
           }

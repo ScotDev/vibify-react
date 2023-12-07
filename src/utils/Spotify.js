@@ -35,13 +35,13 @@ const handleToken = async () => {
 
       const newAccessToken = await refreshSpotifyToken(value);
       if (newAccessToken) {
-        sessionStorage.setItem(
-          "vibify_spotify_access_token",
-          JSON.stringify({
-            value: newAccessToken,
-            expires: Date.now() + fifteenMinutes,
-          })
-        );
+        // sessionStorage.setItem(
+        //   "vibify_spotify_access_token",
+        //   JSON.stringify({
+        //     value: newAccessToken,
+        //     expires: Date.now() + fifteenMinutes,
+        //   })
+        // );
         return newAccessToken;
       } else {
         console.log("Error getting new access token Spotify");
@@ -69,13 +69,13 @@ const handleToken = async () => {
       } else {
         console.log(data);
 
-        sessionStorage.setItem(
-          "vibify_spotify_access_token",
-          JSON.stringify({
-            value: data.session.provider_token,
-            expires: Date.now() + fifteenMinutes,
-          })
-        );
+        // sessionStorage.setItem(
+        //   "vibify_spotify_access_token",
+        //   JSON.stringify({
+        //     value: data.session.provider_token,
+        //     expires: Date.now() + fifteenMinutes,
+        //   })
+        // );
         localStorage.setItem(
           "vibify_spotify_refresh_token",
           JSON.stringify({
