@@ -14,14 +14,10 @@ import { BsHeadphones, BsQuestion } from "react-icons/bs";
 const icon = (title) => {
   switch (title) {
     case "running":
-      return (
-        <GiRunningShoe className="text-neutral-900 justify-self-center aspect-square text-5xl  " />
-      );
+      return <GiRunningShoe className="card-icon" />;
 
     case "party":
-      return (
-        <GiPartyPopper className="text-neutral-900 justify-self-center aspect-square text-5xl " />
-      );
+      return <GiPartyPopper className="card-icon" />;
 
     case "k-pop":
       return (
@@ -31,18 +27,16 @@ const icon = (title) => {
       );
 
     case "hip-hop":
-      return (
-        <GiBasketballBall className="text-neutral-900 justify-self-center aspect-square text-5xl " />
-      );
+      return <GiBasketballBall className="card-icon" />;
 
     case "focus":
-      return (
-        <BsHeadphones className="text-neutral-900 justify-self-center aspect-square text-5xl " />
-      );
+      return <BsHeadphones className="card-icon" />;
 
     case "custom":
       return (
-        <h3 className="font-medium text-7xl leading-none text-center">+</h3>
+        <h3 className="font-medium text-8xl leading-none pb-4 text-center">
+          +
+        </h3>
       );
 
     default:
