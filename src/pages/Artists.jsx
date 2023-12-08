@@ -7,7 +7,12 @@ export default function Artists() {
   return (
     <div className="content">
       <h1>Artists</h1>
-      <h2></h2>
+      <h2 className="max-w-prose">
+        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quo harum vero
+        nesciunt, tempore eveniet commodi! Incidunt, temporibus ab, fuga iste
+        fugiat similique dolor distinctio ex porro repellendus doloribus laborum
+        quaerat.
+      </h2>
     </div>
   );
 }

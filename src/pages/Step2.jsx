@@ -73,7 +73,8 @@ export default function Step2() {
     e.preventDefault();
     let params = {};
     params["limit"] = qty;
-    params["tempo"] = tempo;
+    params["max_tempo"] = tempo + 10;
+    params["min_tempo"] = tempo - 10;
     params["popularity"] = popularity;
 
     // Loop over inspiration array and add to params.

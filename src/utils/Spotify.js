@@ -6,7 +6,7 @@ import { supabase } from "../supabase/client";
 
 // const oneHour = 3600 * 1000;
 const oneYear = 31556926 * 1000;
-const fifteenMinutes = 900 * 1000;
+// const fifteenMinutes = 900 * 1000;
 
 const handleToken = async () => {
   const localAccessToken = sessionStorage.getItem(
