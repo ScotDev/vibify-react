@@ -48,7 +48,8 @@ const handleToken = async () => {
       }
     } else {
       console.log("No refresh token found in cache");
-      removeAllItems();
+      localStorage.clear();
+      sessionStorage.clear();
 
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: "spotify",
