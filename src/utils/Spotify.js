@@ -277,9 +277,9 @@ const createPlaylist = async (access_token, formData) => {
   // const access_token = await handleToken();
 
   const { name, description, isPublic } = formData;
-
-  const user_id = getItem("spotify_user_id").value;
-  console.log("User ID from local storage", user_id);
+  // Need to check if user_id expired
+  const user_id = JSON.parse(localStorage.getItem("vibify_spotify_user_id"));
+  console.log("User ID from local storage", user_id.value);
   const data = {
     name: name,
     description: description,
@@ -287,7 +287,7 @@ const createPlaylist = async (access_token, formData) => {
   };
 
   const request = new Request(
-    `https://api.spotify.com/v1/users/${user_id}/playlists`,
+    `https://api.spotify.com/v1/users/${user_id.value}/playlists`,
     {
       method: "POST",
       headers: {
