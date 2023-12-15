@@ -176,10 +176,10 @@ export const SaveDialog = ({ tracks }) => {
           </div>
 
           <Separator />
-          {/* <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-muted-foreground">
             Add to an existing playlist
-          </p> */}
-          <div className=" space-y-2 ">
+          </p>
+          <div className="space-y-2 ">
             <label
               htmlFor="existing-playlist"
               className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"

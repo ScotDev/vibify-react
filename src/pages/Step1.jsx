@@ -1,6 +1,14 @@
+import { useEffect } from "react";
 import VibeCard from "../components/VibeCard";
 
+import { useRemoveAllItems } from "../state/store";
+
 export default function Step1() {
+  const removeAllItems = useRemoveAllItems();
+  useEffect(() => {
+    removeAllItems();
+  }, []);
+
   const vibes = [
     { title: "custom" },
     { title: "running" },
