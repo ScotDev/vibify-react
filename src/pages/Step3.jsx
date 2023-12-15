@@ -9,6 +9,7 @@ import { SaveDialog } from "../components/SaveDialog";
 export default function Step3() {
   const [loading, setLoading] = useState(true);
   const { recommendationsData } = useLoaderData();
+  console.log(recommendationsData);
 
   const totalDuration = recommendationsData?.reduce(
     (a, b) => a + b.duration_ms,
@@ -19,10 +20,6 @@ export default function Step3() {
       setLoading(false);
     }, 1500);
   }, []);
-
-  const triggerToast = () => {
-    console.log("toast");
-  };
 
   return (
     <>
@@ -58,10 +55,7 @@ export default function Step3() {
           {loading ? (
             <Skeleton className="h-10 w-16 rounded-xl" />
           ) : (
-            <SaveDialog
-              triggerToast={triggerToast}
-              tracks={recommendationsData}
-            />
+            <SaveDialog tracks={recommendationsData} />
           )}
         </div>
 
@@ -94,7 +88,7 @@ export default function Step3() {
             recommendationsData.map((recommendation) => (
               <div
                 key={recommendation.id}
-                className="flex gap-8 w-full truncate"
+                className="flex gap-6 w-full truncate"
               >
                 <Link
                   target="_blank"
@@ -107,19 +101,18 @@ export default function Step3() {
                     className="object-cover object-center aspect-square rounded-xl shadow-md hover:shadow-xl transition duration-300 ease-in-out min-w-max w-20 h-20"
                   />
                 </Link>
-                <div className="flex flex-col justify-between gap-2 truncate w-64 sm:w-full">
+                <div className="flex flex-col justify-between gap-2 truncate w-64 sm:w-1/3">
                   <h2 className="font-medium text-sm sm:text-base text-neutral-800 truncate ">
                     <Link
                       target="_blank"
                       to={recommendation.external_urls.spotify}
-                      className="cursor-pointer "
+                      className="cursor-pointer hover:underline"
                     >
                       {recommendation.name}
                     </Link>
                   </h2>
                   <span className="flex text-neutral-700 gap-1 text-xs sm:text-sm w-full truncate">
                     {recommendation.artists.map((artist, index) => {
-                      // TODO: Add link to artist page
                       if (index === recommendation.artists.length - 1) {
                         return (
                           <span key={artist.id}>
@@ -152,12 +145,15 @@ export default function Step3() {
                       target="_blank"
                       href={recommendation.album.external_urls.spotify}
                     >
-                      <h5 className=" text-neutral-700 truncate">
+                      <h5 className=" text-neutral-700 truncate hover:underline">
                         {recommendation.album.name}
                       </h5>
                     </Link>
                   </span>
                 </div>
+                <p className="hidden sm:block text-sm w-full flex-1 ">
+                  {msToMinSec(recommendation.duration_ms)}
+                </p>
               </div>
             ))}
         </div>

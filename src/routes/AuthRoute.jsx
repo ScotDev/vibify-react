@@ -1,4 +1,5 @@
 import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 import { useAuth } from "../context/AuthProvider";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 
@@ -12,6 +13,7 @@ const AuthRoute = () => {
       <div className="container">
         <Outlet />
       </div>
+      <Footer />
     </>
   ) : (
     <Navigate to={"/login"} replace state={{ path: location.pathname }} />

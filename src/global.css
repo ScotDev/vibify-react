@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .content {
-  @apply py-12;
+  @apply py-12 min-h-screen;
 }
 
 h1 {
@@ -29,7 +29,7 @@ div.media-item a {
 }
 
 .media-item {
-  @apply flex flex-col text-neutral-900 pb-6 max-w-[13rem] gap-2 cursor-pointer;
+  @apply flex flex-col text-neutral-900 pb-6 max-w-[13rem] gap-2;
 }
 
 /* .user-items-grid {

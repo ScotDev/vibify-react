@@ -16,9 +16,9 @@ const handlePreset = (preset) => {
         tracks: [],
         genres: [
           { id: 1, name: "drum-and-bass", type: "genre" },
-          { id: 2, name: "edm", type: "genre" },
+          { id: 2, name: "dance", type: "genre" },
         ],
-        tempo: 140,
+        tempo: 130,
         popularity: 100,
         qty: 30,
       };
@@ -47,7 +47,7 @@ const handlePreset = (preset) => {
           { id: 6, name: "progressive-house", type: "genre" },
         ],
         tempo: 95,
-        popularity: 90,
+        popularity: 95,
         qty: 40,
       };
       break;
