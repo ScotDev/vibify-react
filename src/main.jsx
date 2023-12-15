@@ -20,6 +20,7 @@ import Step2 from "./pages/Step2.jsx";
 import Step3 from "./pages/Step3.jsx";
 import Step3Route from "./routes/step-3.jsx";
 import { StoreContextProvider } from "./state/store.jsx";
+import Verify from "./pages/Verify.jsx";
 
 const router = createBrowserRouter([
   {
@@ -40,12 +41,17 @@ const router = createBrowserRouter([
           </div>
         ),
       },
+      {
+        path: "/login",
+        element: <Login />,
+      },
+      {
+        path: "/verify",
+        element: <Verify />,
+      },
     ],
   },
-  {
-    path: "/login",
-    element: <Login />,
-  },
+
   {
     element: <AuthRoute />,
     errorElement: <ErrorPage />,
