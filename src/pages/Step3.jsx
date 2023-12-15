@@ -9,7 +9,6 @@ import { SaveDialog } from "../components/SaveDialog";
 export default function Step3() {
   const [loading, setLoading] = useState(true);
   const { recommendationsData } = useLoaderData();
-  console.log(recommendationsData);
 
   const totalDuration = recommendationsData?.reduce(
     (a, b) => a + b.duration_ms,
@@ -61,11 +60,17 @@ export default function Step3() {
 
         <div className="flex flex-col gap-6 overflow-x-hidden">
           {recommendationsData.length === 0 && (
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-6">
               <h2 className="text-center text-lg">No recommendations found</h2>
               <p className="text-center italic text-sm">
-                Try changing some dials and knobs
+                Try changing some knobs and dials
               </p>
+              <Link
+                to="/step-2?preset=custom"
+                className="text-center underline"
+              >
+                Go back to previous step
+              </Link>
             </div>
           )}
 

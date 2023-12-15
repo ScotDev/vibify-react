@@ -18,7 +18,7 @@ const handlePreset = (preset) => {
           { id: 1, name: "drum-and-bass", type: "genre" },
           { id: 2, name: "dance", type: "genre" },
         ],
-        tempo: 130,
+        tempo: 125,
         popularity: 100,
         qty: 30,
       };

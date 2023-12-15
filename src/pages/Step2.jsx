@@ -19,7 +19,7 @@ export default function Step2() {
   const [qty, setQty] = useState(10);
   const [tempo, setTempo] = useState(85);
   const [popularity, setPopularity] = useState(100);
-  // const [inspiration, setInspiration] = useState([]);
+  const [errorMsg, setErrorMsg] = useState(null);
   const navigate = useNavigate();
 
   // const store = useInspirationStore((state) => state);
@@ -71,11 +71,23 @@ export default function Step2() {
   const tracks = [];
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (items.length === 0) {
+      setErrorMsg("Please add at least one inspiration item");
+      return console.log("No inspiration items selected");
+    }
+
+    setErrorMsg(null);
+
     let params = {};
     params["limit"] = qty;
     params["max_tempo"] = tempo + 10;
     params["min_tempo"] = tempo - 10;
-    params["popularity"] = popularity;
+    params["target_popularity"] = popularity;
+    if (preset === "party") {
+      params["target_danceability"] = 1;
+      params["target_energy"] = 0.8;
+    }
 
     // Loop over inspiration array and add to params.
     // Need to loop over and separate out by type, but grouped togther in the params, separated by commas.
@@ -203,10 +215,11 @@ export default function Step2() {
             </div>
           </fieldset>
         </div>
-        <div className="py-4">
+        <div className="py-4 flex gap-8 items-center">
           <button type="submit" className="button-primary">
             Submit
           </button>
+          <p className="font-semibold">{errorMsg}</p>
         </div>
       </form>
     </div>
