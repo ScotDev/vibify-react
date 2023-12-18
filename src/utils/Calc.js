@@ -19,4 +19,12 @@ const formatDate = (date) => {
   return dateAsDateObj.toLocaleDateString("en-US", options);
 };
 
-export { msToMinSec, formatDate };
+const formatFollowerCount = (count) => {
+  if (count < 1000) return count;
+  if (count < 1000000) return `${(count / 1000).toFixed(1)}K`;
+  if (count < 1000000000) return `${(count / 1000000).toFixed(1)}M`;
+  if (count < 1000000000000) return `${(count / 1000000000).toFixed(1)}B`;
+  if (count < 1000000000000000) return `${(count / 1000000000000).toFixed(1)}T`;
+};
+
+export { msToMinSec, formatDate, formatFollowerCount };

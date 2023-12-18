@@ -13,6 +13,7 @@ import {
 import { getGenres, getArtists, getTracks } from "../utils/Spotify";
 import useSpotifyAuth from "../hooks/useSpotifyAuth";
 import { useAddToItems, useItems } from "../state/store";
+import { formatFollowerCount } from "../utils/Calc";
 
 export default function SearchableInput() {
   const [open, setOpen] = useState(false);
@@ -146,17 +147,29 @@ export default function SearchableInput() {
                     }}
                   >
                     <div className="flex h-12 items-center justify-between w-full cursor-pointer">
-                      <span className="font-medium text-neutral-700">
-                        {artist.name}
-                      </span>
+                      <div className="flex flex-col gap-1 w-4/5 pr-1">
+                        <span className="font-medium text-neutral-700">
+                          {artist.name}
+                        </span>
+                        <span className="text-muted-foreground text-xs">
+                          {/* {artist.followers.total >= 100000
+                            ? Number(
+                                String(artist.followers.total).slice(0, 3)
+                              ) + "k"
+                            : artist.followers.total}{" "}
+                          followers */}
+                          {formatFollowerCount(artist.followers.total)}{" "}
+                          followers
+                        </span>
+                      </div>
                       {artist.images.length > 2 ? (
                         <img
                           src={artist.images[2]?.url}
                           alt="artist"
-                          className="h-full aspect-square rounded-lg"
+                          className="aspect-square rounded-lg w-1/5 sm:w-12"
                         />
                       ) : (
-                        <div className="h-full aspect-square rounded-lg bg-neutral-200 grid items-center text-center text-neutral-800 font-medium">
+                        <div className="aspect-square rounded-lg bg-neutral-200 grid items-center text-center text-neutral-800 font-medium w-1/5 sm:w-12">
                           {artist.name[0]}
                         </div>
                       )}
@@ -187,16 +200,16 @@ export default function SearchableInput() {
                     }}
                   >
                     <div className="flex h-12 items-center justify-between w-full cursor-pointer">
-                      <div className="flex flex-col gap-1">
-                        <span className="capitalize font-medium text-neutral-00">
+                      <div className="flex flex-col gap-1 w-4/5 pr-1">
+                        <span className="capitalize font-medium truncate">
                           {track.name}
                         </span>
-                        <span className="flex">
+                        <span className="flex truncate">
                           {track.artists.map((artist, index) => {
                             if (index === track.artists.length - 1) {
                               return (
                                 <p
-                                  className="capitalize text-xs text-neutral-600"
+                                  className="capitalize text-xs text-muted-foreground"
                                   key={artist.id}
                                 >
                                   {artist.name}
@@ -205,7 +218,7 @@ export default function SearchableInput() {
                             } else {
                               return (
                                 <p
-                                  className="capitalize text-xs text-neutral-600"
+                                  className="capitalize text-xs text-muted-foreground"
                                   key={artist.id}
                                 >
                                   {artist.name},&nbsp;
@@ -220,10 +233,10 @@ export default function SearchableInput() {
                         <img
                           src={track.album.images[2]?.url}
                           alt="track"
-                          className="h-full aspect-square rounded-lg"
+                          className="aspect-square rounded-lg w-1/5 sm:w-12"
                         />
                       ) : (
-                        <div className="h-full aspect-square rounded-lg bg-neutral-200 grid items-center text-center text-neutral-800 font-medium">
+                        <div className="aspect-square rounded-lg bg-neutral-200 grid items-center text-center text-neutral-800 font-medium w-1/5 sm:w-12">
                           {track.name[0]}
                         </div>
                       )}

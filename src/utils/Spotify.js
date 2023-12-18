@@ -193,8 +193,6 @@ const getArtists = async (access_token, searchTerm) => {
       return acc;
     }
   }, []);
-  console.log("Unique arr", uniqueArray);
-
   return uniqueArray;
 };
 
@@ -211,6 +209,7 @@ const getTracks = async (access_token, searchTerm) => {
 
   const tracks = await fetch(request);
   const result = await tracks.json();
+  console.log(result);
   if (!result.tracks) {
     return [];
   }
