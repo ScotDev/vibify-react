@@ -34,6 +34,8 @@ const handlePreset = (preset) => {
         ],
         tempo: 100,
         popularity: 100,
+        danceability: 1,
+        energy: 0.8,
         qty: 40,
       };
       break;

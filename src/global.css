@@ -2,8 +2,40 @@
 @tailwind components;
 @tailwind utilities;
 
-.content {
-  @apply py-12 min-h-screen;
+* {
+  scrollbar-width: thin;
+  scroll-behavior: smooth;
+  /* scrollbar-gutter: auto; */
+  /* scrollbar-color: green; */
+}
+*::-webkit-scrollbar {
+  @apply w-3;
+}
+
+*::-webkit-scrollbar-track {
+  @apply bg-neutral-100;
+}
+
+*::-webkit-scrollbar-thumb {
+  @apply bg-neutral-400 cursor-grab;
+}
+*::-webkit-scrollbar-thumb:hover {
+  @apply bg-neutral-500;
+}
+*::-webkit-scrollbar-thumb:active {
+  @apply bg-neutral-600;
+}
+
+/* Only way to grab onto the results section in SearchableInput */
+[aria-label="Suggestions"]::-webkit-scrollbar {
+  @apply w-2;
+}
+[aria-label="Suggestions"]::-webkit-scrollbar-track {
+  @apply rounded-md;
+}
+
+[aria-label="Suggestions"]::-webkit-scrollbar-thumb {
+  @apply rounded-md;
 }
 
 h1 {
@@ -18,6 +50,32 @@ h6,
 p,
 span {
   @apply text-neutral-800;
+}
+
+.content {
+  @apply py-12 min-h-screen;
+}
+
+.tag-container {
+  @apply flex absolute bottom-12 overflow-y-hidden overflow-x-scroll sm:overflow-x-hidden w-full h-12;
+}
+
+.tag-container::-webkit-scrollbar {
+  @apply h-2;
+}
+
+.tag-container::-webkit-scrollbar-track {
+  @apply bg-neutral-200 rounded-md;
+}
+
+.tag-container::-webkit-scrollbar-thumb {
+  @apply bg-neutral-300 cursor-grab  rounded-md;
+}
+.tag-container::-webkit-scrollbar-thumb:hover {
+  @apply bg-neutral-400;
+}
+.tag-container::-webkit-scrollbar-thumb:active {
+  @apply bg-neutral-500;
 }
 
 .brand-name {

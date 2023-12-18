@@ -61,22 +61,30 @@ export default function SearchableInput() {
       setLoading(true);
       setOpen(true);
     }
+  }, [search]);
+
+  useEffect(() => {
     const delayDebounceFn = setTimeout(async () => {
       const genres = await getGenres(accessToken, search.trim());
       setGenreResults(genres);
       const artists = await getArtists(accessToken, search.trim());
+      console.log("artists", artists);
       setArtistResults(artists);
       const tracks = await getTracks(accessToken, search.trim());
+
       setTrackResults(tracks);
+
       setLoading(false);
     }, 1500);
     return () => clearTimeout(delayDebounceFn);
   }, [search]);
 
   return (
-    <Command className="rounded-lg border shadow-md" loop>
+    // shouldFilter={false} - this is crucial, otherwise the component will hide the list of tracks and non-exact matches
+    // https://github.com/pacocoursey/cmdk#parts-and-styling
+    <Command className="rounded-lg border shadow-md " loop shouldFilter={false}>
       <CommandInput
-        placeholder="Type a genre, artist or track"
+        placeholder="Type a genre, artist or track..."
         value={search}
         onValueChange={setSearch}
         onFocus={() => setOpen(true)}
@@ -117,106 +125,110 @@ export default function SearchableInput() {
           <CommandSeparator />
           {artistResults.length > 0 && (
             <CommandGroup heading="Artists">
-              {artistResults.map((artist) => (
-                <CommandItem
-                  key={artist.id}
-                  value={artist.name}
-                  onSelect={() => {
-                    // this component formats currentvalue as lowercase,
-                    // so just using artist.name to preserve case
-                    addInspirationObject({
-                      id: artist.id,
-                      name: artist.name,
-                      type: "artist",
-                    });
+              {artistResults.map((artist) => {
+                return (
+                  <CommandItem
+                    key={artist.id}
+                    value={artist.name}
+                    onSelect={() => {
+                      // this component formats currentvalue as lowercase,
+                      // so just using artist.name to preserve case
+                      addInspirationObject({
+                        id: artist.id,
+                        name: artist.name,
+                        type: "artist",
+                      });
 
-                    setOpen(false);
-                    setSearch("");
-                  }}
-                >
-                  <div className="flex h-12 items-center justify-between w-full cursor-pointer">
-                    <span className="font-medium text-neutral-700">
-                      {artist.name}
-                    </span>
-                    {artist.images.length > 2 ? (
-                      <img
-                        src={artist.images[2]?.url}
-                        alt="artist"
-                        className="h-full aspect-square rounded-lg"
-                      />
-                    ) : (
-                      <div className="h-full aspect-square rounded-lg bg-neutral-200 grid items-center text-center text-neutral-800 font-medium">
-                        {artist.name[0]}
-                      </div>
-                    )}
-                  </div>
-                </CommandItem>
-              ))}
+                      setOpen(false);
+                      setSearch("");
+                    }}
+                  >
+                    <div className="flex h-12 items-center justify-between w-full cursor-pointer">
+                      <span className="font-medium text-neutral-700">
+                        {artist.name}
+                      </span>
+                      {artist.images.length > 2 ? (
+                        <img
+                          src={artist.images[2]?.url}
+                          alt="artist"
+                          className="h-full aspect-square rounded-lg"
+                        />
+                      ) : (
+                        <div className="h-full aspect-square rounded-lg bg-neutral-200 grid items-center text-center text-neutral-800 font-medium">
+                          {artist.name[0]}
+                        </div>
+                      )}
+                    </div>
+                  </CommandItem>
+                );
+              })}
             </CommandGroup>
           )}
           <CommandSeparator />
           {trackResults.length > 0 && (
             <CommandGroup heading="Tracks">
-              {trackResults.map((track) => (
-                <CommandItem
-                  key={track.id}
-                  value={track.name}
-                  onSelect={() => {
-                    // this component formats currentvalue as lowercase,
-                    // so just using track.name to preserve case
-                    addInspirationObject({
-                      id: track.id,
-                      name: track.name,
-                      type: "track",
-                    });
-                    setOpen(false);
-                    setSearch("");
-                  }}
-                >
-                  <div className="flex h-12 items-center justify-between w-full cursor-pointer">
-                    <div className="flex flex-col gap-1">
-                      <span className="capitalize font-medium text-neutral-00">
-                        {track.name}
-                      </span>
-                      <span className="flex">
-                        {track.artists.map((artist, index) => {
-                          if (index === track.artists.length - 1) {
-                            return (
-                              <p
-                                className="capitalize text-xs text-neutral-600"
-                                key={artist.id}
-                              >
-                                {artist.name}
-                              </p>
-                            );
-                          } else {
-                            return (
-                              <p
-                                className="capitalize text-xs text-neutral-600"
-                                key={artist.id}
-                              >
-                                {artist.name},&nbsp;
-                              </p>
-                            );
-                          }
-                        })}
-                      </span>
-                    </div>
-
-                    {track.album.images.length > 2 ? (
-                      <img
-                        src={track.album.images[2]?.url}
-                        alt="track"
-                        className="h-full aspect-square rounded-lg"
-                      />
-                    ) : (
-                      <div className="h-full aspect-square rounded-lg bg-neutral-200 grid items-center text-center text-neutral-800 font-medium">
-                        {track.name[0]}
+              {trackResults.map((track) => {
+                return (
+                  <CommandItem
+                    key={track.id}
+                    value={track.name}
+                    onSelect={() => {
+                      // this component formats currentvalue as lowercase,
+                      // so just using track.name to preserve case
+                      addInspirationObject({
+                        id: track.id,
+                        name: track.name,
+                        type: "track",
+                      });
+                      setOpen(false);
+                      setSearch("");
+                    }}
+                  >
+                    <div className="flex h-12 items-center justify-between w-full cursor-pointer">
+                      <div className="flex flex-col gap-1">
+                        <span className="capitalize font-medium text-neutral-00">
+                          {track.name}
+                        </span>
+                        <span className="flex">
+                          {track.artists.map((artist, index) => {
+                            if (index === track.artists.length - 1) {
+                              return (
+                                <p
+                                  className="capitalize text-xs text-neutral-600"
+                                  key={artist.id}
+                                >
+                                  {artist.name}
+                                </p>
+                              );
+                            } else {
+                              return (
+                                <p
+                                  className="capitalize text-xs text-neutral-600"
+                                  key={artist.id}
+                                >
+                                  {artist.name},&nbsp;
+                                </p>
+                              );
+                            }
+                          })}
+                        </span>
                       </div>
-                    )}
-                  </div>
-                </CommandItem>
-              ))}
+
+                      {track.album.images.length > 2 ? (
+                        <img
+                          src={track.album.images[2]?.url}
+                          alt="track"
+                          className="h-full aspect-square rounded-lg"
+                        />
+                      ) : (
+                        <div className="h-full aspect-square rounded-lg bg-neutral-200 grid items-center text-center text-neutral-800 font-medium">
+                          {track.name[0]}
+                        </div>
+                      )}
+                    </div>
+                  </CommandItem>
+                );
+              })}
             </CommandGroup>
           )}
         </CommandList>

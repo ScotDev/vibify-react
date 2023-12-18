@@ -85,8 +85,8 @@ export default function Step2() {
     params["min_tempo"] = tempo - 10;
     params["target_popularity"] = popularity;
     if (preset === "party") {
-      params["target_danceability"] = 1;
-      params["target_energy"] = 0.8;
+      params["target_danceability"] = vibe.danceability;
+      params["target_energy"] = vibe.energy;
     }
 
     // Loop over inspiration array and add to params.
@@ -136,7 +136,7 @@ export default function Step2() {
               <SearchableInput />
             </div>
 
-            <div className="flex absolute bottom-14 overflow-x-hidden w-full">
+            <div className="tag-container">
               {items.map((item) => {
                 return (
                   <Tag
