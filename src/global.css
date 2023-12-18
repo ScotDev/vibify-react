@@ -57,7 +57,7 @@ span {
 }
 
 .tag-container {
-  @apply flex absolute bottom-12 overflow-y-hidden overflow-x-scroll sm:overflow-x-hidden w-full h-12;
+  @apply flex absolute bottom-12 overflow-y-hidden overflow-x-auto sm:overflow-x-hidden w-full h-12;
 }
 
 .tag-container::-webkit-scrollbar {

@@ -69,7 +69,9 @@ export default function SearchableInput() {
       setGenreResults(genres);
       const artists = await getArtists(accessToken, search.trim());
       console.log("artists", artists);
+
       setArtistResults(artists);
+
       const tracks = await getTracks(accessToken, search.trim());
 
       setTrackResults(tracks);

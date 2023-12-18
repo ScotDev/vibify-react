@@ -30,7 +30,7 @@ export default function Tag({ value, handleClick }) {
       </span>
       <span
         onClick={() => handleClick(value.id)}
-        className={`px-1 ml-1 text-muted-foreground font-semibold cursor-pointer ${cancelBgColour} rounded-full hover:bg-neutral-200`}
+        className={`px-1 ml-2 text-muted-foreground font-semibold cursor-pointer ${cancelBgColour} rounded-full hover:bg-neutral-200`}
       >
         X
       </span>
