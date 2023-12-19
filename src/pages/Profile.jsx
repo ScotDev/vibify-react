@@ -52,7 +52,7 @@ export default function Profile() {
         {loading ? (
           <Skeleton className="w-full sm:w-52 h-5 mt-1 rounded-xl" />
         ) : (
-          <h3>{userData.display_name}</h3>
+          <p>{userData.display_name}</p>
         )}
       </div>
       <div className="flex flex-col gap-2 max-w-96 py-2">

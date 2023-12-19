@@ -16,14 +16,15 @@ import {
 export default function Step2() {
   let params = new URLSearchParams(document.location.search);
   const preset = params.get("preset");
-  const [qty, setQty] = useState(10);
-  const [tempo, setTempo] = useState(85);
-  const [popularity, setPopularity] = useState(100);
+  const [details, setDetails] = useState({
+    qty: 10,
+    tempo: 85,
+    popularity: 100,
+  });
+
   const [errorMsg, setErrorMsg] = useState(null);
   const navigate = useNavigate();
 
-  // const store = useInspirationStore((state) => state);
-  // const store = useStore((state) => state);
   const items = useItems();
   const addToItems = useAddToItems();
   const removeOneItem = useRemoveOneItem();
@@ -36,11 +37,11 @@ export default function Step2() {
   };
 
   useEffect(() => {
-    setQty(vibe.qty);
-    setTempo(vibe.tempo);
-    setPopularity(vibe.popularity);
-    // For now just use vibe.genres from preset
-    // setInspiration(vibe.genres);
+    setDetails({
+      qty: vibe.qty,
+      tempo: vibe.tempo,
+      popularity: vibe.popularity,
+    });
   }, []);
 
   useEffect(() => {
@@ -56,14 +57,8 @@ export default function Step2() {
     // console.log(vibe.genres);
   }, []);
 
-  const handleQtyChange = (value) => {
-    setQty(value);
-  };
-  const handleTempoChange = (value) => {
-    setTempo(value);
-  };
-  const handlePopularityChange = (value) => {
-    setPopularity(value);
+  const handleChange = (e) => {
+    setDetails({ ...details, [e.target.name]: e.target.value });
   };
 
   const genres = [];
@@ -80,10 +75,10 @@ export default function Step2() {
     setErrorMsg(null);
 
     let params = {};
-    params["limit"] = qty;
-    params["max_tempo"] = tempo + 10;
-    params["min_tempo"] = tempo - 10;
-    params["target_popularity"] = popularity;
+    params["limit"] = details.qty;
+    params["max_tempo"] = details.tempo + 10;
+    params["min_tempo"] = details.tempo - 10;
+    params["target_popularity"] = details.popularity;
     if (preset === "party") {
       params["target_danceability"] = vibe.danceability;
       params["target_energy"] = vibe.energy;
@@ -177,41 +172,41 @@ export default function Step2() {
             <div className="w-full flex flex-col gap-4">
               <label htmlFor="qty">Number of tracks</label>
               <Slider
-                defaultValue={[qty]}
-                value={[qty]}
-                onValueChange={handleQtyChange}
+                defaultValue={[details.qty]}
+                value={[details.qty]}
+                onValueChange={handleChange}
                 min={5}
                 max={100}
                 step={5}
                 name="qty"
               />
-              <span>{qty}</span>
+              <span>{details.qty}</span>
             </div>
             <div className="w-full flex flex-col gap-4">
               <label htmlFor="BPM">BPM</label>
               <Slider
-                defaultValue={[tempo]}
-                value={[tempo]}
-                onValueChange={handleTempoChange}
+                defaultValue={[details.tempo]}
+                value={[details.tempo]}
+                onValueChange={handleChange}
                 min={20}
                 max={200}
                 step={5}
                 name="BPM"
               />
-              <span>{tempo}</span>
+              <span>{details.tempo}</span>
             </div>
             <div className="w-full flex flex-col gap-4">
               <label htmlFor="Popularity">Popularity</label>
               <Slider
-                defaultValue={[popularity]}
-                value={[popularity]}
-                onValueChange={handlePopularityChange}
+                defaultValue={[details.popularity]}
+                value={[details.popularity]}
+                onValueChange={handleChange}
                 min={5}
                 max={100}
                 step={5}
                 name="Popularity"
               />
-              <span>{popularity}</span>
+              <span>{details.popularity}</span>
             </div>
           </fieldset>
         </div>
