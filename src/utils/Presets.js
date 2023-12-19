@@ -20,6 +20,7 @@ const handlePreset = (preset) => {
         ],
         tempo: 150,
         popularity: 100,
+        energy: 1,
         qty: 30,
       };
       break;

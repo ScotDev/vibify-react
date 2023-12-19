@@ -38,6 +38,7 @@ export default function Step2() {
 
   useEffect(() => {
     setDetails({
+      ...details,
       qty: vibe.qty,
       tempo: vibe.tempo,
       popularity: vibe.popularity,
@@ -57,8 +58,11 @@ export default function Step2() {
     // console.log(vibe.genres);
   }, []);
 
-  const handleChange = (e) => {
-    setDetails({ ...details, [e.target.name]: e.target.value });
+  const handleChange = (e, name) => {
+    const [val] = e;
+    // Due to shadcn/ui/slider's implementation, the name attribute is not passed through to the onValueChange callback.
+    // So we have to get creative.
+    setDetails({ ...details, [name]: val });
   };
 
   const genres = [];
@@ -79,10 +83,8 @@ export default function Step2() {
     params["max_tempo"] = details.tempo + 10;
     params["min_tempo"] = details.tempo - 10;
     params["target_popularity"] = details.popularity;
-    if (preset === "party") {
-      params["target_danceability"] = vibe.danceability;
-      params["target_energy"] = vibe.energy;
-    }
+    vibe.danceability && (params["target_danceability"] = vibe.danceability);
+    vibe.energy && (params["target_energy"] = vibe.energy);
 
     // Loop over inspiration array and add to params.
     // Need to loop over and separate out by type, but grouped togther in the params, separated by commas.
@@ -174,7 +176,7 @@ export default function Step2() {
               <Slider
                 defaultValue={[details.qty]}
                 value={[details.qty]}
-                onValueChange={handleChange}
+                onValueChange={(e) => handleChange(e, "qty")}
                 min={5}
                 max={100}
                 step={5}
@@ -187,11 +189,11 @@ export default function Step2() {
               <Slider
                 defaultValue={[details.tempo]}
                 value={[details.tempo]}
-                onValueChange={handleChange}
+                onValueChange={(e) => handleChange(e, "tempo")}
                 min={20}
                 max={200}
                 step={5}
-                name="BPM"
+                name="tempo"
               />
               <span>{details.tempo}</span>
             </div>
@@ -200,11 +202,11 @@ export default function Step2() {
               <Slider
                 defaultValue={[details.popularity]}
                 value={[details.popularity]}
-                onValueChange={handleChange}
+                onValueChange={(e) => handleChange(e, "popularity")}
                 min={5}
                 max={100}
                 step={5}
-                name="Popularity"
+                name="popularity"
               />
               <span>{details.popularity}</span>
             </div>

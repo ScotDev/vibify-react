@@ -11,7 +11,7 @@ import useSpotifyAuth from "../hooks/useSpotifyAuth";
 export default function Profile() {
   const accessToken = useSpotifyAuth();
 
-  // Potentially change to normally useEffect data fetching
+  // Potentially change to normal useEffect data fetching
   // in order to access useSpotifyAuth() hook
   // const { profileData } = useLoaderData();
 
