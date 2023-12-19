@@ -202,6 +202,7 @@ export default function SearchableInput() {
                         album: {
                           name: track.album.name,
                           images: track.album.images,
+                          external_urls: track.album.external_urls,
                         },
                       });
                       setOpen(false);

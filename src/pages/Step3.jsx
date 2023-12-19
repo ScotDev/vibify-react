@@ -12,28 +12,48 @@ export default function Step3() {
   const [loading, setLoading] = useState(true);
   const { recommendationsData } = useLoaderData();
 
-  // const items = useItems();
+  const items = useItems();
 
   // Need to merge recommendationsData with items, only if items includes items with type of "track".
   // Also need to check that any ids in items are not already in recommendationsData.
   // Could be a good chance to move away from the loader pattern.
-  // const mergedData = recommendationsData?.map((recommendation) => {
-  //   const track = items.find((item) => item.id === recommendation.id);
-  //   if (track) {
-  //     return { ...recommendation, ...track };
-  //   } else {
-  //     return recommendation;
-  //   }
-  // });
   // const tracks = items.filter((item) => item.type === "track");
   // if (tracks.length > 0) {
   //   console.log("item", tracks);
   // }
 
-  const totalDuration = recommendationsData?.reduce(
-    (a, b) => a + b.duration_ms,
-    0
+  // 1. First of all, we merge recommendationsData with items, regardless of duplicate IDs
+  // 2. Then we filter out any duplicate IDs
+  // const tracks = items.filter((item) => item.type === "track");
+  // console.log("tracks", tracks);
+  // const mergedData = recommendationsData?.map((recommendation) => {
+  //   return { ...recommendation };
+  //   // console.log("tracks", tracks);
+  //   // if (tracks.length > 0) {
+  //   //   return { ...recommendation, ...tracks };
+  //   // }
+  // });
+  const tracks = items.filter((item) => item.type === "track");
+  const filteredTracks = tracks.filter(
+    (track) => track.id !== recommendationsData.id
   );
+  const mergedData = [...filteredTracks, ...recommendationsData];
+
+  // const mergedData = recommendationsData?.map((recommendation) => {
+  //   // const track = items.find((item) => item.id === recommendation.id);
+  //   const conflictingTrack = items.find((item) => item.id === recommendation.id);
+  //   const tracks = items.filter((item) => item.type === "track");
+  //   if (conflictingTrack) {
+  //     console.log("track", conflictingTrack);
+  //     return recommendation;
+  //   } else {
+  //     console.log("recommendation", recommendation)
+  //     return { ...recommendation, ...track };
+  //   }
+  // });
+  console.log("mergedData", mergedData);
+
+  const totalDuration = mergedData?.reduce((a, b) => a + b.duration_ms, 0);
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
@@ -67,19 +87,19 @@ export default function Step3() {
               {loading ? (
                 <Skeleton className="h-4 w-20 rounded-xl" />
               ) : (
-                <span>{recommendationsData.length}</span>
+                <span>{mergedData.length}</span>
               )}
             </div>
           </div>
           {loading ? (
             <Skeleton className="h-10 w-16 rounded-xl" />
           ) : (
-            <SaveDialog tracks={recommendationsData} />
+            <SaveDialog tracks={mergedData} />
           )}
         </div>
 
         <div className="flex flex-col gap-6 overflow-x-hidden">
-          {recommendationsData.length === 0 && (
+          {mergedData.length === 0 && (
             <div className="flex flex-col gap-6">
               <h2 className="text-center text-lg">No recommendations found</h2>
               <p className="text-center italic text-sm">
@@ -95,7 +115,7 @@ export default function Step3() {
           )}
 
           {loading &&
-            Array(recommendationsData.length)
+            Array(mergedData.length)
               .fill()
               .map((_, index) => {
                 return (
@@ -110,7 +130,7 @@ export default function Step3() {
                 );
               })}
           {!loading &&
-            recommendationsData.map((recommendation) => (
+            mergedData.map((recommendation) => (
               <div
                 key={recommendation.id}
                 className="flex gap-6 w-full truncate"
