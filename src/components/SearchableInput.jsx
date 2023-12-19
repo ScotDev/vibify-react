@@ -76,7 +76,7 @@ export default function SearchableInput() {
       setArtistResults(artists);
 
       const tracks = await getTracks(accessToken, search.trim());
-
+      console.log("tracks", tracks);
       setTrackResults(tracks);
 
       setLoading(false);
@@ -168,10 +168,10 @@ export default function SearchableInput() {
                         <img
                           src={artist.images[2]?.url}
                           alt="artist"
-                          className="aspect-square rounded-lg w-1/5 sm:w-12"
+                          className="aspect-square rounded-lg w-12"
                         />
                       ) : (
-                        <div className="aspect-square rounded-lg bg-neutral-200 grid items-center text-center text-neutral-800 font-medium w-1/5 sm:w-12">
+                        <div className="aspect-square rounded-lg bg-neutral-200 grid items-center text-center text-neutral-800 font-medium w-12">
                           {artist.name[0]}
                         </div>
                       )}
@@ -195,7 +195,14 @@ export default function SearchableInput() {
                       addInspirationObject({
                         id: track.id,
                         name: track.name,
+                        artists: track.artists,
+                        external_urls: track.external_urls,
+                        duration_ms: track.duration_ms,
                         type: "track",
+                        album: {
+                          name: track.album.name,
+                          images: track.album.images,
+                        },
                       });
                       setOpen(false);
                       setSearch("");
@@ -235,10 +242,10 @@ export default function SearchableInput() {
                         <img
                           src={track.album.images[2]?.url}
                           alt="track"
-                          className="aspect-square rounded-lg w-1/5 sm:w-12"
+                          className="aspect-square rounded-lg w-12"
                         />
                       ) : (
-                        <div className="aspect-square rounded-lg bg-neutral-200 grid items-center text-center text-neutral-800 font-medium w-1/5 sm:w-12">
+                        <div className="aspect-square rounded-lg bg-neutral-200 grid items-center text-center text-neutral-800 font-medium w-12">
                           {track.name[0]}
                         </div>
                       )}

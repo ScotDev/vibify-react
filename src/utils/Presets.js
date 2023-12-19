@@ -87,6 +87,8 @@ const handlePreset = (preset) => {
         genres: [{ id: 10, name: "reggaeton", type: "genre" }],
         tempo: 95,
         popularity: 100,
+        danceability: 1,
+        energy: 1,
         qty: 30,
       };
       break;

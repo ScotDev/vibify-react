@@ -6,9 +6,29 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { msToMinSec } from "../utils/Calc";
 import { SaveDialog } from "../components/SaveDialog";
 
+import { useItems } from "../state/store";
+
 export default function Step3() {
   const [loading, setLoading] = useState(true);
   const { recommendationsData } = useLoaderData();
+
+  // const items = useItems();
+
+  // Need to merge recommendationsData with items, only if items includes items with type of "track".
+  // Also need to check that any ids in items are not already in recommendationsData.
+  // Could be a good chance to move away from the loader pattern.
+  // const mergedData = recommendationsData?.map((recommendation) => {
+  //   const track = items.find((item) => item.id === recommendation.id);
+  //   if (track) {
+  //     return { ...recommendation, ...track };
+  //   } else {
+  //     return recommendation;
+  //   }
+  // });
+  // const tracks = items.filter((item) => item.type === "track");
+  // if (tracks.length > 0) {
+  //   console.log("item", tracks);
+  // }
 
   const totalDuration = recommendationsData?.reduce(
     (a, b) => a + b.duration_ms,

@@ -233,15 +233,6 @@ const getRecommendations = async (params) => {
   const queryString = await params
     .map((param) => {
       const paramKey = Object.keys(param)[0];
-      // if (paramKey === "genres") {
-      //   return encodeURIComponent(param[paramKey] = param[paramKey].split(","));
-      // }
-      // if (paramKey === "tempo") {
-      //   const tempoAsNumber = parseInt(param["tempo"]);
-      //   return `min_tempo=${tempoAsNumber - 10}&max_tempo=${
-      //     tempoAsNumber + 10
-      //   }`;
-      // }
       const paramValue = encodeURIComponent(param[paramKey]);
       return `${paramKey}=${paramValue}`;
     })
