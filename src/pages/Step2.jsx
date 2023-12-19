@@ -15,6 +15,7 @@ import {
 
 export default function Step2() {
   let params = new URLSearchParams(document.location.search);
+  const MAX_ITEMS_LENGTH = 5;
   const preset = params.get("preset");
   const [details, setDetails] = useState({
     qty: 10,
@@ -50,7 +51,7 @@ export default function Step2() {
       // const hasItem = (genre) =>
       //   items.filter((item) => item.name === genre.name).length === 0;
       // console.log(hasItem(genre));
-      if (items.length < 3) {
+      if (items.length <= MAX_ITEMS_LENGTH) {
         console.log("adding genre", genre);
         addToItems(genre);
       }
@@ -155,9 +156,9 @@ export default function Step2() {
                 </button>
               </div>
               <div>
-                {items.length === 3 && (
+                {items.length === 5 && (
                   <p className="text-xs  text-neutral-700 ">
-                    {items.length} of 3 selected
+                    {items.length} of {MAX_ITEMS_LENGTH} selected
                   </p>
                 )}
               </div>

@@ -26,15 +26,16 @@ export default function SearchableInput() {
   const [artistResults, setArtistResults] = useState([]);
   const [trackResults, setTrackResults] = useState([]);
 
+  const MAX_ITEMS_LENGTH = 5;
+
   const items = useItems();
   const addToItems = useAddToItems();
 
   const accessToken = useSpotifyAuth();
 
   const addInspirationObject = (object) => {
-    console.log("object", object);
-    if (items.length < 3) {
-      console.log("adding object");
+    if (items.length < MAX_ITEMS_LENGTH) {
+      console.log("adding object", items.length, MAX_ITEMS_LENGTH);
       addToItems(object);
     }
   };
@@ -66,6 +67,7 @@ export default function SearchableInput() {
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(async () => {
+      if (search.trim().length === 0) return;
       const genres = await getGenres(accessToken, search.trim());
       setGenreResults(genres);
       const artists = await getArtists(accessToken, search.trim());
