@@ -14,44 +14,16 @@ export default function Step3() {
 
   const items = useItems();
 
-  // Need to merge recommendationsData with items, only if items includes items with type of "track".
-  // Also need to check that any ids in items are not already in recommendationsData.
-  // Could be a good chance to move away from the loader pattern.
-  // const tracks = items.filter((item) => item.type === "track");
-  // if (tracks.length > 0) {
-  //   console.log("item", tracks);
-  // }
-
-  // 1. First of all, we merge recommendationsData with items, regardless of duplicate IDs
-  // 2. Then we filter out any duplicate IDs
-  // const tracks = items.filter((item) => item.type === "track");
-  // console.log("tracks", tracks);
-  // const mergedData = recommendationsData?.map((recommendation) => {
-  //   return { ...recommendation };
-  //   // console.log("tracks", tracks);
-  //   // if (tracks.length > 0) {
-  //   //   return { ...recommendation, ...tracks };
-  //   // }
-  // });
   const tracks = items.filter((item) => item.type === "track");
   const filteredTracks = tracks.filter(
     (track) => track.id !== recommendationsData.id
   );
+
   const mergedData = [...filteredTracks, ...recommendationsData];
 
-  // const mergedData = recommendationsData?.map((recommendation) => {
-  //   // const track = items.find((item) => item.id === recommendation.id);
-  //   const conflictingTrack = items.find((item) => item.id === recommendation.id);
-  //   const tracks = items.filter((item) => item.type === "track");
-  //   if (conflictingTrack) {
-  //     console.log("track", conflictingTrack);
-  //     return recommendation;
-  //   } else {
-  //     console.log("recommendation", recommendation)
-  //     return { ...recommendation, ...track };
-  //   }
-  // });
-  console.log("mergedData", mergedData);
+  const difference = filteredTracks.length;
+  // Remove the last n items from the array so the total number of tracks matches what the user selected
+  mergedData.splice(-difference);
 
   const totalDuration = mergedData?.reduce((a, b) => a + b.duration_ms, 0);
   useEffect(() => {

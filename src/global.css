@@ -93,6 +93,9 @@ div.media-item a {
 /* .user-items-grid {
   @apply flex flex-wrap gap-16 mb-24;
 } */
+.error-msg {
+  @apply font-semibold;
+}
 
 .card-grid {
   /* @apply flex flex-wrap gap-6 mb-24 xs:gap-2 xs:grid xs:grid-cols-2; */

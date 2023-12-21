@@ -217,7 +217,7 @@ export default function Step2() {
           <button type="submit" className="button-primary">
             Submit
           </button>
-          <p className="font-semibold">{errorMsg}</p>
+          <p className="error-msg">{errorMsg}</p>
         </div>
       </form>
     </div>

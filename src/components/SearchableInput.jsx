@@ -66,6 +66,7 @@ export default function SearchableInput() {
   }, [search]);
 
   useEffect(() => {
+    // const controller = new AbortController();
     const delayDebounceFn = setTimeout(async () => {
       if (search.trim().length === 0) return;
       const genres = await getGenres(accessToken, search.trim());
@@ -204,6 +205,7 @@ export default function SearchableInput() {
                           images: track.album.images,
                           external_urls: track.album.external_urls,
                         },
+                        uri: track.uri,
                       });
                       setOpen(false);
                       setSearch("");

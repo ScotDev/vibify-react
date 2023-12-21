@@ -37,6 +37,8 @@ import useSpotifyAuth from "../hooks/useSpotifyAuth";
 export const SaveDialog = ({ tracks }) => {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [playlistsLoading, setPlaylistsLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -68,9 +70,11 @@ export const SaveDialog = ({ tracks }) => {
         tracks
       );
       if (res === null) {
-        console.log("Error adding tracks to playlist");
+        setLoading(false);
+        setError("Error adding tracks to playlist");
         return;
       }
+      error && setError("");
       setTimeout(() => {
         setLoading(false);
       }, 2000);
@@ -87,9 +91,11 @@ export const SaveDialog = ({ tracks }) => {
 
     const playlistID = await createPlaylist(accessToken, formData);
     if (playlistID === null) {
-      console.log("Error creating playlist");
+      setLoading(false);
+      setError("Error creating playlist, try again");
       return;
     }
+    error && setError("");
     await addTracksToPlaylist(accessToken, playlistID, tracks);
 
     setTimeout(() => {
@@ -101,12 +107,14 @@ export const SaveDialog = ({ tracks }) => {
   };
 
   const loadUserPlaylists = async () => {
+    setPlaylistsLoading(true);
     const playlists = await getUserPlaylists(accessToken);
     // This should be cached
-    // console.log(playlists);
+
     if (playlists.length === 0) return;
     // Handle no playlists found
     setSelectOptions(playlists);
+    setPlaylistsLoading(false);
   };
 
   return (
@@ -176,9 +184,7 @@ export const SaveDialog = ({ tracks }) => {
           </div>
 
           <Separator />
-          <p className="text-sm text-muted-foreground">
-            Add to an existing playlist
-          </p>
+          <h2 className="font-medium">Add to an existing playlist</h2>
           <div className="space-y-2 ">
             <label
               htmlFor="existing-playlist"
@@ -195,6 +201,8 @@ export const SaveDialog = ({ tracks }) => {
                 setSelectedPlaylist(value);
               }}
               value={selectedPlaylist}
+              disabled={playlistsLoading}
+              // open={selectOptions.length > 0}
               onOpenChange={async () => {
                 await loadUserPlaylists();
               }}
@@ -210,7 +218,7 @@ export const SaveDialog = ({ tracks }) => {
                       <SelectItem
                         key={option.id}
                         value={option.id}
-                        className="cursor-pointer capitalize "
+                        className="cursor-pointer capitalize"
                       >
                         {option.name}
                       </SelectItem>
@@ -220,7 +228,7 @@ export const SaveDialog = ({ tracks }) => {
               </SelectContent>
             </Select>
           </div>
-          <div className="flex justify-between">
+          <div className="flex gap-4 items-center">
             <button
               className="button-primary"
               type="submit"
@@ -228,6 +236,7 @@ export const SaveDialog = ({ tracks }) => {
             >
               {loading ? "Saving..." : "Save"}
             </button>
+            <p className="error-msg">{error}</p>
             {/* <button
               className="py-2 px-4 rounded-lg bg-neutral-100 disabled:bg-neutral-50 text-neutral-700 font-medium w-max disabled:cursor-not-allowed disabled:opacity-70"
               type="reset"

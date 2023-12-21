@@ -13,7 +13,7 @@ export default function Login() {
         appearance={{ theme: ThemeSupa }}
         providers={["spotify"]}
         onlyThirdPartyProviders
-        redirectTo="https://vibify.vercel.app/verify"
+        // redirectTo="https://vibify.app/"
         providerScopes={{
           spotify:
             "user-read-email user-read-private user-top-read playlist-modify-public playlist-modify-private",
