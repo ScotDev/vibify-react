@@ -18,12 +18,17 @@ export default function Step3() {
   const filteredTracks = tracks.filter(
     (track) => track.id !== recommendationsData.id
   );
-
+  console.log("filtered", filteredTracks);
+  console.log("Recommended", recommendationsData);
   const mergedData = [...filteredTracks, ...recommendationsData];
 
   const difference = filteredTracks.length;
   // Remove the last n items from the array so the total number of tracks matches what the user selected
-  mergedData.splice(-difference);
+  if (difference > 0) {
+    mergedData.splice(-difference);
+  }
+
+  console.log("merged", mergedData);
 
   const totalDuration = mergedData?.reduce((a, b) => a + b.duration_ms, 0);
   useEffect(() => {
