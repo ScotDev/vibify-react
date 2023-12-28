@@ -258,18 +258,18 @@ export default function Step3() {
                 </div>
               );
             })}
-        <div className="flex items-center gap-6">
+        <div className="flex flex-col gap-6">
           {recommendationsData.length > 0 && (
             <button
-              className="button-secondary w-fit "
+              className="button-secondary w-fit"
               onClick={handleLoadMore}
               disabled={extendedLoading || maxedRecommendations}
             >
-              {extendedLoading ? "Loading..." : "Add more +"}
+              {extendedLoading ? "Loading..." : "Add tracks"}
             </button>
           )}
           {maxedRecommendations && (
-            <p className="error-msg text-sm">
+            <p className="error-msg sm:text-sm">
               No more recommendations available
             </p>
           )}
