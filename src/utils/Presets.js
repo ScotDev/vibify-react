@@ -46,11 +46,13 @@ const handlePreset = (preset) => {
         description: "Time to focus up",
         tracks: [],
         genres: [
-          { id: 5, name: "electronic", type: "genre" },
-          { id: 6, name: "progressive-house", type: "genre" },
+          // { id: 5, name: "electronic", type: "genre" },
+          // { id: 6, name: "progressive-house", type: "genre" },
+          // { id: 5, name: "chill", type: "genre" },
+          { id: 6, name: "ambient", type: "genre" },
         ],
-        tempo: 95,
-        popularity: 95,
+        tempo: 75,
+        popularity: 90,
         qty: 40,
       };
       break;
@@ -63,8 +65,25 @@ const handlePreset = (preset) => {
           { id: 7, name: "hip-hop", type: "genre" },
           { id: 8, name: "r-n-b", type: "genre" },
         ],
-        tempo: 85,
-        popularity: 95,
+        tempo: 90,
+        popularity: 100,
+        energy: 0.9,
+        qty: 30,
+      };
+      break;
+    case "pop":
+      vibe = {
+        ...vibe,
+        description: "Let's chill",
+        tracks: [],
+        genres: [
+          { id: 9, name: "pop", type: "genre" },
+          // { id: 8, name: "r-n-b", type: "genre" },
+        ],
+        tempo: 110,
+        popularity: 100,
+        danceability: 1,
+        energy: 1,
         qty: 30,
       };
       break;
@@ -73,9 +92,10 @@ const handlePreset = (preset) => {
         ...vibe,
         description: "Let's chill",
         tracks: [],
-        genres: [{ id: 9, name: "k-pop", type: "genre" }],
+        genres: [{ id: 10, name: "k-pop", type: "genre" }],
         tempo: 110,
         popularity: 100,
+        energy: 1,
         qty: 20,
       };
       break;
@@ -84,7 +104,7 @@ const handlePreset = (preset) => {
         ...vibe,
         description: "Vamos",
         tracks: [],
-        genres: [{ id: 10, name: "reggaeton", type: "genre" }],
+        genres: [{ id: 11, name: "reggaeton", type: "genre" }],
         tempo: 95,
         popularity: 100,
         danceability: 1,

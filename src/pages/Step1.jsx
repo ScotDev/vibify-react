@@ -15,6 +15,7 @@ export default function Step1() {
     { title: "party" },
     { title: "focus" },
     { title: "hip-hop" },
+    { title: "pop" },
     { title: "k-pop" },
     { title: "reggaeton" },
   ];

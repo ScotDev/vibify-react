@@ -8,34 +8,98 @@ import { SaveDialog } from "../components/SaveDialog";
 
 import { useItems } from "../state/store";
 
-export default function Step3() {
-  const [loading, setLoading] = useState(true);
-  const { recommendationsData } = useLoaderData();
+import { getRecommendations } from "../utils/Spotify";
 
+import useSpotifyAuth from "../hooks/useSpotifyAuth";
+
+export default function Step3() {
+  // Hooks
+  const accessToken = useSpotifyAuth();
+
+  // Local state
+  const [loading, setLoading] = useState(true);
+  const [extendedLoading, setExtendedLoading] = useState(false);
+  // const { recommendationsData } = useLoaderData();
+  const [recommendationsData, setRecommendationsData] = useState([]);
+  const [maxedRecommendations, setMaxedRecommendations] = useState(false);
+
+  // Global state store
   const items = useItems();
 
-  const tracks = items.filter((item) => item.type === "track");
-  const filteredTracks = tracks.filter(
-    (track) => track.id !== recommendationsData.id
-  );
-  console.log("filtered", filteredTracks);
-  console.log("Recommended", recommendationsData);
-  const mergedData = [...filteredTracks, ...recommendationsData];
-
-  const difference = filteredTracks.length;
-  // Remove the last n items from the array so the total number of tracks matches what the user selected
-  if (difference > 0) {
-    mergedData.splice(-difference);
-  }
-
-  console.log("merged", mergedData);
-
-  const totalDuration = mergedData?.reduce((a, b) => a + b.duration_ms, 0);
   useEffect(() => {
+    if (!accessToken) return;
+    const fetchRecommendations = async () => {
+      const url = new URL(window.location.href);
+      const params = new URLSearchParams(url.search);
+      const fnParamsArr = [];
+      params.forEach((value, key) => {
+        fnParamsArr.push({ [key]: value });
+      });
+      const data = await getRecommendations(accessToken, fnParamsArr);
+
+      const filteredTracks = items.filter(
+        (track) => track.id !== data.id && track.type === "track"
+      );
+
+      const mergedData = [...filteredTracks, ...data];
+      const difference = filteredTracks.length;
+      // Remove the last n items from the array so the total number of tracks matches what the user selected
+      if (difference > 0) {
+        mergedData.splice(-difference);
+      }
+
+      setRecommendationsData(mergedData);
+    };
+    fetchRecommendations();
+    // setLoading(false);
     setTimeout(() => {
       setLoading(false);
-    }, 1200);
-  }, []);
+    }, 1000);
+  }, [accessToken]);
+
+  const totalDuration = recommendationsData?.reduce(
+    (a, b) => a + b.duration_ms,
+    0
+  );
+
+  const handleLoadMore = async () => {
+    setExtendedLoading(true);
+
+    // Fetch more recommendations and add them to the mergedData array
+    // Also check for duplicates
+
+    const url = new URL(window.location.href);
+    const params = new URLSearchParams(url.search);
+    const fnParamsArr = [];
+    params.forEach((value, key) => {
+      if (key === "limit") {
+        fnParamsArr.push({ [key]: 10 });
+      }
+      fnParamsArr.push({ [key]: value });
+    });
+
+    // console.log("fnParams", fnParamsArr);
+    const data = await getRecommendations(accessToken, fnParamsArr);
+
+    // Need to filter out duplicates
+
+    const filteredTracks = data.filter(
+      (track) => !recommendationsData.some((rec) => rec.id === track.id)
+    );
+    console.log("filteredTracks", filteredTracks);
+
+    // Need to find a way to communicate to the user that there are no more recommendations
+    if (filteredTracks.length === 0) {
+      setMaxedRecommendations(true);
+      return setExtendedLoading(false);
+    }
+
+    setRecommendationsData([...recommendationsData, ...filteredTracks]);
+
+    setTimeout(() => {
+      setExtendedLoading(false);
+    }, 1000);
+  };
 
   return (
     <>
@@ -64,19 +128,19 @@ export default function Step3() {
               {loading ? (
                 <Skeleton className="h-4 w-20 rounded-xl" />
               ) : (
-                <span>{mergedData.length}</span>
+                <span>{recommendationsData.length}</span>
               )}
             </div>
           </div>
           {loading ? (
             <Skeleton className="h-10 w-16 rounded-xl" />
           ) : (
-            <SaveDialog tracks={mergedData} />
+            <SaveDialog tracks={recommendationsData} />
           )}
         </div>
 
         <div className="flex flex-col gap-6 overflow-x-hidden">
-          {mergedData.length === 0 && (
+          {recommendationsData.length === 0 && !loading && (
             <div className="flex flex-col gap-6">
               <h2 className="text-center text-lg">No recommendations found</h2>
               <p className="text-center italic text-sm">
@@ -92,7 +156,7 @@ export default function Step3() {
           )}
 
           {loading &&
-            Array(mergedData.length)
+            Array(recommendationsData.length)
               .fill()
               .map((_, index) => {
                 return (
@@ -107,7 +171,7 @@ export default function Step3() {
                 );
               })}
           {!loading &&
-            mergedData.map((recommendation) => (
+            recommendationsData.map((recommendation) => (
               <div
                 key={recommendation.id}
                 className="flex gap-6 w-full truncate"
@@ -178,6 +242,37 @@ export default function Step3() {
                 </p>
               </div>
             ))}
+        </div>
+        {extendedLoading &&
+          Array(10)
+            .fill()
+            .map((_, index) => {
+              return (
+                <div key={index} className="flex gap-8 w-full">
+                  <Skeleton className="w-20 h-20 rounded-xl" />
+                  <div className="flex flex-col justify-between gap-2">
+                    <Skeleton className="w-full h-6 rounded-xl" />
+                    <Skeleton className="w-52 h-4 rounded-xl" />
+                    <Skeleton className="w-52 h-4 rounded-xl" />{" "}
+                  </div>
+                </div>
+              );
+            })}
+        <div className="flex items-center gap-6">
+          {recommendationsData.length > 0 && (
+            <button
+              className="button-secondary w-fit "
+              onClick={handleLoadMore}
+              disabled={extendedLoading || maxedRecommendations}
+            >
+              {extendedLoading ? "Loading..." : "Add more +"}
+            </button>
+          )}
+          {maxedRecommendations && (
+            <p className="error-msg text-sm">
+              No more recommendations available
+            </p>
+          )}
         </div>
       </div>
     </>

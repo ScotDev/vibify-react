@@ -6,7 +6,7 @@ import AuthProvider from "./context/AuthProvider";
 
 import { createBrowserRouter, RouterProvider, Link } from "react-router-dom";
 // import { loader as profileLoader } from "./routes/profile";
-import { loader as step3Loader } from "./routes/step-3.jsx";
+// import { loader as step3Loader } from "./routes/step-3.jsx";
 
 import RootRoute from "./routes/root";
 import ProfileRoute from "./routes/profile";
@@ -83,7 +83,7 @@ const router = createBrowserRouter([
           {
             path: "/step-3",
             element: <Step3 />,
-            loader: step3Loader,
+            // loader: step3Loader,
           },
         ],
       },

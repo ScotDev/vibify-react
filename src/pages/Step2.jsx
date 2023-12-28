@@ -206,7 +206,7 @@ export default function Step2() {
                 onValueChange={(e) => handleChange(e, "popularity")}
                 min={5}
                 max={100}
-                step={5}
+                step={10}
                 name="popularity"
               />
               <span>{details.popularity}</span>

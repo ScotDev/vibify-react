@@ -216,9 +216,9 @@ const getTracks = async (access_token, searchTerm) => {
   return result.tracks.items;
 };
 
-const getRecommendations = async (params) => {
+const getRecommendations = async (access_token, params) => {
   // https://api.spotify.com/v1/recommendations
-  const access_token = await handleToken();
+  // const access_token = await handleToken();
 
   // Need to parse params and build out query string/
   // const queryString = params.map((param) => {
